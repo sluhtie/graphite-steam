@@ -3,6 +3,11 @@
 @import "../../colors.css";
 @import "../partials/tokens.css";
 @import "../partials/base.css";
+@import "../partials/web-tokens.css";
 @import "../partials/web-base.css";
 @import "../partials/web-store.css";
 @import "../partials/web-community.css";
+@import "../partials/web-inventory.css";
+@import "../partials/web-activity.css";
+@import "../partials/web-discussions.css";
+@import "../partials/web-market.css";

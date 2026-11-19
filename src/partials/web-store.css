@@ -14,6 +14,14 @@
 	background-image: none !important;
 	box-shadow: none !important;
 }
+/* nav bar: one hairline instead of the extra tinted strip below it */
+.responsive_page_content > div:first-child > div > div > div {
+	border-bottom: 1px solid var(--gr-border);
+	height: auto !important;
+}
+.responsive_page_content > div:first-child > div > div > div > div:last-child:not(.Panel) {
+	display: none !important;
+}
 .responsive_page_content > div:first-child form {
 	background: var(--gr-surface-2) !important;
 	border: 1px solid var(--gr-border) !important;

@@ -1,0 +1,314 @@
+/* Community Market: home, search results, item listing pages, dialogs. */
+
+/* --- Header ---------------------------------------------------------------- */
+.market_header_bg,
+.market_header_bg #BG_top,
+#BG_top,
+#BG_bottom {
+	background: transparent !important;
+	background-image: none !important;
+}
+.market_header_bg {
+	border-bottom: 1px solid var(--gr-border);
+}
+h1.market_header,
+.market_header_text {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.02em !important;
+	text-shadow: none !important;
+}
+.market_header_logo {
+	background: transparent !important;
+	background-image: none !important;
+}
+.market_title_text {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_subtitle_text {
+	color: var(--gr-text-3) !important;
+	font-size: 13px !important;
+}
+.user_info {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.user_info_text,
+.user_info_text a {
+	color: var(--gr-text) !important;
+}
+#marketBetaNoteCtn,
+.market_beta_note {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Tabs -------------------------------------------------------------------- */
+.market_tab_well_tabs {
+	background: transparent !important;
+	border-bottom: 1px solid var(--gr-border);
+	display: flex;
+	gap: 4px;
+	padding-bottom: 6px;
+}
+.market_tab_well_tab {
+	background: transparent !important;
+	margin: 0 !important;
+}
+.market_tab_well_tab .market_tab_well_tab_contents {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.market_tab_well_tab:hover .market_tab_well_tab_contents {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.market_tab_well_tab_active .market_tab_well_tab_contents,
+.market_tab_well_tab.market_tab_well_tab_active .market_tab_well_tab_contents {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.market_tab_well_tab_contents .market_tab_count {
+	color: var(--gr-text-3) !important;
+}
+.market_large_tab_well {
+	background: transparent !important;
+}
+
+/* --- Action buttons ("Sell an item", "Buy", ...) --------------------------- */
+.item_market_action_button,
+.item_market_action_button .item_market_action_button_contents,
+.item_market_action_button_green .item_market_action_button_contents,
+.item_market_action_button_blue .item_market_action_button_contents {
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-bg) !important;
+	text-shadow: none !important;
+	font-weight: 600 !important;
+	box-shadow: none !important;
+}
+.item_market_action_button_edge,
+.item_market_action_button_preload {
+	display: none !important;
+}
+.item_market_action_button:hover .item_market_action_button_contents {
+	background: var(--gr-accent-strong) !important;
+}
+
+/* --- Listing tables ----------------------------------------------------------- */
+.market_content_block,
+.market_listing_table,
+.my_listing_section {
+	background: transparent !important;
+	border: none !important;
+}
+.my_market_header,
+.market_content_block h3,
+.my_market_header_active {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_listing_table_header {
+	background: transparent !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.market_listing_table_header .market_listing_right_cell,
+.market_listing_table_header > div {
+	border: none !important;
+}
+.market_listing_table_message {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+.market_listing_row,
+.market_recent_listing_row,
+.market_listing_row.market_recent_listing_row {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin: 0 0 6px !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.market_listing_row_link:hover .market_listing_row,
+.market_listing_row:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.market_listing_item_img,
+.market_listing_row .market_listing_item_img {
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background-color: var(--gr-surface-3) !important;
+}
+.market_listing_game_name,
+.market_listing_num_listings_qty {
+	color: var(--gr-text-3) !important;
+}
+.market_listing_price,
+.market_table_value .normal_price,
+.market_listing_price_with_fee {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_table_value,
+.market_listing_their_price {
+	color: var(--gr-text-3) !important;
+}
+
+/* --- Sidebar: search + browse by game --------------------------------------- */
+#sideBar,
+#findItems,
+#browseItems,
+#moreInfo,
+.market_search_sidebar_contents {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+}
+#sideBar {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	padding: 4px 0;
+}
+.market_search_sidebar_section_tip_small,
+.market_search_sidebar_section_tip {
+	color: var(--gr-accent) !important;
+	font-weight: 600 !important;
+}
+.market_search_advanced_button,
+.game_button .game_button_contents,
+.market_search_game_button_group .game_button .game_button_contents {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.game_button:hover .game_button_contents,
+.market_search_advanced_button:hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+}
+.game_button_game_icon img {
+	border-radius: 4px;
+}
+
+/* Search results page */
+#searchResults,
+#searchResultsTable,
+.market_search_results_header {
+	background: transparent !important;
+	border: none !important;
+}
+.market_paging,
+.market_paging_controls .pagebtn,
+.market_paging_pagelink {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+}
+.market_paging_pagelink.active {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_paging_controls .pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* --- Item listing page (/market/listings/...) -------------------------------- */
+.market_listing_nav_container,
+.market_listing_nav {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.market_listing_nav a {
+	color: var(--gr-text-2) !important;
+}
+#largeiteminfo,
+.market_listing_largeimage,
+.market_listing_iteminfo,
+.item_desc_content,
+.item_desc_description,
+#largeiteminfo_content {
+	background: transparent !important;
+	background-image: none !important;
+}
+#largeiteminfo,
+.market_listing_largeimage {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.market_commodity_orders_block,
+.market_commodity_order_block,
+.market_commodity_buyrequests,
+.market_commodity_forsale_table,
+.market_commodity_buyreqeusts_table,
+#market_commodity_order_spread,
+.pricehistory_container,
+#pricehistory,
+.market_listing_iteminfo .item_desc_descriptors {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+.market_commodity_orders_header_promote,
+.market_commodity_orders_header {
+	color: var(--gr-text) !important;
+}
+.market_commodity_orders_table td,
+.market_commodity_orders_table th {
+	border-color: var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.market_commodity_orders_table tr:nth-child(even) td {
+	background: color-mix(in srgb, var(--gr-text) 3%, transparent) !important;
+}
+.pricehistory_zoom_controls .zoomopt {
+	color: var(--gr-text-2) !important;
+	border-radius: var(--gr-radius-sm);
+	padding: 2px 6px;
+}
+.pricehistory_zoom_controls .zoomopt:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text) !important;
+}
+
+/* Dialogs (buy / sell / remove) */
+.market_dialog_content_frame,
+.market_dialog_content,
+.market_dialog_content_darker,
+.market_buynow_confirmation_innerframe,
+.market_dialog_purchase_confirmation_inner {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+#modalContentTitleBar {
+	background: var(--gr-surface-2) !important;
+}

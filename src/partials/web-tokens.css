@@ -1,0 +1,85 @@
+/* Valve's newer React web pages (store nav, new market item pages, footers,
+   dropdowns, ...) are built on a Radix-style design system with color scales
+   on :root. Remapping those scales to Graphite restyles all of them at once,
+   independent of their hashed class names. */
+:root:root {
+	/* neutral grey ramp (1 = darkest) */
+	--color-dull-1: var(--gr-bg);
+	--color-dull-2: color-mix(in srgb, var(--gr-bg) 50%, var(--gr-surface));
+	--color-dull-3: var(--gr-surface);
+	--color-dull-4: color-mix(in srgb, var(--gr-surface) 50%, var(--gr-surface-2));
+	--color-dull-5: var(--gr-surface-2);
+	--color-dull-6: color-mix(in srgb, var(--gr-surface-2) 50%, var(--gr-surface-3));
+	--color-dull-7: var(--gr-surface-3);
+	--color-dull-8: color-mix(in srgb, var(--gr-surface-3) 75%, var(--gr-text-3));
+	--color-dull-9: color-mix(in srgb, var(--gr-surface-3) 55%, var(--gr-text-3));
+	--color-dull-10: var(--gr-text-3);
+	--color-dull-11: var(--gr-text-2);
+	--color-dull-12: color-mix(in srgb, var(--gr-text-2) 50%, var(--gr-text));
+
+	--color-greyneutral-1: var(--color-dull-1);
+	--color-greyneutral-2: var(--color-dull-2);
+	--color-greyneutral-3: var(--color-dull-3);
+	--color-greyneutral-4: var(--color-dull-4);
+	--color-greyneutral-5: var(--color-dull-5);
+	--color-greyneutral-6: var(--color-dull-6);
+	--color-greyneutral-7: var(--color-dull-7);
+	--color-greyneutral-8: var(--color-dull-8);
+	--color-greyneutral-9: var(--color-dull-9);
+	--color-greyneutral-10: var(--color-dull-10);
+	--color-greyneutral-11: var(--color-dull-11);
+	--color-greyneutral-12: var(--color-dull-12);
+
+	/* accent ramp (Valve blue -> Graphite accent) */
+	--color-accent-1: color-mix(in srgb, var(--gr-accent) 6%, var(--gr-bg));
+	--color-accent-2: color-mix(in srgb, var(--gr-accent) 10%, var(--gr-bg));
+	--color-accent-3: color-mix(in srgb, var(--gr-accent) 16%, var(--gr-bg));
+	--color-accent-4: color-mix(in srgb, var(--gr-accent) 22%, var(--gr-bg));
+	--color-accent-5: color-mix(in srgb, var(--gr-accent) 30%, var(--gr-bg));
+	--color-accent-6: color-mix(in srgb, var(--gr-accent) 40%, var(--gr-bg));
+	--color-accent-7: color-mix(in srgb, var(--gr-accent) 60%, var(--gr-bg));
+	--color-accent-8: var(--gr-accent);
+	--color-accent-9: color-mix(in srgb, var(--gr-accent) 90%, white);
+	--color-accent-10: color-mix(in srgb, var(--gr-accent) 80%, white);
+	--color-accent-11: color-mix(in srgb, var(--gr-accent) 70%, white);
+	--color-accent-12: color-mix(in srgb, var(--gr-accent) 35%, white);
+	--color-accent-contrast: var(--gr-bg);
+
+	--color-text-light-title: var(--gr-text);
+	--color-text-light-subtitle: color-mix(in srgb, var(--gr-text) 70%, var(--gr-text-2));
+	--color-text-light-body: var(--gr-text-2);
+	--color-text-light-description: var(--gr-text-2);
+	--color-text-light-note: var(--gr-text-3);
+
+	--font-family: var(--gr-font);
+	--radius-sm: var(--gr-radius-sm);
+	--radius-md: var(--gr-radius-sm);
+	--radius-lg: var(--gr-radius);
+	--control-radius: var(--gr-radius-sm);
+	--footer-bg-color: var(--gr-bg);
+}
+
+/* New community template (React): page wrapper and hero band use fixed colors */
+#CommunityTemplate,
+body:has(#CommunityTemplate) {
+	background: var(--gr-bg) !important;
+}
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div {
+	background-color: var(--gr-bg) !important;
+}
+/* blurred full-page art behind the page */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > img:first-child {
+	display: none !important;
+}
+/* tinted hero band at the top */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > div:first-of-type {
+	background-image: none !important;
+}
+/* header box inside the hero ("Steam Community Market" + search) */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > div:first-of-type > div > div:first-child {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	box-shadow: none !important;
+}

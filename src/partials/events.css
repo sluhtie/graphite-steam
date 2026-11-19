@@ -1,0 +1,93 @@
+/* News / patch notes overlay (click an event in the library). */
+
+.$(PartnerEvent@AppPartnerEventsPage),
+.$(PartnerEvent@AppPartnerEventsPage).$(InLibraryView@EventDetailsPageContainer),
+.$(EventDetailsPageContainer).$(InLibraryView@EventDetailsPageContainer),
+div.$(InLibraryView@EventDetailsPageContainer) {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.$(EventBackgroundBlurCtn),
+.$(EventBackgroundBlur) {
+	display: none !important;
+}
+
+/* Header with type, date and title */
+.$(LibraryEventTitleContainer),
+.$(EventDetailTitleContainer@EventDetailsPageContainer) {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.$(EventDetailsType@EventDetailsPageContainer) {
+	color: var(--gr-accent) !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.$(EventDetailTitle@EventDetailsPageContainer) {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+.$(EventDetailsBody@EventDetailsPageContainer),
+.$(EventDescriptionContainer) {
+	color: var(--gr-text-2) !important;
+	line-height: 1.6 !important;
+}
+.$(EventDetailsBody@EventDetailsPageContainer) a {
+	color: var(--gr-accent) !important;
+}
+.$(EventCoverImageBackground) {
+	background: var(--gr-surface) !important;
+}
+
+/* Vote / discuss / share bar */
+.$(Container@DiscussContainer) {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border-top: 1px solid var(--gr-border);
+}
+.$(VoteContainer@DiscussContainer),
+.$(DiscussContainer),
+.$(ShareContainer@DiscussContainer) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius) !important;
+}
+.$(DiscussionButton@DiscussContainer) {
+	background: var(--gr-surface-3) !important;
+	box-shadow: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.$(DiscussionButton@DiscussContainer):hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+}
+.$(VoteCount@DiscussContainer),
+.$(DiscussionCount@DiscussContainer) {
+	color: var(--gr-accent) !important;
+}
+
+/* Floating close / scroll buttons next to the overlay */
+.$(CloseButton@AppPartnerEventsPage),
+.$(ScrollButton@AppPartnerEventsPage) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	box-shadow: var(--gr-shadow) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(CloseButton@AppPartnerEventsPage) {
+	border-radius: 50% !important;
+}
+.$(ScrollButton@AppPartnerEventsPage) {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.$(CloseButton@AppPartnerEventsPage):hover,
+.$(ScrollButton@AppPartnerEventsPage):hover {
+	background: var(--gr-surface-3) !important;
+}

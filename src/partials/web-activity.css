@@ -1,0 +1,176 @@
+/* Friend activity feed (/id/<you>/home) and shared comment / progress bits. */
+
+/* --- Status post box ------------------------------------------------------- */
+.blotter_status_entry .commentthread_entry {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius) !important;
+	padding: 12px !important;
+}
+.blotter_status_entry .commentthread_entry_quotebox {
+	background: transparent !important;
+	border: none !important;
+}
+.commentthread_textarea,
+.blotter_status_entry textarea {
+	background: var(--gr-surface-3) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	padding: 8px 10px !important;
+	min-height: 36px;
+}
+.commentthread_textarea:focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent) !important;
+}
+.blotter_appselect,
+.blotter_appselect .option {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.blotter_appselect_options {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+
+/* --- Day separators -------------------------------------------------------- */
+.blotter_day_header {
+	margin: 24px 0 10px !important;
+}
+.blotter_day_header_date {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase;
+}
+.blotter_day_header_divider {
+	background: var(--gr-border) !important;
+	height: 1px !important;
+}
+
+/* --- Feed cards ------------------------------------------------------------ */
+.blotter_block {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	margin-bottom: 10px !important;
+}
+.blotter_daily_rollup,
+.blotter_author_block,
+.blotter_gamepurchase,
+.blotter_screenshot,
+.blotter_userstatus {
+	background: transparent !important;
+}
+.blotter_author_block {
+	border-bottom: 1px solid var(--gr-border);
+}
+.blotter_daily_rollup_line {
+	color: var(--gr-text-2) !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+.blotter_daily_rollup {
+	padding: 10px 14px !important;
+}.blotter_daily_rollup_line a,
+.blotter_author_block a {
+	color: var(--gr-text) !important;
+	font-weight: 500;
+}
+.blotter_gamepurchase_details,
+.blotter_gamepurchase_text {
+	color: var(--gr-text-2) !important;
+}
+.blotter_gamepurchase_logo img,
+.blotter_gamepurchase_logo {
+	border-radius: var(--gr-radius-sm) !important;
+	border: none !important;
+}
+.blotter_control_container .btn_grey_grey,
+.blotter_control_container .btn_grey_grey > span {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+}
+.blotter_block .commentthread_area {
+	background: transparent !important;
+	border: none !important;
+	border-top: 1px solid var(--gr-border) !important;
+	border-radius: 0 !important;
+}
+
+/* --- Right column ---------------------------------------------------------- */
+#friendactivity_right_column .box,
+#friendactivity_right_column .friends_add_block,
+#friendactivity_right_column .panel,
+.friend_activity_header_search {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+#friendactivity_right_column .friends_launch_area.panel {
+	background: transparent !important;
+	border: none !important;
+}
+#friendactivity_right_column .box,
+#friendactivity_right_column .friends_add_block {
+	margin-bottom: 10px !important;
+}
+.profileFriendSearchBox {
+	background: transparent !important;
+	border: none !important;
+}
+.profile_menu_item a,
+.profile_menu_text {
+	color: var(--gr-text-2) !important;
+}
+.profile_menu_item:hover a,
+.profile_menu_item a:hover .profile_menu_text {
+	color: var(--gr-text) !important;
+}
+.profile_menu_item {
+	border-radius: var(--gr-radius-sm);
+}
+.profile_menu_item:hover {
+	background: var(--gr-hover);
+}
+.profile_link_block hr,
+.profile_menu hr {
+	border-color: var(--gr-border) !important;
+	background: var(--gr-border) !important;
+}
+
+/* --- Progress bars (achievements on profiles, badges) ---------------------- */
+.achievement_progress_bar_ctn,
+.profile_xp_block_remaining_bar,
+.badge_progress_bar,
+.progress_bar_ctn {
+	background: var(--gr-surface-3) !important;
+	border: none !important;
+	border-radius: 4px !important;
+	overflow: hidden;
+}
+.achievement_progress_bar_ctn .progress_bar,
+.profile_xp_block_remaining_bar_progress,
+.badge_progress_bar_inner,
+.progress_bar {
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+}
+.game_info_achievements_summary_area,
+.game_info_stats {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}

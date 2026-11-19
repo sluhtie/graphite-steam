@@ -85,6 +85,63 @@
 .$(PartnerEventRowCapsule_Container):hover {
 	box-shadow: 0 0 0 1px color-mix(in srgb, var(--gr-text) 18%, transparent), var(--gr-shadow) !important;
 }
+/* Event card hover: Steam fades in a blue overlay with the summary text */
+.$(PartnerEventRowCapsule_Container):hover .$(EventSummaryContainer),
+.gpfocus > .$(PartnerEventRowCapsule_Container) .$(EventSummaryContainer) {
+	background-color: color-mix(in srgb, var(--gr-surface-2) 94%, transparent) !important;
+}
+.$(EventSummaryType) {
+	color: var(--gr-accent) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.$(EventSummaryText) {
+	color: var(--gr-text) !important;
+}
+
+/* Game hover card (hovering a capsule) */
+.$(AppPortraitHover) {
+	background-color: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.$(AppPortraitHover) .$(CapsuleBackgroundContainer@AppPortraitHover) {
+	display: none !important;
+}
+.$(AppPortraitHover) .$(AppTitle@AppPortraitHover) {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.$(AppPortraitHover) .$(ScreenshotImg@AppPortraitHover),
+.$(AppPortraitHover) .$(MiniScreenshot@AppPortraitHover) {
+	border-radius: var(--gr-radius-sm);
+}
+.$(AppPortraitHover) .$(PlaytimeDetails@AppPortraitHover) {
+	color: var(--gr-text-2) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.$(AppPortraitHover) .$(Header@AppPortraitHover),
+.$(AppPortraitHover) .$(FriendsLabel@AppPortraitHover) {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.$(AppPortraitHover) .$(GameUpdatedContainer@AppPortraitHover) {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text) !important;
+}
+.$(AppPortraitHover) .$(GameUpdatedCircle@AppPortraitHover) {
+	background: var(--gr-accent) !important;
+}
+.$(HoverPosition@HoverPositionOuter) {
+	filter: none !important;
+}
+
 .$(EventTimeSpan) {
 	background: var(--gr-accent) !important;
 	color: var(--gr-bg) !important;

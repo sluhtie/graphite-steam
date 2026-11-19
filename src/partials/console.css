@@ -1,0 +1,55 @@
+/* Console tab (Steam started with -dev / -console). */
+
+.$(Console@SpewLine) {
+	background: var(--gr-surface) !important;
+	margin: 0 8px 8px 0;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius-lg);
+	overflow: hidden;
+}
+.$(ConsoleInner@SpewLine) {
+	background: transparent !important;
+	padding: 12px 16px !important;
+}
+.$(SpewLine),
+.$(LineWrapper@SpewLine) {
+	color: var(--gr-text-2) !important;
+	font-family: "Cascadia Mono", "JetBrains Mono", Consolas, ui-monospace, monospace !important;
+	font-size: 12px !important;
+	line-height: 1.55 !important;
+}
+.$(Timestamp@SpewLine) {
+	color: var(--gr-text-3) !important;
+}
+.$(SpewLine).$(Error@SpewLine) {
+	color: #ff7a7f !important;
+}
+.$(SpewLine).$(Warning@SpewLine) {
+	color: #f5c46b !important;
+}
+.$(SpewLine).$(Input@SpewLine) {
+	color: var(--gr-accent) !important;
+}
+.$(ConsoleInput@SpewLine) {
+	background: transparent !important;
+	padding: 8px 12px 12px !important;
+	border-top: 1px solid var(--gr-border);
+}
+.$(InputBox@SpewLine) {
+	font-family: "Cascadia Mono", "JetBrains Mono", Consolas, ui-monospace, monospace !important;
+	font-size: 12.5px !important;
+	height: 36px !important;
+}
+.$(Suggestions@SpewLine) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.$(Suggestion@SpewLine) {
+	color: var(--gr-text-2) !important;
+}
+.$(Suggestion@SpewLine):hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}

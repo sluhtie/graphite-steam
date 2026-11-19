@@ -15,13 +15,13 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 ## What it themes
 
 - **Window frame**: menu bar and Store / Library / Community tabs merged into one row, flat window controls, slim bottom bar
-- **Library**: game list, home page shelves and capsules, game details page (hero fade, play bar, sections, activity feed)
+- **Library**: game list, home page shelves and capsules, hover cards, game details page (hero fade, play bar, sections, activity feed), news / patch notes overlay, downloads page, console
 - **Menus**: root menus, nav dropdowns and context menus
 - **Dialogs**: settings window, toggles, inputs, buttons, modals
 - **Friends**: friends list and chat windows
-- **Store & Community pages** (optional, on by default): flat backgrounds, neutral cards and buttons on the store home, game pages, search, community home, hubs, discussions and profiles. Custom profile backgrounds stay visible, and discount badges keep Steam's green.
+- **Store & Community pages** (optional, on by default): store home, game pages and search; community home, hubs, discussions, friend activity, profiles, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity colors are untouched.
 
-The store and community are Valve's web pages. They use stable class names, but some newer React parts use hashed names from Valve's servers, which the build can't resolve locally. Those parts are styled through structural selectors or left alone.
+The store and community are Valve's web pages. Older parts use stable class names. Newer React parts are built on Valve's web design system, whose color scales (`--color-dull-*`, `--color-accent-*`, ...) Graphite remaps on `:root`, so they follow the theme without relying on hashed class names. A few spots are still matched structurally.
 
 ## Install
 
@@ -45,7 +45,7 @@ In **Millennium → Themes → Graphite**:
 - **Corners**: Rounded or Sharp.
 - **Header**: Single row (default) or Classic two-row layout.
 - **Store & community pages**: restyle the in-client web pages (on by default).
-- **Hide URL bar** and **Hide What's New**.
+- **Hide URL bar** (on by default) and **Hide What's New**.
 
 ## How it works
 

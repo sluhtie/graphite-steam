@@ -8,3 +8,6 @@
 @import "./partials/library-app.css";
 @import "./partials/menus.css";
 @import "./partials/dialogs.css";
+@import "./partials/downloads.css";
+@import "./partials/console.css";
+@import "./partials/events.css";

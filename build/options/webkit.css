@@ -192,6 +192,92 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	box-shadow: var(--gr-shadow) !important;
 }
 
+/* Valve's newer React web pages (store nav, new market item pages, footers,
+   dropdowns, ...) are built on a Radix-style design system with color scales
+   on :root. Remapping those scales to Graphite restyles all of them at once,
+   independent of their hashed class names. */
+:root:root {
+	/* neutral grey ramp (1 = darkest) */
+	--color-dull-1: var(--gr-bg);
+	--color-dull-2: color-mix(in srgb, var(--gr-bg) 50%, var(--gr-surface));
+	--color-dull-3: var(--gr-surface);
+	--color-dull-4: color-mix(in srgb, var(--gr-surface) 50%, var(--gr-surface-2));
+	--color-dull-5: var(--gr-surface-2);
+	--color-dull-6: color-mix(in srgb, var(--gr-surface-2) 50%, var(--gr-surface-3));
+	--color-dull-7: var(--gr-surface-3);
+	--color-dull-8: color-mix(in srgb, var(--gr-surface-3) 75%, var(--gr-text-3));
+	--color-dull-9: color-mix(in srgb, var(--gr-surface-3) 55%, var(--gr-text-3));
+	--color-dull-10: var(--gr-text-3);
+	--color-dull-11: var(--gr-text-2);
+	--color-dull-12: color-mix(in srgb, var(--gr-text-2) 50%, var(--gr-text));
+
+	--color-greyneutral-1: var(--color-dull-1);
+	--color-greyneutral-2: var(--color-dull-2);
+	--color-greyneutral-3: var(--color-dull-3);
+	--color-greyneutral-4: var(--color-dull-4);
+	--color-greyneutral-5: var(--color-dull-5);
+	--color-greyneutral-6: var(--color-dull-6);
+	--color-greyneutral-7: var(--color-dull-7);
+	--color-greyneutral-8: var(--color-dull-8);
+	--color-greyneutral-9: var(--color-dull-9);
+	--color-greyneutral-10: var(--color-dull-10);
+	--color-greyneutral-11: var(--color-dull-11);
+	--color-greyneutral-12: var(--color-dull-12);
+
+	/* accent ramp (Valve blue -> Graphite accent) */
+	--color-accent-1: color-mix(in srgb, var(--gr-accent) 6%, var(--gr-bg));
+	--color-accent-2: color-mix(in srgb, var(--gr-accent) 10%, var(--gr-bg));
+	--color-accent-3: color-mix(in srgb, var(--gr-accent) 16%, var(--gr-bg));
+	--color-accent-4: color-mix(in srgb, var(--gr-accent) 22%, var(--gr-bg));
+	--color-accent-5: color-mix(in srgb, var(--gr-accent) 30%, var(--gr-bg));
+	--color-accent-6: color-mix(in srgb, var(--gr-accent) 40%, var(--gr-bg));
+	--color-accent-7: color-mix(in srgb, var(--gr-accent) 60%, var(--gr-bg));
+	--color-accent-8: var(--gr-accent);
+	--color-accent-9: color-mix(in srgb, var(--gr-accent) 90%, white);
+	--color-accent-10: color-mix(in srgb, var(--gr-accent) 80%, white);
+	--color-accent-11: color-mix(in srgb, var(--gr-accent) 70%, white);
+	--color-accent-12: color-mix(in srgb, var(--gr-accent) 35%, white);
+	--color-accent-contrast: var(--gr-bg);
+
+	--color-text-light-title: var(--gr-text);
+	--color-text-light-subtitle: color-mix(in srgb, var(--gr-text) 70%, var(--gr-text-2));
+	--color-text-light-body: var(--gr-text-2);
+	--color-text-light-description: var(--gr-text-2);
+	--color-text-light-note: var(--gr-text-3);
+
+	--font-family: var(--gr-font);
+	--radius-sm: var(--gr-radius-sm);
+	--radius-md: var(--gr-radius-sm);
+	--radius-lg: var(--gr-radius);
+	--control-radius: var(--gr-radius-sm);
+	--footer-bg-color: var(--gr-bg);
+}
+
+/* New community template (React): page wrapper and hero band use fixed colors */
+#CommunityTemplate,
+body:has(#CommunityTemplate) {
+	background: var(--gr-bg) !important;
+}
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div {
+	background-color: var(--gr-bg) !important;
+}
+/* blurred full-page art behind the page */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > img:first-child {
+	display: none !important;
+}
+/* tinted hero band at the top */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > div:first-of-type {
+	background-image: none !important;
+}
+/* header box inside the hero ("Steam Community Market" + search) */
+#CommunityTemplate > .noOpinionatedGlobalStyles > div > div > div > div > div:first-of-type > div > div:first-child {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	box-shadow: none !important;
+}
+
 /* Shared base for Valve web pages shown inside the client (store, community).
    These pages use stable, human-readable class names. */
 
@@ -334,6 +420,21 @@ textarea::placeholder {
 	font-style: normal !important;
 }
 
+/* Blue magnifier sprites used by legacy search boxes */
+.discussionSearchTextSubmitImg,
+img[src*="searchButton"],
+img[src*="search_icon"],
+input[type="image"][src*="search"] {
+	filter: grayscale(1) brightness(1.25) !important;
+	opacity: 0.75;
+	border-radius: var(--gr-radius-sm);
+}
+.discussionSearchTextContainer .discussionSearchText,
+.community_home_search_content input[type="text"] {
+	background: transparent !important;
+	border: none !important;
+}
+
 /* --- Prices / discounts ----------------------------------------------------
    Discount badges keep Steam's green so sales stay recognizable at a glance. */
 .discount_pct {
@@ -463,6 +564,14 @@ footer {
 	background: var(--gr-bg) !important;
 	background-image: none !important;
 	box-shadow: none !important;
+}
+/* nav bar: one hairline instead of the extra tinted strip below it */
+.responsive_page_content > div:first-child > div > div > div {
+	border-bottom: 1px solid var(--gr-border);
+	height: auto !important;
+}
+.responsive_page_content > div:first-child > div > div > div > div:last-child:not(.Panel) {
+	display: none !important;
 }
 .responsive_page_content > div:first-child form {
 	background: var(--gr-surface-2) !important;
@@ -972,8 +1081,15 @@ footer {
 .profile_header_bg,
 .profile_header_bg_texture,
 .profile_header {
-	background: var(--gr-bg) !important;
+	background: transparent !important;
 	background-image: none !important;
+	box-shadow: none !important;
+}
+/* Without a custom background the page itself is flat Graphite; with one,
+   Steam paints a dark band behind the header - drop it so the art shows. */
+.profile_page.has_profile_background .profile_header_bg_texture,
+.profile_page.has_profile_background .profile_header_bg {
+	background: transparent !important;
 }
 .profile_header .persona_name_text_content,
 .profile_header .actual_persona_name {
@@ -1097,4 +1213,793 @@ footer {
 .eventbbcodeparser_EventDetailsBody,
 .partnereventwebrowembed_LoadingThrobberCtn {
 	background: var(--gr-surface) !important;
+}
+
+/* Inventory, trade offers and other "small header" profile subpages. */
+
+/* Small profile header (avatar + "name » Inventory") */
+.profile_small_header_bg,
+.profile_small_header_texture {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.profile_small_header_texture {
+	border-bottom: 1px solid var(--gr-border);
+}
+.profile_small_header_name a,
+.profile_small_header_name,
+.profile_small_header_location {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.profile_small_header_arrow,
+.profile_small_header_location {
+	color: var(--gr-text-3) !important;
+}
+.profile_small_header_avatar .playerAvatar img {
+	border-radius: var(--gr-radius-sm);
+}
+
+/* Game tabs */
+.games_list_tabs_ctn {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+}
+.games_list_tabs {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.games_list_tab {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.games_list_tab:hover {
+	background: var(--gr-surface-3) !important;
+}
+.games_list_tab.active {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent) !important;
+}
+.games_list_tab_name {
+	color: var(--gr-text) !important;
+	font-weight: 500 !important;
+}
+.games_list_tab_number {
+	color: var(--gr-text-3) !important;
+}
+.games_list_tab_separator,
+.games_list_tab_row_separator {
+	display: none !important;
+}
+
+/* Inventory body */
+#tabcontent_inventory,
+.inventory_page_right,
+.inventory_iteminfo,
+.inventory_rightnav {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+#tabcontent_inventory {
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	/* no extra padding: Steam's float layout needs the full width */
+}
+.trade_item_box,
+#inventories.trade_item_box {
+	background: transparent !important;
+	border: none !important;
+}
+.inventory_page .itemHolder,
+.itemHolder {
+	background-color: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-sizing: border-box !important;
+	overflow: hidden;
+}
+.itemHolder.disabled {
+	background-color: color-mix(in srgb, var(--gr-surface-2) 60%, transparent) !important;
+}
+.item.app730,
+.inventory_page .item {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.inventory_item_link:hover + *,
+.itemHolder:hover {
+	border-color: color-mix(in srgb, var(--gr-text) 25%, transparent) !important;
+}
+.inventory_page_left .pagecontrol_element,
+.pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.pagecontrol_element.disabled,
+.pagebtn.disabled {
+	opacity: 0.4;
+}
+
+/* Filter row */
+.filter_search_box {
+	height: 32px !important;
+}
+.filter_ctn,
+.filter_tag_options,
+.econ_tag_filter_category {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.econ_tag_filter_category_label {
+	color: var(--gr-text-3) !important;
+	font-weight: 600 !important;
+}
+
+/* "More" dropdown + trade offers button */
+.dselect_container .trigger,
+#inventory_more_trigger {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.dselect_container .dropcontainer ul,
+.dselect_container .dropcontainer {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.dselect_container .dropcontainer a {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+}
+.dselect_container .dropcontainer a:hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+
+/* Friend activity feed (/id/<you>/home) and shared comment / progress bits. */
+
+/* --- Status post box ------------------------------------------------------- */
+.blotter_status_entry .commentthread_entry {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius) !important;
+	padding: 12px !important;
+}
+.blotter_status_entry .commentthread_entry_quotebox {
+	background: transparent !important;
+	border: none !important;
+}
+.commentthread_textarea,
+.blotter_status_entry textarea {
+	background: var(--gr-surface-3) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	padding: 8px 10px !important;
+	min-height: 36px;
+}
+.commentthread_textarea:focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent) !important;
+}
+.blotter_appselect,
+.blotter_appselect .option {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.blotter_appselect_options {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+
+/* --- Day separators -------------------------------------------------------- */
+.blotter_day_header {
+	margin: 24px 0 10px !important;
+}
+.blotter_day_header_date {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase;
+}
+.blotter_day_header_divider {
+	background: var(--gr-border) !important;
+	height: 1px !important;
+}
+
+/* --- Feed cards ------------------------------------------------------------ */
+.blotter_block {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	margin-bottom: 10px !important;
+}
+.blotter_daily_rollup,
+.blotter_author_block,
+.blotter_gamepurchase,
+.blotter_screenshot,
+.blotter_userstatus {
+	background: transparent !important;
+}
+.blotter_author_block {
+	border-bottom: 1px solid var(--gr-border);
+}
+.blotter_daily_rollup_line {
+	color: var(--gr-text-2) !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+.blotter_daily_rollup {
+	padding: 10px 14px !important;
+}.blotter_daily_rollup_line a,
+.blotter_author_block a {
+	color: var(--gr-text) !important;
+	font-weight: 500;
+}
+.blotter_gamepurchase_details,
+.blotter_gamepurchase_text {
+	color: var(--gr-text-2) !important;
+}
+.blotter_gamepurchase_logo img,
+.blotter_gamepurchase_logo {
+	border-radius: var(--gr-radius-sm) !important;
+	border: none !important;
+}
+.blotter_control_container .btn_grey_grey,
+.blotter_control_container .btn_grey_grey > span {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+}
+.blotter_block .commentthread_area {
+	background: transparent !important;
+	border: none !important;
+	border-top: 1px solid var(--gr-border) !important;
+	border-radius: 0 !important;
+}
+
+/* --- Right column ---------------------------------------------------------- */
+#friendactivity_right_column .box,
+#friendactivity_right_column .friends_add_block,
+#friendactivity_right_column .panel,
+.friend_activity_header_search {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+#friendactivity_right_column .friends_launch_area.panel {
+	background: transparent !important;
+	border: none !important;
+}
+#friendactivity_right_column .box,
+#friendactivity_right_column .friends_add_block {
+	margin-bottom: 10px !important;
+}
+.profileFriendSearchBox {
+	background: transparent !important;
+	border: none !important;
+}
+.profile_menu_item a,
+.profile_menu_text {
+	color: var(--gr-text-2) !important;
+}
+.profile_menu_item:hover a,
+.profile_menu_item a:hover .profile_menu_text {
+	color: var(--gr-text) !important;
+}
+.profile_menu_item {
+	border-radius: var(--gr-radius-sm);
+}
+.profile_menu_item:hover {
+	background: var(--gr-hover);
+}
+.profile_link_block hr,
+.profile_menu hr {
+	border-color: var(--gr-border) !important;
+	background: var(--gr-border) !important;
+}
+
+/* --- Progress bars (achievements on profiles, badges) ---------------------- */
+.achievement_progress_bar_ctn,
+.profile_xp_block_remaining_bar,
+.badge_progress_bar,
+.progress_bar_ctn {
+	background: var(--gr-surface-3) !important;
+	border: none !important;
+	border-radius: 4px !important;
+	overflow: hidden;
+}
+.achievement_progress_bar_ctn .progress_bar,
+.profile_xp_block_remaining_bar_progress,
+.badge_progress_bar_inner,
+.progress_bar {
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+}
+.game_info_achievements_summary_area,
+.game_info_stats {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* Discussions landing page (steamcommunity.com/discussions) and forums. */
+
+.discussions_page .group_content,
+.steam_discussions_intro,
+.group_content.bottomless {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.steam_discussions_intro {
+	color: var(--gr-text-2) !important;
+	line-height: 1.55 !important;
+}
+.steam_discussions_intro b,
+.steam_discussions_intro strong {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.discussions_page .pageheader,
+.steam_discussions_intro h1 {
+	font-size: 26px !important;
+	font-weight: 600 !important;
+}
+
+/* Tabs: Steam forums / Game forums / Tools & servers */
+.discussions_header {
+	border: none !important;
+	box-shadow: none !important;
+	background: transparent !important;
+	display: flex;
+	gap: 6px;
+	padding-bottom: 12px !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.discussions_header .group_tab {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	font-weight: 500 !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.discussions_header .group_tab > span {
+	background: transparent !important;
+	color: inherit !important;
+}
+.discussions_header .group_tab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.discussions_header .group_tab.active {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.discussion_tab_content_area,
+.grouppage_content_area {
+	background: transparent !important;
+}
+
+/* Forum list */
+.discussions_forumlist_header,
+.forum_list_ctn .forum_list_header {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	border: none !important;
+	background: transparent !important;
+}
+.discussions_forum_row,
+.discussions_forum_row.unread {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin-bottom: 6px !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.discussions_forum_row:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.discussions_forum_row .forum_name,
+.discussions_forum_row a.forum_name {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.discussions_forum_row .forum_last_post,
+.discussions_forum_row .forum_topic_count,
+.discussions_forum_row .forum_desc {
+	color: var(--gr-text-3) !important;
+}
+.discussions_forum_row .forum_name img,
+.discussions_forum_row img[src*="mail"] {
+	opacity: 0.6;
+}
+
+/* Right side: game discussion shortcuts */
+.forum_list_right {
+	background: transparent !important;
+}
+.recent_game_discussion,
+.recent_game_discussion.quasi_official_group {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin-bottom: 6px !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.recent_game_discussion:hover {
+	background: var(--gr-surface-3) !important;
+}
+.recent_game_discussion img {
+	border-radius: var(--gr-radius-sm);
+}
+.recent_game_discussion_name,
+.recent_game_discussion .name {
+	color: var(--gr-text) !important;
+}
+
+/* Topic page */
+.forum_op {
+	padding: 18px !important;
+}
+.forum_op_author,
+.commentthread_author_link bdi {
+	color: var(--gr-text) !important;
+}
+.forum_op .content,
+.commentthread_comment_text {
+	color: var(--gr-text-2) !important;
+	line-height: 1.55 !important;
+}
+.forum_paging_controls .pagebtn,
+.commentthread_paging .pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* Community Market: home, search results, item listing pages, dialogs. */
+
+/* --- Header ---------------------------------------------------------------- */
+.market_header_bg,
+.market_header_bg #BG_top,
+#BG_top,
+#BG_bottom {
+	background: transparent !important;
+	background-image: none !important;
+}
+.market_header_bg {
+	border-bottom: 1px solid var(--gr-border);
+}
+h1.market_header,
+.market_header_text {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.02em !important;
+	text-shadow: none !important;
+}
+.market_header_logo {
+	background: transparent !important;
+	background-image: none !important;
+}
+.market_title_text {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_subtitle_text {
+	color: var(--gr-text-3) !important;
+	font-size: 13px !important;
+}
+.user_info {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.user_info_text,
+.user_info_text a {
+	color: var(--gr-text) !important;
+}
+#marketBetaNoteCtn,
+.market_beta_note {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Tabs -------------------------------------------------------------------- */
+.market_tab_well_tabs {
+	background: transparent !important;
+	border-bottom: 1px solid var(--gr-border);
+	display: flex;
+	gap: 4px;
+	padding-bottom: 6px;
+}
+.market_tab_well_tab {
+	background: transparent !important;
+	margin: 0 !important;
+}
+.market_tab_well_tab .market_tab_well_tab_contents {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.market_tab_well_tab:hover .market_tab_well_tab_contents {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.market_tab_well_tab_active .market_tab_well_tab_contents,
+.market_tab_well_tab.market_tab_well_tab_active .market_tab_well_tab_contents {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.market_tab_well_tab_contents .market_tab_count {
+	color: var(--gr-text-3) !important;
+}
+.market_large_tab_well {
+	background: transparent !important;
+}
+
+/* --- Action buttons ("Sell an item", "Buy", ...) --------------------------- */
+.item_market_action_button,
+.item_market_action_button .item_market_action_button_contents,
+.item_market_action_button_green .item_market_action_button_contents,
+.item_market_action_button_blue .item_market_action_button_contents {
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-bg) !important;
+	text-shadow: none !important;
+	font-weight: 600 !important;
+	box-shadow: none !important;
+}
+.item_market_action_button_edge,
+.item_market_action_button_preload {
+	display: none !important;
+}
+.item_market_action_button:hover .item_market_action_button_contents {
+	background: var(--gr-accent-strong) !important;
+}
+
+/* --- Listing tables ----------------------------------------------------------- */
+.market_content_block,
+.market_listing_table,
+.my_listing_section {
+	background: transparent !important;
+	border: none !important;
+}
+.my_market_header,
+.market_content_block h3,
+.my_market_header_active {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_listing_table_header {
+	background: transparent !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.market_listing_table_header .market_listing_right_cell,
+.market_listing_table_header > div {
+	border: none !important;
+}
+.market_listing_table_message {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+.market_listing_row,
+.market_recent_listing_row,
+.market_listing_row.market_recent_listing_row {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin: 0 0 6px !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.market_listing_row_link:hover .market_listing_row,
+.market_listing_row:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.market_listing_item_img,
+.market_listing_row .market_listing_item_img {
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background-color: var(--gr-surface-3) !important;
+}
+.market_listing_game_name,
+.market_listing_num_listings_qty {
+	color: var(--gr-text-3) !important;
+}
+.market_listing_price,
+.market_table_value .normal_price,
+.market_listing_price_with_fee {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_table_value,
+.market_listing_their_price {
+	color: var(--gr-text-3) !important;
+}
+
+/* --- Sidebar: search + browse by game --------------------------------------- */
+#sideBar,
+#findItems,
+#browseItems,
+#moreInfo,
+.market_search_sidebar_contents {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+}
+#sideBar {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	padding: 4px 0;
+}
+.market_search_sidebar_section_tip_small,
+.market_search_sidebar_section_tip {
+	color: var(--gr-accent) !important;
+	font-weight: 600 !important;
+}
+.market_search_advanced_button,
+.game_button .game_button_contents,
+.market_search_game_button_group .game_button .game_button_contents {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.game_button:hover .game_button_contents,
+.market_search_advanced_button:hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+}
+.game_button_game_icon img {
+	border-radius: 4px;
+}
+
+/* Search results page */
+#searchResults,
+#searchResultsTable,
+.market_search_results_header {
+	background: transparent !important;
+	border: none !important;
+}
+.market_paging,
+.market_paging_controls .pagebtn,
+.market_paging_pagelink {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+}
+.market_paging_pagelink.active {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.market_paging_controls .pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* --- Item listing page (/market/listings/...) -------------------------------- */
+.market_listing_nav_container,
+.market_listing_nav {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.market_listing_nav a {
+	color: var(--gr-text-2) !important;
+}
+#largeiteminfo,
+.market_listing_largeimage,
+.market_listing_iteminfo,
+.item_desc_content,
+.item_desc_description,
+#largeiteminfo_content {
+	background: transparent !important;
+	background-image: none !important;
+}
+#largeiteminfo,
+.market_listing_largeimage {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.market_commodity_orders_block,
+.market_commodity_order_block,
+.market_commodity_buyrequests,
+.market_commodity_forsale_table,
+.market_commodity_buyreqeusts_table,
+#market_commodity_order_spread,
+.pricehistory_container,
+#pricehistory,
+.market_listing_iteminfo .item_desc_descriptors {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+.market_commodity_orders_header_promote,
+.market_commodity_orders_header {
+	color: var(--gr-text) !important;
+}
+.market_commodity_orders_table td,
+.market_commodity_orders_table th {
+	border-color: var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.market_commodity_orders_table tr:nth-child(even) td {
+	background: color-mix(in srgb, var(--gr-text) 3%, transparent) !important;
+}
+.pricehistory_zoom_controls .zoomopt {
+	color: var(--gr-text-2) !important;
+	border-radius: var(--gr-radius-sm);
+	padding: 2px 6px;
+}
+.pricehistory_zoom_controls .zoomopt:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text) !important;
+}
+
+/* Dialogs (buy / sell / remove) */
+.market_dialog_content_frame,
+.market_dialog_content,
+.market_dialog_content_darker,
+.market_buynow_confirmation_innerframe,
+.market_dialog_purchase_confirmation_inner {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+#modalContentTitleBar {
+	background: var(--gr-surface-2) !important;
 }

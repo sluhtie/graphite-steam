@@ -3,7 +3,12 @@
 	"author": "sluhtie",
 	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one accent color, quiet typography and a single-row header.",
 	"version": "1.0.0",
-	"tags": ["Minimal", "Dark", "Modern", "Clean"],
+	"tags": [
+		"Minimal",
+		"Dark",
+		"Modern",
+		"Clean"
+	],
 	"github": {
 		"owner": "sluhtie",
 		"repo_name": "steamtheme"
@@ -12,11 +17,26 @@
 	"splash_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/settings.png",
 	"RootColors": "colors.css",
 	"Patches": [
-		{ "MatchRegexString": "^Steam$", "TargetCss": "build/main.css" },
-		{ "MatchRegexString": "Menu$", "TargetCss": "build/menus.css" },
-		{ "MatchRegexString": "Supernav$", "TargetCss": "build/menus.css" },
-		{ "MatchRegexString": ".ModalDialogPopup", "TargetCss": "build/dialogs.css" },
-		{ "MatchRegexString": ".friendsui-container", "TargetCss": "build/friends.css" }
+		{
+			"MatchRegexString": "^Steam$",
+			"TargetCss": "build/main.css"
+		},
+		{
+			"MatchRegexString": "Menu$",
+			"TargetCss": "build/menus.css"
+		},
+		{
+			"MatchRegexString": "Supernav$",
+			"TargetCss": "build/menus.css"
+		},
+		{
+			"MatchRegexString": ".ModalDialogPopup",
+			"TargetCss": "build/dialogs.css"
+		},
+		{
+			"MatchRegexString": ".friendsui-container",
+			"TargetCss": "build/friends.css"
+		}
 	],
 	"Conditions": {
 		"Font": {
@@ -24,9 +44,30 @@
 			"tab": "Appearance",
 			"default": "Inter",
 			"values": {
-				"Inter": { "TargetCss": { "affects": [".*"], "src": "build/options/font-inter.css" } },
-				"System": { "TargetCss": { "affects": [".*"], "src": "build/options/font-system.css" } },
-				"Steam": { "TargetCss": { "affects": [".*"], "src": "build/options/font-steam.css" } }
+				"Inter": {
+					"TargetCss": {
+						"affects": [
+							".*"
+						],
+						"src": "build/options/font-inter.css"
+					}
+				},
+				"System": {
+					"TargetCss": {
+						"affects": [
+							".*"
+						],
+						"src": "build/options/font-system.css"
+					}
+				},
+				"Steam": {
+					"TargetCss": {
+						"affects": [
+							".*"
+						],
+						"src": "build/options/font-steam.css"
+					}
+				}
 			}
 		},
 		"Corners": {
@@ -35,7 +76,14 @@
 			"default": "Rounded",
 			"values": {
 				"Rounded": {},
-				"Sharp": { "TargetCss": { "affects": [".*"], "src": "build/options/corners-sharp.css" } }
+				"Sharp": {
+					"TargetCss": {
+						"affects": [
+							".*"
+						],
+						"src": "build/options/corners-sharp.css"
+					}
+				}
 			}
 		},
 		"Header": {
@@ -43,7 +91,14 @@
 			"tab": "Layout",
 			"default": "Single row",
 			"values": {
-				"Single row": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/header-single-row.css" } },
+				"Single row": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/header-single-row.css"
+					}
+				},
 				"Classic": {}
 			}
 		},
@@ -55,19 +110,31 @@
 				"no": {},
 				"yes": {
 					"TargetCss": {
-						"affects": ["https:\\/\\/store\\.steampowered\\.com\\/.*", "https:\\/\\/steamcommunity\\.com\\/.*", "https:\\/\\/help\\.steampowered\\.com\\/.*", "https:\\/\\/checkout\\.steampowered\\.com\\/.*"],
+						"affects": [
+							"https:\\/\\/store\\.steampowered\\.com\\/.*",
+							"https:\\/\\/steamcommunity\\.com\\/.*",
+							"https:\\/\\/help\\.steampowered\\.com\\/.*",
+							"https:\\/\\/checkout\\.steampowered\\.com\\/.*"
+						],
 						"src": "build/options/webkit.css"
 					}
 				}
 			}
 		},
 		"Hide URL bar": {
-			"description": "Hide the address bar above store and community pages.",
+			"description": "Hide the address bar above store and community pages (the Store / Community tabs and the page navigation already cover it).",
 			"tab": "Layout",
-			"default": "no",
+			"default": "yes",
 			"values": {
 				"no": {},
-				"yes": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/hide-url-bar.css" } }
+				"yes": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/hide-url-bar.css"
+					}
+				}
 			}
 		},
 		"Hide What's New": {
@@ -76,7 +143,14 @@
 			"default": "no",
 			"values": {
 				"no": {},
-				"yes": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/hide-whats-new.css" } }
+				"yes": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/hide-whats-new.css"
+					}
+				}
 			}
 		}
 	}

@@ -139,6 +139,11 @@
 .$(SuperNavMenu) {
 	position: relative;
 }
+/* Steam's own underline (blue) - replaced by ours on .SuperNavMenu::after */
+.$(SuperNav) .$(MenuButton@SuperNav)::after,
+.$(SuperNav) .$(MenuButton@SuperNav)::before {
+	display: none !important;
+}
 
 .$(Arrow@SuperNav) {
 	opacity: 0.55;

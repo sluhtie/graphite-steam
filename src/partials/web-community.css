@@ -158,8 +158,15 @@
 .profile_header_bg,
 .profile_header_bg_texture,
 .profile_header {
-	background: var(--gr-bg) !important;
+	background: transparent !important;
 	background-image: none !important;
+	box-shadow: none !important;
+}
+/* Without a custom background the page itself is flat Graphite; with one,
+   Steam paints a dark band behind the header - drop it so the art shows. */
+.profile_page.has_profile_background .profile_header_bg_texture,
+.profile_page.has_profile_background .profile_header_bg {
+	background: transparent !important;
 }
 .profile_header .persona_name_text_content,
 .profile_header .actual_persona_name {

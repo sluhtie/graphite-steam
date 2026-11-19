@@ -1,0 +1,101 @@
+/* Downloads page (library > downloads). */
+
+.$(DownloadsPage) {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+}
+
+/* Top area: hero + speed graph */
+.$(DownloadsPage) .$(TopSection@DownloadsPage) .$(Section@DownloadsPage),
+.$(DownloadsPage) .$(TopSection@DownloadsPage) .$(Section@DownloadsPage).$(Empty@DownloadsPage) {
+	background: var(--gr-bg) !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.$(HeroAndLogo@GraphAndStats),
+.$(HeroAndLogo@GraphAndStats).$(Empty@GraphAndStats) {
+	background: linear-gradient(to right, var(--gr-surface-2), var(--gr-bg)) !important;
+}
+.$(HeroAndLogo@GraphAndStats) img {
+	filter: saturate(0.85);
+}
+.$(DownloadGraphWrapper),
+.$(DownloadGraph@GraphAndStats) {
+	background: transparent !important;
+}
+.$(LegendText@GraphAndStats),
+.$(Stat@GraphAndStats) .$(Label@GraphAndStats) {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0.02em !important;
+	text-transform: none !important;
+}
+.$(Figure) {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.$(LegendBox@GraphAndStats).$(Network@GraphAndStats) {
+	background: var(--gr-accent) !important;
+}
+
+/* Section headers ("Up next", "Scheduled", "Completed") */
+.$(SectionTitle@DownloadsPage) .$(Title@DownloadsPage) {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+.$(SectionTitle@DownloadsPage) .$(Count@DownloadsPage) {
+	color: var(--gr-text-3) !important;
+}
+.$(SectionTitle@DownloadsPage) .$(Rule@DownloadsPage) {
+	background: var(--gr-border) !important;
+	height: 1px !important;
+}
+.$(AutoUpdate@DownloadsPage),
+.$(AutoUpdateHours) {
+	color: var(--gr-text-3) !important;
+}
+.$(EmptyTransfers@DownloadsPage) .$(Text@DownloadsPage) {
+	color: var(--gr-text-3) !important;
+	font-size: 13px !important;
+}
+
+/* Download rows */
+.$(SectionItem@DownloadsPage) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(SectionItem@DownloadsPage):hover {
+	background: var(--gr-surface-3) !important;
+}
+.$(AppPortrait@DownloadsPage) .$(LibraryItemBox) {
+	box-shadow: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.$(DownloadItemName) .$(Name@DownloadItemName) {
+	color: var(--gr-text) !important;
+	font-weight: 500 !important;
+}
+.$(ProgressDetails@DownloadsPage),
+.$(ProgressDetails@DownloadsPage) .$(Value@DownloadsPage),
+.$(SectionItemStatus) {
+	color: var(--gr-text-3) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.$(SectionItemButtons) .DialogButton {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.$(SectionItemButtons) .DialogButton:hover {
+	background: var(--gr-hover) !important;
+}
+
+/* Progress bars */
+.$(ProgressBar@DownloadsPage),
+.$(DownloadsPage) [class*="ProgressBar"] > div {
+	background: var(--gr-accent) !important;
+}

@@ -1,0 +1,153 @@
+/* Inventory, trade offers and other "small header" profile subpages. */
+
+/* Small profile header (avatar + "name » Inventory") */
+.profile_small_header_bg,
+.profile_small_header_texture {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.profile_small_header_texture {
+	border-bottom: 1px solid var(--gr-border);
+}
+.profile_small_header_name a,
+.profile_small_header_name,
+.profile_small_header_location {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.profile_small_header_arrow,
+.profile_small_header_location {
+	color: var(--gr-text-3) !important;
+}
+.profile_small_header_avatar .playerAvatar img {
+	border-radius: var(--gr-radius-sm);
+}
+
+/* Game tabs */
+.games_list_tabs_ctn {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+}
+.games_list_tabs {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.games_list_tab {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.games_list_tab:hover {
+	background: var(--gr-surface-3) !important;
+}
+.games_list_tab.active {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent) !important;
+}
+.games_list_tab_name {
+	color: var(--gr-text) !important;
+	font-weight: 500 !important;
+}
+.games_list_tab_number {
+	color: var(--gr-text-3) !important;
+}
+.games_list_tab_separator,
+.games_list_tab_row_separator {
+	display: none !important;
+}
+
+/* Inventory body */
+#tabcontent_inventory,
+.inventory_page_right,
+.inventory_iteminfo,
+.inventory_rightnav {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+#tabcontent_inventory {
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	/* no extra padding: Steam's float layout needs the full width */
+}
+.trade_item_box,
+#inventories.trade_item_box {
+	background: transparent !important;
+	border: none !important;
+}
+.inventory_page .itemHolder,
+.itemHolder {
+	background-color: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-sizing: border-box !important;
+	overflow: hidden;
+}
+.itemHolder.disabled {
+	background-color: color-mix(in srgb, var(--gr-surface-2) 60%, transparent) !important;
+}
+.item.app730,
+.inventory_page .item {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.inventory_item_link:hover + *,
+.itemHolder:hover {
+	border-color: color-mix(in srgb, var(--gr-text) 25%, transparent) !important;
+}
+.inventory_page_left .pagecontrol_element,
+.pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.pagecontrol_element.disabled,
+.pagebtn.disabled {
+	opacity: 0.4;
+}
+
+/* Filter row */
+.filter_search_box {
+	height: 32px !important;
+}
+.filter_ctn,
+.filter_tag_options,
+.econ_tag_filter_category {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.econ_tag_filter_category_label {
+	color: var(--gr-text-3) !important;
+	font-weight: 600 !important;
+}
+
+/* "More" dropdown + trade offers button */
+.dselect_container .trigger,
+#inventory_more_trigger {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.dselect_container .dropcontainer ul,
+.dselect_container .dropcontainer {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.dselect_container .dropcontainer a {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+}
+.dselect_container .dropcontainer a:hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}

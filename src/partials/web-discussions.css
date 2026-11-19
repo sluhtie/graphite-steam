@@ -1,0 +1,142 @@
+/* Discussions landing page (steamcommunity.com/discussions) and forums. */
+
+.discussions_page .group_content,
+.steam_discussions_intro,
+.group_content.bottomless {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.steam_discussions_intro {
+	color: var(--gr-text-2) !important;
+	line-height: 1.55 !important;
+}
+.steam_discussions_intro b,
+.steam_discussions_intro strong {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.discussions_page .pageheader,
+.steam_discussions_intro h1 {
+	font-size: 26px !important;
+	font-weight: 600 !important;
+}
+
+/* Tabs: Steam forums / Game forums / Tools & servers */
+.discussions_header {
+	border: none !important;
+	box-shadow: none !important;
+	background: transparent !important;
+	display: flex;
+	gap: 6px;
+	padding-bottom: 12px !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.discussions_header .group_tab {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	font-weight: 500 !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.discussions_header .group_tab > span {
+	background: transparent !important;
+	color: inherit !important;
+}
+.discussions_header .group_tab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.discussions_header .group_tab.active {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.discussion_tab_content_area,
+.grouppage_content_area {
+	background: transparent !important;
+}
+
+/* Forum list */
+.discussions_forumlist_header,
+.forum_list_ctn .forum_list_header {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	border: none !important;
+	background: transparent !important;
+}
+.discussions_forum_row,
+.discussions_forum_row.unread {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin-bottom: 6px !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.discussions_forum_row:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.discussions_forum_row .forum_name,
+.discussions_forum_row a.forum_name {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.discussions_forum_row .forum_last_post,
+.discussions_forum_row .forum_topic_count,
+.discussions_forum_row .forum_desc {
+	color: var(--gr-text-3) !important;
+}
+.discussions_forum_row .forum_name img,
+.discussions_forum_row img[src*="mail"] {
+	opacity: 0.6;
+}
+
+/* Right side: game discussion shortcuts */
+.forum_list_right {
+	background: transparent !important;
+}
+.recent_game_discussion,
+.recent_game_discussion.quasi_official_group {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin-bottom: 6px !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.recent_game_discussion:hover {
+	background: var(--gr-surface-3) !important;
+}
+.recent_game_discussion img {
+	border-radius: var(--gr-radius-sm);
+}
+.recent_game_discussion_name,
+.recent_game_discussion .name {
+	color: var(--gr-text) !important;
+}
+
+/* Topic page */
+.forum_op {
+	padding: 18px !important;
+}
+.forum_op_author,
+.commentthread_author_link bdi {
+	color: var(--gr-text) !important;
+}
+.forum_op .content,
+.commentthread_comment_text {
+	color: var(--gr-text-2) !important;
+	line-height: 1.55 !important;
+}
+.forum_paging_controls .pagebtn,
+.commentthread_paging .pagebtn {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
