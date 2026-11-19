@@ -142,12 +142,21 @@ textarea::placeholder {
 
 /* Blue magnifier sprites used by legacy search boxes */
 .discussionSearchTextSubmitImg,
+img[src*="searchbox_workshop_submit"],
 img[src*="searchButton"],
 img[src*="search_icon"],
 input[type="image"][src*="search"] {
-	filter: grayscale(1) brightness(1.25) !important;
-	opacity: 0.75;
+	content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1ab' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M16 16l4.5 4.5'/%3E%3C/svg%3E") !important;
+	padding: 6px !important;
+	box-sizing: border-box !important;
+	background: transparent !important;
 	border-radius: var(--gr-radius-sm);
+	opacity: 0.85;
+}
+/* the blue button frame is a sprite on ::before */
+.discussionSearchTextContainer::before {
+	background: transparent !important;
+	background-image: none !important;
 }
 .discussionSearchTextContainer .discussionSearchText,
 .community_home_search_content input[type="text"] {

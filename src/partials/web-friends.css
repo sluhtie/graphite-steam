@@ -1,0 +1,140 @@
+/* Friends / groups / following pages (/id/<you>/friends, /groups, ...). */
+
+.friends_header_bg {
+	background: transparent !important;
+	background-image: none !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.friends_header_name a,
+.friends_header_name {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+
+/* Left navigation */
+.friends_nav h4,
+.friends_nav .nav_header {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.friends_nav .icon_item {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.friends_nav .icon_item:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.friends_nav .icon_item.active {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.friends_nav .icon_item .title,
+.friends_nav .icon_item span {
+	color: inherit !important;
+}
+.friends_nav .icon_item .count {
+	color: var(--gr-text-3) !important;
+}
+.friends_nav hr,
+.friends_nav .nav_divider {
+	border-color: var(--gr-border) !important;
+	background: var(--gr-border) !important;
+}
+
+/* Title bar ("YOUR FRIENDS 20 / 335", "YOUR GROUPS") */
+.profile_friends.title_bar,
+.title_bar {
+	background: transparent !important;
+	background-image: none !important;
+	border-bottom: 1px solid var(--gr-border);
+	padding-left: 0 !important;
+}
+.profile_friends.title_bar .title,
+.title_bar .title {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+	text-transform: none !important;
+}
+.profile_friends.title_bar .title .friends_count,
+.profile_friends.title_bar .title span {
+	color: var(--gr-text-3) !important;
+}
+.title_bar input,
+.title_bar .searchBarContainer input {
+	background: var(--gr-surface-2) !important;
+}
+
+/* Section labels (In game / Online / Offline) */
+.state_block .state_block_header,
+.friends_content .state_block > div:first-child,
+.profile_friends .state_label {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+
+/* Friend tiles */
+.friend_block_v2,
+.friend_block_v2.persona {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.friend_block_v2:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.friend_block_v2.selected {
+	border-color: color-mix(in srgb, var(--gr-accent) 60%, transparent) !important;
+}
+.friend_block_v2 .player_avatar,
+.friend_block_v2 .player_avatar img {
+	border: none !important;
+	border-radius: 0 !important;
+}
+.friend_block_v2 .friend_block_content {
+	color: var(--gr-text-2) !important;
+}
+.friend_block_v2.online .friend_block_content {
+	color: #7cc4ff !important;
+}
+.friend_block_v2.in-game .friend_block_content,
+.friend_block_v2.in-game .friend_small_text {
+	color: #a7e07a !important;
+}
+.friend_block_v2 .friend_last_online_text,
+.friend_block_v2 .friend_small_text {
+	color: var(--gr-text-3) !important;
+}
+
+/* Groups list */
+.group_block,
+.group_block.invite_row {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.group_block .groupTitle a,
+.group_block .linkTitle {
+	color: var(--gr-text) !important;
+}
+.group_block .groupMemberStat,
+.group_block .pubGroup,
+.group_block .groupMemberRow {
+	color: var(--gr-text-3) !important;
+}
+.groups_list_search,
+.groups_list_search input {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}

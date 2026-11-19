@@ -1,0 +1,197 @@
+/* Steam Workshop: home, per-game browse pages, item pages. */
+
+/* Header banner: keep the logo art but calm it down */
+#BG_top_workshop,
+.workshop_header,
+.apphub_HeaderTop.workshop {
+	background-color: transparent !important;
+	filter: grayscale(1) brightness(0.8);
+	border-bottom: 1px solid var(--gr-border);
+}
+#ig_bottom,
+#ig_bottom.smallheader,
+.workshop_browse_page,
+#workshop_container {
+	background: transparent !important;
+	background-image: none !important;
+}
+
+/* Browse box on the workshop home */
+.browseApps {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	overflow: hidden;
+}
+.browseAppsTitleContainer {
+	background: transparent !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.browseAppsTitle {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.browseAppsTitle span,
+.browseAppsTitleSubtitle {
+	color: var(--gr-text-3) !important;
+}
+.searchApps {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.searchApps input,
+.searchAppsInput {
+	background: transparent !important;
+	border: none !important;
+	font-style: normal !important;
+}
+.workshopAppsRow {
+	background: transparent !important;
+	background-image: none !important;
+}
+.workshopAppsRow .app {
+	background-image: none !important;
+	background-color: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius) !important;
+	transition: transform var(--gr-med) var(--gr-ease);
+}
+.workshopAppsRow .app:hover {
+	transform: translateY(-2px);
+}
+.workshopAppsRow .appCover {
+	background-image: none !important;
+}
+.workshopAppsRow .appNumItems {
+	color: var(--gr-text-3) !important;
+}
+.workshopAppsSort .browseOption,
+.workshopAppsSort .rightbox_list_option {
+	color: var(--gr-text-2) !important;
+}
+.workshopAppsSort .browseOption.selected,
+.workshopAppsSort .browseOption:hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.workshopAppsSort .browseOption.selected::before,
+.workshopAppsSort .browseOption.selected::after {
+	display: none !important;
+}
+.workshop_apps_paging,
+.workshop_apps_paging_summary {
+	color: var(--gr-text-3) !important;
+}
+
+/* News + side panels */
+.mainSectionHeader,
+.workshop_news_header {
+	color: var(--gr-text-3) !important;
+	border-color: var(--gr-border) !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.headline a,
+.workshop_news .headline a {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.bodytext .bb_h2,
+.bodytext .bb_h1 {
+	color: var(--gr-text) !important;
+}
+.primary_panel_border,
+.primary_panel,
+#rightContents .panel,
+.sidebar .panel {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+.primary_panel_border {
+	padding: 0 !important;
+}
+.current_player_workshop_title a {
+	color: var(--gr-text) !important;
+}
+
+/* Per-game browse pages */
+.workshopBrowseItems .workshopItem,
+.workshopItem {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+}
+.workshopItemPreviewHolder {
+	background: var(--gr-surface-3) !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	overflow: hidden;
+}
+.workshopItemTitle {
+	color: var(--gr-text) !important;
+}
+.workshopItemAuthorName,
+.workshopItemAuthorName a {
+	color: var(--gr-text-3) !important;
+}
+.workshopBrowsePagingWithBG,
+.workshopBrowsePaging,
+.workshopBrowsePagingInfo {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.rightDetailsBlock,
+.panel .rightDetailsBlock,
+.browseOptions,
+.filterOption,
+.workshop_browse_menu_area {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.browseOption,
+.filterOption {
+	border-radius: var(--gr-radius-sm);
+}
+.browseOption.selected,
+.browseOption:hover {
+	background: var(--gr-active) !important;
+}
+
+/* Item detail pages */
+.workshopItemDetailsHeader,
+.game_area_purchase_game.workshop,
+.workshopItemDescription,
+.detailsStatsContainerLeft,
+.detailsStatsContainerRight,
+.workshopTags,
+.rightSectionTopTitle,
+#highlight_player_area {
+	background: transparent !important;
+	background-image: none !important;
+	color: var(--gr-text-2) !important;
+}
+.workshopItemTitle,
+.workshopItemDetailsHeader .workshopItemTitle {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.detailsStatsContainerLeft,
+.detailsStatsContainerRight {
+	color: var(--gr-text-3) !important;
+}
+.subscribeOption,
+.game_area_purchase_game.workshop {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.workshopItemPreviewImageMain,
+.workshopItemPreviewImageEnlargeable,
+.highlight_strip_item {
+	border-radius: var(--gr-radius-sm) !important;
+}

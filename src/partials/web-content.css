@@ -1,0 +1,153 @@
+/* Profile content pages: screenshots / artwork / videos / workshop items /
+   guides (the "sharedfiles" pages) and badges. */
+
+/* --- Shared files header --------------------------------------------------- */
+#BG_top_sharedfiles,
+.sharedfiles_header_ctn,
+#BG_bottom_sharedfiles,
+#mainContents_sharedfiles,
+#tabs_basebg {
+	background: transparent !important;
+	background-image: none !important;
+}
+#BG_top_sharedfiles {
+	border-bottom: 1px solid var(--gr-border);
+}
+#HeaderUserInfo .HeaderUserInfoName a,
+#HeaderUserInfo .HeaderUserInfoName,
+.HeaderUserInfoSection {
+	color: var(--gr-text) !important;
+}
+.sharedfiles_filterselect,
+.sharedfiles_filterselect .option {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	padding-right: 10px !important;
+}
+.sharedfiles_filterselect_options,
+.sharedfiles_filterselect .options {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+
+/* Section tabs (Screenshots / Artwork / Videos / ...) */
+.sectionTabs {
+	border-bottom: 1px solid var(--gr-border);
+	padding-bottom: 8px;
+}
+.sectionTab {
+	color: var(--gr-text-2) !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm);
+	padding: 5px 10px !important;
+	text-decoration: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.sectionTab:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text) !important;
+}
+.sectionTab.active {
+	background: var(--gr-active);
+	color: var(--gr-text) !important;
+	border-bottom: none !important;
+}
+
+/* Empty-state / instructions box and item grids */
+#instructions_main_container,
+.sharedfiles_main_ctn,
+#image_wall,
+.profile_media_item,
+.workshopItemCollectionContainer {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	color: var(--gr-text-2) !important;
+}
+#instructions_main h1,
+#instructions_main .instructions_header {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.instructions_subtext {
+	color: var(--gr-text-2) !important;
+}
+.imageWallRow .profile_media_item,
+.profile_media_item {
+	overflow: hidden;
+}
+
+/* --- Badges ----------------------------------------------------------------- */
+.profile_xp_block {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+}
+.profile_badges_header_title {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.profile_badges_sortoptions a {
+	color: var(--gr-text-2) !important;
+	text-decoration: none !important;
+	border-radius: var(--gr-radius-sm);
+	padding: 2px 8px;
+}
+.profile_badges_sortoptions a.active,
+.profile_badges_sortoptions a:hover {
+	background: var(--gr-active);
+	color: var(--gr-text) !important;
+}
+.badge_row,
+.badge_row.is_link {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.badge_row.is_link:hover {
+	border-color: color-mix(in srgb, var(--gr-text) 18%, transparent) !important;
+}
+.badge_row_inner,
+.badge_title_row,
+.badge_content,
+.badge_title_rule {
+	background: transparent !important;
+	background-image: none !important;
+}
+.badge_title_rule {
+	border-color: var(--gr-border) !important;
+}
+.badge_title {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.badge_view_details,
+.badge_title_stats,
+.badge_title_stats_playtime {
+	color: var(--gr-text-3) !important;
+}
+.progress_info_bold,
+.badge_title_stats_drops .progress_info_bold {
+	color: var(--gr-accent) !important;
+}
+.badge_current,
+.badge_empty,
+.badge_progress_info {
+	background: transparent !important;
+	border-color: var(--gr-border) !important;
+	color: var(--gr-text-2) !important;
+}
+.badge_empty {
+	border-radius: var(--gr-radius-sm);
+}
+.badge_progress_card {
+	border-radius: 4px;
+}

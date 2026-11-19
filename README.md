@@ -19,9 +19,11 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 - **Menus**: root menus, nav dropdowns and context menus
 - **Dialogs**: settings window, toggles, inputs, buttons, modals
 - **Friends**: friends list and chat windows
-- **Store & Community pages** (optional, on by default): store home, game pages and search; community home, hubs, discussions, friend activity, profiles, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity colors are untouched.
+- **Store & Community pages** (optional, on by default): store home, game pages, search, discovery queue, wishlist, personal calendar, news hub and charts; community home, hubs, discussions and forum topic lists, workshop, friend activity, profiles, friends & groups, screenshots / artwork / guides, badges, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
 
 The store and community are Valve's web pages. Older parts use stable class names. Newer React parts are built on Valve's web design system, whose color scales (`--color-dull-*`, `--color-accent-*`, ...) Graphite remaps on `:root`, so they follow the theme without relying on hashed class names. A few spots are still matched structurally.
+
+Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardcode their colors behind hashed class names. For those, the option also loads `src/scripts/web-recolor.js`: a small local script that reads computed colors and swaps Valve's dark blue-greys for Graphite surfaces and its bright blues for the accent. It never touches images, game art or status colors and makes no network requests.
 
 ## Install
 
@@ -92,6 +94,7 @@ src/             Source CSS with $(Token) class references
   friends.css    Friends list and chat
   partials/      Shared pieces pulled in with @import
   options/       Stylesheets toggled by theme options (webkit.css = store/community)
+  scripts/       web-recolor.js for Valve's React web pages
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview and lookup scripts
 ```

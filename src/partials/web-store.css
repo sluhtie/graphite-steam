@@ -351,6 +351,42 @@
 	border-radius: var(--gr-radius-sm);
 }
 
+/* --- Explore / discovery queue page --------------------------------------- */
+.page_header_ctn {
+	background-image: none !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.discovery_queue_overlay_bg::before {
+	background: var(--gr-play) !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius-lg);
+	box-shadow: var(--gr-shadow);
+	width: auto !important;
+	right: 0 !important;
+	transform: scale(0.92);
+	transform-origin: left center;
+	transition: transform var(--gr-med) var(--gr-ease);
+}
+.discovery_queue_overlay:hover .discovery_queue_overlay_bg::before {
+	transform: scale(0.95);
+}
+.discovery_queue_overlay_message {
+	position: relative;
+	color: var(--gr-play-text) !important;
+	font-weight: 600 !important;
+	text-shadow: none !important;
+}
+.discovery_queue_customize_ctn,
+.explore_rightcol_box {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.faq_question {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+
 /* --- Search results / lists ------------------------------------------------ */
 .search_result_row,
 .store_capsule_list .store_capsule,

@@ -17,6 +17,7 @@ const overrides = Object.fromEntries(args.flatMap((a, i) => a === '--set' ? [arg
 const skin = JSON.parse(fs.readFileSync(path.join(root, 'skin.json'), 'utf8'));
 
 const rules = [];
+const scripts = [];
 if (skin.RootColors) rules.push({ re: ['.*'], file: skin.RootColors });
 for (const p of skin.Patches || []) {
   if (p.TargetCss) rules.push({ re: [p.MatchRegexString], file: p.TargetCss });
@@ -25,6 +26,8 @@ for (const [name, cond] of Object.entries(skin.Conditions || {})) {
   const value = overrides[name] ?? cond.default;
   const css = cond.values?.[value]?.TargetCss;
   if (css) rules.push({ re: css.affects, file: css.src });
+  const js = cond.values?.[value]?.TargetJs;
+  if (js) scripts.push({ re: js.affects, file: js.src });
 }
 
 const targets = await (await fetch('http://127.0.0.1:8080/json/list')).json().catch(() => {
@@ -57,6 +60,11 @@ for (const t of targets.filter(t => t.type === 'page')) {
   await cdp(t, `(() => { document.querySelectorAll('style[data-graphite-live]').forEach(s => s.remove());
     for (const css of ${JSON.stringify(sheets)}) { const s = document.createElement('style');
       s.dataset.graphiteLive = ''; s.textContent = css; document.head.appendChild(s); } })()`);
+  if (!remove) {
+    const matchJs = scripts.filter(r => r.re.some(re => new RegExp(re).test(t.title) || new RegExp(re).test(t.url)));
+    for (const r of matchJs) await cdp(t, fs.readFileSync(path.join(root, r.file), 'utf8'));
+    if (matchJs.length) files.push(...matchJs.map(r => r.file));
+  }
   if (files.length && !remove) { windows++; console.log(`${t.title.padEnd(28)} <- ${files.join(', ')}`); }
 }
 console.log(remove ? 'Removed live styles.' : `Injected into ${windows} window(s).`);

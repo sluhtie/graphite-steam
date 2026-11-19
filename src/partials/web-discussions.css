@@ -122,6 +122,65 @@
 	color: var(--gr-text) !important;
 }
 
+/* --- Topic list (inside a forum) -------------------------------------------- */
+.forum_topics {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.forum_topic,
+.forum_topic.unread,
+.forum_topic.sticky {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	margin: 0 0 4px !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.forum_topic:hover {
+	background: var(--gr-surface-3) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 16%, transparent) !important;
+}
+.forum_topic.sticky {
+	border-color: color-mix(in srgb, var(--gr-accent) 28%, var(--gr-border)) !important;
+}
+.forum_topic_name {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+}
+.forum_topic:not(.unread) .forum_topic_name {
+	color: var(--gr-text-2) !important;
+}
+.forum_topic_label,
+.forum_topic_label.sticky_label {
+	color: var(--gr-accent) !important;
+	font-size: 10.5px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase;
+	margin-right: 6px;
+}
+.forum_topic_op,
+.forum_topic_lastpost {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.forum_topic_reply_count,
+.forum_topic_award_count {
+	color: var(--gr-text-2) !important;
+}
+.forum_topic_icon img,
+.forum_topic_reply_count img,
+.forum_topic_award_count img {
+	filter: grayscale(1) brightness(1.4);
+	opacity: 0.55;
+}
+.forum_topic.unread .forum_topic_icon img {
+	opacity: 0.9;
+}
+
 /* Topic page */
 .forum_op {
 	padding: 18px !important;

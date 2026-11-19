@@ -103,7 +103,7 @@
 			}
 		},
 		"Store & community pages": {
-			"description": "Also restyle the Store and Community web pages shown inside Steam.",
+			"description": "Also restyle the Store and Community web pages shown inside Steam. Includes a small local script that recolors Valve's newer React pages (wishlist, calendar, news hub, charts).",
 			"tab": "Layout",
 			"default": "yes",
 			"values": {
@@ -117,6 +117,15 @@
 							"https:\\/\\/checkout\\.steampowered\\.com\\/.*"
 						],
 						"src": "build/options/webkit.css"
+					},
+					"TargetJs": {
+						"affects": [
+							"https:\\/\\/store\\.steampowered\\.com\\/.*",
+							"https:\\/\\/steamcommunity\\.com\\/.*",
+							"https:\\/\\/help\\.steampowered\\.com\\/.*",
+							"https:\\/\\/checkout\\.steampowered\\.com\\/.*"
+						],
+						"src": "src/scripts/web-recolor.js"
 					}
 				}
 			}
