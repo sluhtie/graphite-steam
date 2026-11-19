@@ -36,6 +36,9 @@ const problems = new Map();
 function bundle(file, stack = []) {
   if (stack.includes(file)) throw new Error('Circular @import: ' + [...stack, file].join(' -> '));
   let css = fs.readFileSync(file, 'utf8');
+  // colors.css pulled in as a fallback must lose against Millennium's own
+  // (user-edited) RootColors, so give it zero specificity.
+  if (stack.length && path.basename(file) === 'colors.css') css = css.replace(/:root\s*\{/, ':where(:root) {');
   css = css.replace(IMPORT_RE, (_, rel) => bundle(path.resolve(path.dirname(file), rel), [...stack, file]));
   return css;
 }

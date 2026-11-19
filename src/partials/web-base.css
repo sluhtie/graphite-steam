@@ -1,0 +1,255 @@
+/* Shared base for Valve web pages shown inside the client (store, community).
+   These pages use stable, human-readable class names. */
+
+html,
+body,
+body.v6,
+body.v7,
+body.flat_page,
+body.headerless_page,
+.responsive_page_frame,
+.responsive_page_content,
+.responsive_page_template_content,
+.page_content_ctn,
+.pagecontent {
+	background-color: var(--gr-bg) !important;
+	background-image: none !important;
+}
+
+body {
+	color: var(--gr-text-2);
+}
+
+h1, h2, h3,
+.pageheader,
+.page_title,
+.home_page_content_title,
+.home_section_title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	text-shadow: none !important;
+	letter-spacing: -0.01em !important;
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+.btn_green_steamui,
+.btn_green_white_innerfade,
+.btnv6_green_white_innerfade,
+.btn_addtocart .btn_green_steamui,
+.btn_blue_steamui,
+.btnv6_blue_blue_innerfade,
+.btn_blue_white_innerfade {
+	background: var(--gr-accent) !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+}
+.btn_green_steamui > span,
+.btn_green_white_innerfade > span,
+.btnv6_green_white_innerfade > span,
+.btn_blue_steamui > span,
+.btnv6_blue_blue_innerfade > span,
+.btn_blue_white_innerfade > span {
+	background: transparent !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600 !important;
+	text-shadow: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.btn_green_steamui:hover,
+.btn_green_white_innerfade:hover,
+.btnv6_green_white_innerfade:hover,
+.btn_blue_steamui:hover,
+.btnv6_blue_blue_innerfade:hover,
+.btn_blue_white_innerfade:hover {
+	background: var(--gr-accent-strong) !important;
+}
+
+.btnv6_blue_hoverfade,
+.btnv6_lightblue_blue,
+.btn_grey_steamui,
+.btn_grey_black,
+.btn_grey_white_innerfade,
+.btnv6_grey_black,
+.btn_darkblue_white_innerfade,
+.btn_black,
+.btn_profile_action,
+.btn_medium.btn_grey_grey,
+.btnv6_white_transparent {
+	background: var(--gr-surface-3) !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	text-shadow: none !important;
+}
+.btnv6_blue_hoverfade > span,
+.btnv6_lightblue_blue > span,
+.btn_grey_steamui > span,
+.btn_grey_black > span,
+.btn_grey_white_innerfade > span,
+.btnv6_grey_black > span,
+.btn_darkblue_white_innerfade > span,
+.btn_black > span,
+.btn_profile_action > span,
+.btn_medium.btn_grey_grey > span,
+.btnv6_white_transparent > span {
+	background: transparent !important;
+	color: var(--gr-text) !important;
+	text-shadow: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.btnv6_blue_hoverfade:hover,
+.btnv6_lightblue_blue:hover,
+.btn_grey_steamui:hover,
+.btn_grey_black:hover,
+.btn_grey_white_innerfade:hover,
+.btnv6_grey_black:hover,
+.btn_darkblue_white_innerfade:hover,
+.btn_black:hover,
+.btn_profile_action:hover,
+.btn_medium.btn_grey_grey:hover,
+.btnv6_white_transparent:hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+}
+
+/* --- Inputs ---------------------------------------------------------------- */
+input[type="text"],
+input[type="search"],
+input[type="password"],
+textarea,
+select,
+.gray_bevel,
+.dynInput {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+}
+input[type="text"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 60%, transparent) !important;
+	outline: none !important;
+}
+input::placeholder,
+textarea::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+
+/* --- Prices / discounts ----------------------------------------------------
+   Discount badges keep Steam's green so sales stay recognizable at a glance. */
+.discount_pct {
+	font-weight: 600 !important;
+}
+.discount_prices,
+.discount_block .discount_prices,
+.bundle_base_discount {
+	background: var(--gr-surface-3) !important;
+}
+.discount_final_price {
+	color: var(--gr-text) !important;
+}
+.discount_original_price {
+	color: var(--gr-text-3) !important;
+}
+.discount_block {
+	border-radius: var(--gr-radius-sm);
+	overflow: hidden;
+}
+
+/* --- Hover popups ---------------------------------------------------------- */
+.hover_box,
+.game_hover_box,
+.miniprofile_container {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+}
+.hover_arrow_left,
+.hover_arrow_right {
+	display: none !important;
+}
+.hover_review_summary,
+.hover_tag_row .app_tag {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* Tags */
+.app_tag,
+a.app_tag,
+.deep_dive_tag {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text-2) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+}
+.app_tag:hover,
+a.app_tag:hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+/* (community uses a sticky footer, so no solid band here) */
+#footer,
+#footer_spacer,
+.footer_content,
+footer {
+	background: transparent !important;
+	background-image: none !important;
+}
+
+/* --- Web dropdown menus ----------------------------------------------------- */
+.popup_body.popup_menu,
+.popup_block .popup_body {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.popup_block [class^="shadow_"]:not(.shadow_content) {
+	display: none !important;
+}
+.popup_menu_item,
+.popup_menu .popup_menu_item {
+	color: var(--gr-text-2) !important;
+	border-radius: var(--gr-radius-sm);
+}
+.popup_menu_item:hover,
+.popup_menu .popup_menu_item:hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+#footer .valve_links a,
+#footer a {
+	color: var(--gr-text-3) !important;
+}
+
+/* --- Dimming overlay behind modals ---------------------------------------- */
+.responsive_page_content_overlay {
+	background: var(--gr-scrim) !important;
+}
+.newmodal,
+.newmodal_content_border,
+.newmodal_content,
+.newmodal_header_border,
+.newmodal_header {
+	background: var(--gr-surface) !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+}
+.newmodal {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	overflow: hidden;
+	box-shadow: var(--gr-shadow) !important;
+}

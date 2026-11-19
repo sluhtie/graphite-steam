@@ -10,6 +10,8 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 | --- | --- |
 | ![Settings](docs/settings.png) | ![Menu](docs/menu.png) |
 
+![Store](docs/store.png)
+
 ## What it themes
 
 - **Window frame**: menu bar and Store / Library / Community tabs merged into one row, flat window controls, slim bottom bar
@@ -17,8 +19,9 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 - **Menus**: root menus, nav dropdowns and context menus
 - **Dialogs**: settings window, toggles, inputs, buttons, modals
 - **Friends**: friends list and chat windows
+- **Store & Community pages** (optional, on by default): flat backgrounds, neutral cards and buttons on the store home, game pages, search, community home, hubs, discussions and profiles. Custom profile backgrounds stay visible, and discount badges keep Steam's green.
 
-Store and community pages are Valve web pages rendered inside Steam and are left as they are.
+The store and community are Valve's web pages. They use stable class names, but some newer React parts use hashed names from Valve's servers, which the build can't resolve locally. Those parts are styled through structural selectors or left alone.
 
 ## Install
 
@@ -41,6 +44,7 @@ In **Millennium → Themes → Graphite**:
 - **Font**: Inter (default, loaded from Google Fonts), System (Segoe UI) or Steam's Motiva Sans.
 - **Corners**: Rounded or Sharp.
 - **Header**: Single row (default) or Classic two-row layout.
+- **Store & community pages**: restyle the in-client web pages (on by default).
 - **Hide URL bar** and **Hide What's New**.
 
 ## How it works
@@ -87,7 +91,7 @@ src/             Source CSS with $(Token) class references
   dialogs.css    Settings and other dialog windows
   friends.css    Friends list and chat
   partials/      Shared pieces pulled in with @import
-  options/       Stylesheets toggled by theme options
+  options/       Stylesheets toggled by theme options (webkit.css = store/community)
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview and lookup scripts
 ```

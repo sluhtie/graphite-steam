@@ -1,0 +1,286 @@
+/* steamcommunity.com */
+
+/* --- Page backgrounds ------------------------------------------------------ */
+.apphub_background,
+.apphub_HomeHeader,
+.apphub_HeaderTop,
+.apphub_HeaderBottom,
+#ModalContentContainer,
+.community_home_header,
+.pagecontent,
+.maincontent,
+.profile_page:not(.has_profile_background),
+.profile_page:not(.has_profile_background) .profile_content,
+.forum_area,
+.group_page,
+.page_content {
+	background-color: var(--gr-bg) !important;
+	background-image: none !important;
+}
+.apphub_HomeHeader,
+.apphub_HeaderBottom {
+	border-bottom: 1px solid var(--gr-border);
+}
+
+/* --- Community home -------------------------------------------------------- */
+.community_home_title,
+.apphub_AppName {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.02em !important;
+}
+.community_home_subtitle {
+	color: var(--gr-text-2) !important;
+}
+.community_home_app_shortcuts,
+.community_home_search_box {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.community_home_app_shortcuts_list_header,
+.community_home_search_box h3,
+.community_home_search_ctn h3 {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.community_home_search_apps,
+.community_home_search_people,
+.community_home_search_content > div:not(.community_home_search_title) {
+	background: var(--gr-surface-3) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+}
+.community_home_search_content input {
+	background: transparent !important;
+	border: none !important;
+}
+
+/* Section tabs (All / Screenshots / Artwork / ...) */
+.apphub_sectionTabs,
+.community_home_tabs {
+	background: transparent !important;
+	border: none !important;
+}
+.apphub_sectionTab {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm);
+	padding: 4px 10px !important;
+	font-weight: 500 !important;
+	text-decoration: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.apphub_sectionTab:hover {
+	color: var(--gr-text) !important;
+	background: var(--gr-hover) !important;
+}
+.apphub_sectionTab.active {
+	color: var(--gr-text) !important;
+	background: var(--gr-active) !important;
+	box-shadow: none !important;
+}
+.apphub_sectionTab.active > span,
+.apphub_sectionTab > span {
+	border: none !important;
+	background: none !important;
+}
+
+/* Sort buttons */
+.btn_grey_grey_outer_bevel,
+.btn_grey_grey_outer_bevel > span,
+.community_home_sort_buttons a,
+.community_home_sort_buttons a > span {
+	background: var(--gr-surface-3) !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	text-shadow: none !important;
+	box-shadow: none !important;
+}
+.community_home_sort_buttons a.btn_darkblue_white_innerfade,
+.community_home_sort_buttons a.btn_darkblue_white_innerfade > span {
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+}
+.btn_uppercase > span {
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+
+/* Content cards */
+.apphub_Card,
+.apphub_Card.interactable {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	transition: border-color var(--gr-med) var(--gr-ease), box-shadow var(--gr-med) var(--gr-ease);
+}
+.apphub_Card.interactable:hover {
+	border-color: color-mix(in srgb, var(--gr-text) 20%, transparent) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.apphub_CardMetaData,
+.apphub_CardContentAuthorBlock {
+	background: transparent !important;
+}
+.apphub_CardContentAuthorName a,
+.apphub_CardContentAppName {
+	color: var(--gr-text) !important;
+}
+.apphub_CardContentMoreLink,
+.apphub_CardRating {
+	color: var(--gr-text-3) !important;
+}
+.apphub_CardTextContent,
+.apphub_CardContentNewsDesc {
+	color: var(--gr-text-2) !important;
+}
+.apphub_CardContentTitle,
+.apphub_CardContentNewsTitle {
+	color: var(--gr-text) !important;
+}
+
+/* --- Profiles --------------------------------------------------------------
+   Custom profile backgrounds stay visible; the content column gets a calm,
+   slightly translucent surface on top of them. */
+.profile_page.has_profile_background .profile_content.has_profile_background {
+	background: color-mix(in srgb, var(--gr-bg) 82%, transparent) !important;
+	border-radius: var(--gr-radius-lg) var(--gr-radius-lg) 0 0;
+}
+.profile_header_bg,
+.profile_header_bg_texture,
+.profile_header {
+	background: var(--gr-bg) !important;
+	background-image: none !important;
+}
+.profile_header .persona_name_text_content,
+.profile_header .actual_persona_name {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.profile_header_summary .profile_summary {
+	color: var(--gr-text-2) !important;
+}
+.profile_customization,
+.profile_customization_area .profile_customization,
+.profile_leftcol .profile_customization,
+.profile_rightcol,
+.profile_recentgame_header,
+.recent_games,
+.recent_game,
+.showcase_content_bg,
+.profile_comment_area,
+.commentthread_area {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius) !important;
+	border: 1px solid var(--gr-border);
+	box-shadow: none !important;
+}
+.recent_game,
+.showcase_content_bg {
+	border: none;
+}
+.profile_customization_header,
+.profile_recentgame_header {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	border: none !important;
+}
+.profile_count_link .count_link_label,
+.profile_count_link a {
+	color: var(--gr-text-2) !important;
+}
+.profile_count_link_total {
+	color: var(--gr-text) !important;
+}
+.profile_in_game,
+.profile_in_game_header {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius-sm);
+}
+.persona_level .friendPlayerLevel {
+	border-radius: 50% !important;
+}
+
+/* Comments */
+.commentthread_comment {
+	border-bottom: 1px solid var(--gr-border);
+}
+.commentthread_comment_text {
+	color: var(--gr-text-2) !important;
+}
+.commentthread_author_link {
+	color: var(--gr-text) !important;
+}
+.commentthread_entry_quotebox {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	border: none !important;
+}
+
+/* --- Discussions / forums -------------------------------------------------- */
+.forum_topic,
+.forum_topic.unread {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	margin-bottom: 4px !important;
+	border: none !important;
+}
+.forum_topic:hover {
+	background: var(--gr-surface-3) !important;
+}
+.forum_op,
+.commentthread_comment_content,
+.rightbox,
+.rightcol .rightbox {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius) !important;
+	border: 1px solid var(--gr-border) !important;
+}
+
+.forum_paging,
+.forum_paging_header,
+.forum_paging_footer {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.discussionSearchTextContainer {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.rightbox_list_selection_background {
+	display: none !important;
+}
+.rightbox_list_option {
+	border-radius: var(--gr-radius-sm);
+}
+.rightbox_list_option.selected,
+.rightbox_list_option.selected::before,
+.rightbox_list_option.selected::after {
+	background: var(--gr-active) !important;
+	background-image: none !important;
+	border: none !important;
+}
+.rightbox_list_option:not(.selected):hover {
+	background: var(--gr-hover) !important;
+}
+
+/* --- News / event overlay (store "Steam News" modal) ----------------------- */
+.partnerevent_overlay,
+.eventbbcodeparser_EventDetailsBody,
+.partnereventwebrowembed_LoadingThrobberCtn {
+	background: var(--gr-surface) !important;
+}

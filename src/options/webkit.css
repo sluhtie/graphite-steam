@@ -1,0 +1,8 @@
+/* Store and community pages inside the client (Valve web pages). Loaded via
+   the "Store & community pages" option, which matches their URLs. */
+@import "../../colors.css";
+@import "../partials/tokens.css";
+@import "../partials/base.css";
+@import "../partials/web-base.css";
+@import "../partials/web-store.css";
+@import "../partials/web-community.css";

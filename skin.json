@@ -47,6 +47,20 @@
 				"Classic": {}
 			}
 		},
+		"Store & community pages": {
+			"description": "Also restyle the Store and Community web pages shown inside Steam.",
+			"tab": "Layout",
+			"default": "yes",
+			"values": {
+				"no": {},
+				"yes": {
+					"TargetCss": {
+						"affects": ["https:\\/\\/store\\.steampowered\\.com\\/.*", "https:\\/\\/steamcommunity\\.com\\/.*", "https:\\/\\/help\\.steampowered\\.com\\/.*", "https:\\/\\/checkout\\.steampowered\\.com\\/.*"],
+						"src": "build/options/webkit.css"
+					}
+				}
+			}
+		},
 		"Hide URL bar": {
 			"description": "Hide the address bar above store and community pages.",
 			"tab": "Layout",
