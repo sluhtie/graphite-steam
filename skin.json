@@ -1,20 +1,22 @@
 {
 	"name": "Graphite",
 	"author": "sluhtie",
-	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one accent color, quiet typography and a single-row header.",
-	"version": "1.0.0",
+	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one editable accent color, quiet typography and a single-row header - across the library, menus, settings, friends and the Store & Community pages.",
+	"version": "1.1.0",
 	"tags": [
 		"Minimal",
 		"Dark",
 		"Modern",
-		"Clean"
+		"Clean",
+		"Store",
+		"Community"
 	],
 	"github": {
 		"owner": "sluhtie",
 		"repo_name": "steamtheme"
 	},
-	"header_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/library.png",
-	"splash_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/settings.png",
+	"header_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/header.jpg",
+	"splash_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/splash.jpg",
 	"RootColors": "colors.css",
 	"Patches": [
 		{

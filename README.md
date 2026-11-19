@@ -4,13 +4,13 @@ A clean, minimal and modern theme for the Steam desktop client, built for [Mille
 
 Neutral graphite surfaces, one accent color, quiet typography, a single-row header and an inset content panel. No gradients, no glow, no visual noise.
 
-![Library](docs/library.png)
+![Library](docs/library.jpg)
 
-| Settings | Menus |
+| Game page | Store |
 | --- | --- |
-| ![Settings](docs/settings.png) | ![Menu](docs/menu.png) |
-
-![Store](docs/store.png)
+| ![Game page](docs/game.jpg) | ![Store](docs/store.jpg) |
+| **Community Market** | **Settings** |
+| ![Community Market](docs/market.jpg) | ![Settings](docs/settings.png) |
 
 ## What it themes
 
@@ -28,7 +28,7 @@ Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardco
 ## Install
 
 1. Install [Millennium](https://steambrew.app).
-2. Clone this repo into Steam's theme folder:
+2. Install Graphite from [steambrew.app/themes](https://steambrew.app/themes), or manually clone this repo into Steam's theme folder:
 
    ```powershell
    cd "C:\Program Files (x86)\Steam\millennium\themes"
