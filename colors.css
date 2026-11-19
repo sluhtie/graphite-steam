@@ -1,0 +1,24 @@
+:root {
+	/* @name Accent @description Highlights, selection, links and primary buttons */
+	--gr-accent: #8fa8ff;
+	/* @name Play button @description Background of the Play / Install button */
+	--gr-play: #ececf0;
+	/* @name Play button text @description Text and icon color on the Play / Install button */
+	--gr-play-text: #0b0b0d;
+	/* @name Background @description Window background, title bar and game list */
+	--gr-bg: #0b0b0d;
+	/* @name Surface @description Main content panel */
+	--gr-surface: #111114;
+	/* @name Raised surface @description Cards, inputs and menus */
+	--gr-surface-2: #18181c;
+	/* @name Hover surface @description Hovered and active items */
+	--gr-surface-3: #222227;
+	/* @name Border @description Hairlines and outlines */
+	--gr-border: #232328;
+	/* @name Text @description Primary text */
+	--gr-text: #ececf0;
+	/* @name Secondary text @description Labels and less important text */
+	--gr-text-2: #a1a1ab;
+	/* @name Muted text @description Hints, counters and disabled text */
+	--gr-text-3: #6b6b75;
+}

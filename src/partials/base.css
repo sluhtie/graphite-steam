@@ -1,0 +1,142 @@
+/* Shared base for every themed window: type, scrollbars and Steam's global
+   dialog controls (these use stable, unhashed class names). */
+
+body {
+	font-family: var(--gr-font) !important;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+body *:not(pre, code, kbd, samp, svg, svg *) {
+	font-family: inherit !important;
+}
+
+::selection {
+	background: var(--gr-accent-soft);
+	color: var(--gr-text);
+}
+
+/* --- Scrollbars ---------------------------------------------------------- */
+::-webkit-scrollbar {
+	width: 10px !important;
+	height: 10px !important;
+	background: transparent !important;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+	background: transparent !important;
+}
+::-webkit-scrollbar-thumb {
+	background-color: color-mix(in srgb, var(--gr-text) 14%, transparent) !important;
+	background-clip: padding-box !important;
+	border: 3px solid transparent !important;
+	border-radius: 10px !important;
+	min-height: 40px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: color-mix(in srgb, var(--gr-text) 26%, transparent) !important;
+}
+::-webkit-scrollbar-button {
+	display: none !important;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.DialogButton {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease) !important;
+}
+.DialogButton:not(.Disabled, :disabled):hover,
+.DialogButton.gpfocus {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+	color: var(--gr-text) !important;
+}
+.DialogButton.Primary {
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+}
+.DialogButton.Primary:not(.Disabled, :disabled):hover,
+.DialogButton.Primary.gpfocus {
+	background: var(--gr-accent-strong) !important;
+	color: var(--gr-bg) !important;
+}
+.DialogButton.Disabled,
+.DialogButton:disabled {
+	opacity: 0.45 !important;
+}
+
+/* --- Inputs -------------------------------------------------------------- */
+.DialogInput,
+.DialogTextInputBase,
+.DialogInputPlaceholder {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	transition: border-color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease) !important;
+}
+.DialogInput::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+.DialogInput:focus,
+.DialogTextInputBase:focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 60%, transparent) !important;
+	background: var(--gr-surface-2) !important;
+	outline: none !important;
+}
+
+.DialogDropDown {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+}
+.DialogDropDown:not(.Disabled):hover {
+	background: var(--gr-surface-3) !important;
+}
+.DialogDropDown_Arrow svg {
+	fill: var(--gr-text-2) !important;
+}
+
+/* --- Checkboxes & toggles ------------------------------------------------ */
+.DialogCheckbox {
+	background: var(--gr-surface-3) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 4px !important;
+	box-shadow: none !important;
+}
+.DialogCheckbox_Container.Active .DialogCheckbox,
+.DialogCheckbox_Container.Checked .DialogCheckbox {
+	background: var(--gr-accent) !important;
+	border-color: var(--gr-accent) !important;
+}
+.DialogCheckbox svg path,
+.DialogCheckbox svg polyline {
+	stroke: var(--gr-bg) !important;
+}
+
+.DialogToggle_Label,
+.DialogLabel {
+	color: var(--gr-text-2) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+
+/* --- Tooltips ------------------------------------------------------------ */
+.TextToolTip,
+.tool-tip {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: var(--gr-shadow) !important;
+}

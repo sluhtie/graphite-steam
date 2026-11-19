@@ -1,0 +1,4 @@
+/* Hide the address bar above store / community pages. */
+.$(URLBar@URLBarText) {
+	display: none !important;
+}

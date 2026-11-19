@@ -1,0 +1,170 @@
+/* Library: left game list. */
+
+.$(Container@IsResizingLeftList+MainPanel) {
+	background: var(--gr-bg) !important;
+}
+
+.$(LeftListSizableContainer@LibraryWindowDivider),
+.$(Container@GameListHomeAndSearch) {
+	background: var(--gr-bg) !important;
+}
+
+.$(LibraryWindowDivider@LeftListSizableContainer) {
+	background: transparent !important;
+}
+.$(LibraryWindowDivider@LeftListSizableContainer).$(Sizable@LibraryWindowDivider):hover {
+	background: var(--gr-accent-soft) !important;
+}
+
+/* Home button + collections button */
+.$(GameListHomeAndSearch) {
+	background: transparent !important;
+	padding: 4px 6px 0 8px !important;
+}
+.$(Bar@CollectionIconBox) {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.$(Bar@CollectionIconBox):hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.$(Bar@CollectionIconBox).$(Selected@CollectionIconBox) {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+/* Steam paints a big blurred logo behind "Home" */
+.$(Bar@CollectionIconBox) .$(Icon@CollectionIconBox) {
+	display: none !important;
+}
+.$(Label@CollectionIconBox) {
+	color: inherit !important;
+	font-weight: 500 !important;
+	font-size: 13px !important;
+}
+.$(CollectionIconBox) {
+	background: currentColor !important;
+	opacity: 0.6;
+	border-radius: 2px;
+}
+
+/* View selector ("Games & Software") + filters */
+.$(Bar@ViewFiltersBar) {
+	padding-left: 2px !important;
+}
+.$(MenuHeader@ViewFiltersBar) {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(MenuHeader@ViewFiltersBar):hover {
+	background: var(--gr-hover) !important;
+}
+.$(ViewName) {
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.06em !important;
+}
+.$(CheckboxWithImage) {
+	opacity: 0.55;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.$(CheckboxWithImage):hover,
+.$(CheckboxWithImage).$(Active@ViewFiltersBar) {
+	opacity: 1;
+}
+
+/* Search */
+.$(SearchInput@AdvancedSearchPane) .DialogInput {
+	background: var(--gr-surface-2) !important;
+	border-color: transparent !important;
+	height: 32px !important;
+}
+.$(SearchInput@AdvancedSearchPane) .DialogInput:focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 50%, transparent) !important;
+}
+.$(AdvancedSearchButton) {
+	opacity: 0.6;
+	border-radius: var(--gr-radius-sm);
+}
+.$(AdvancedSearchButton):hover {
+	opacity: 1;
+	background: var(--gr-hover);
+}
+.$(AdvancedSearchPane) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+
+/* Collection headers ("FAVORITES (17)") */
+.$(Container@CollapseIconParent) {
+	background: transparent !important;
+}
+.$(Container@SectionHeaderContent) {
+	background: transparent !important;
+}
+.$(SectionName) {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.$(SectionCount@SectionRule) {
+	color: var(--gr-text-3) !important;
+	opacity: 0.7;
+	font-size: 11px !important;
+}
+.$(SectionRule) {
+	display: none !important;
+}
+.$(Container@CollapseIconParent) svg {
+	opacity: 0.5;
+}
+
+/* Game entries */
+.$(Container@GameListEntryContainer) {
+	border-radius: var(--gr-radius-sm) !important;
+	margin: 0 6px 0 8px !important;
+	width: auto !important;
+	background: transparent !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(Container@GameListEntryContainer):hover {
+	background: var(--gr-hover) !important;
+}
+.$(Container@GameListEntryContainer).$(Selected@GameListEntryContainer) {
+	background: var(--gr-active) !important;
+}
+.$(Container@GameListEntryContainer).$(Selected@GameListEntryContainer) .$(GameListEntryContainer) {
+	color: var(--gr-text) !important;
+}
+.$(GameListEntryContainer) {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.$(Container@GameListEntryContainer).$(Installed@GameListEntryContainer) .$(GameListEntryContainer) {
+	color: var(--gr-text) !important;
+}
+.$(Container@GameListEntryContainer).$(Uninstalled@GameListEntryContainer) .$(GameListEntryContainer) {
+	color: var(--gr-text-3) !important;
+}
+.$(Container@GameListEntryContainer).$(Uninstalled@GameListEntryContainer):hover .$(GameListEntryContainer) {
+	color: var(--gr-text-2) !important;
+}
+.$(Container@GameListEntryContainer).$(Running@GameListEntryContainer) .$(GameListEntryContainer),
+.$(Container@GameListEntryContainer).$(Updating@GameListEntryContainer) .$(GameListEntryContainer) {
+	color: var(--gr-accent) !important;
+}
+.$(DownloadProgress@GameListEntryContainer) {
+	color: var(--gr-text-3) !important;
+}
+.$(GameIcon@GameListEntryContainer) {
+	border-radius: 4px;
+	overflow: hidden;
+}

@@ -1,0 +1,69 @@
+{
+	"name": "Graphite",
+	"author": "sluhtie",
+	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one accent color, quiet typography and a single-row header.",
+	"version": "1.0.0",
+	"tags": ["Minimal", "Dark", "Modern", "Clean"],
+	"github": {
+		"owner": "sluhtie",
+		"repo_name": "steamtheme"
+	},
+	"header_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/library.png",
+	"splash_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/settings.png",
+	"RootColors": "colors.css",
+	"Patches": [
+		{ "MatchRegexString": "^Steam$", "TargetCss": "build/main.css" },
+		{ "MatchRegexString": "Menu$", "TargetCss": "build/menus.css" },
+		{ "MatchRegexString": "Supernav$", "TargetCss": "build/menus.css" },
+		{ "MatchRegexString": ".ModalDialogPopup", "TargetCss": "build/dialogs.css" },
+		{ "MatchRegexString": ".friendsui-container", "TargetCss": "build/friends.css" }
+	],
+	"Conditions": {
+		"Font": {
+			"description": "Interface font. Inter is loaded from Google Fonts, System uses Segoe UI on Windows.",
+			"tab": "Appearance",
+			"default": "Inter",
+			"values": {
+				"Inter": { "TargetCss": { "affects": [".*"], "src": "build/options/font-inter.css" } },
+				"System": { "TargetCss": { "affects": [".*"], "src": "build/options/font-system.css" } },
+				"Steam": { "TargetCss": { "affects": [".*"], "src": "build/options/font-steam.css" } }
+			}
+		},
+		"Corners": {
+			"description": "Corner style of cards, buttons and the content panel.",
+			"tab": "Appearance",
+			"default": "Rounded",
+			"values": {
+				"Rounded": {},
+				"Sharp": { "TargetCss": { "affects": [".*"], "src": "build/options/corners-sharp.css" } }
+			}
+		},
+		"Header": {
+			"description": "Single row merges the menu bar and the Store / Library / Community tabs into one compact row.",
+			"tab": "Layout",
+			"default": "Single row",
+			"values": {
+				"Single row": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/header-single-row.css" } },
+				"Classic": {}
+			}
+		},
+		"Hide URL bar": {
+			"description": "Hide the address bar above store and community pages.",
+			"tab": "Layout",
+			"default": "no",
+			"values": {
+				"no": {},
+				"yes": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/hide-url-bar.css" } }
+			}
+		},
+		"Hide What's New": {
+			"description": "Hide the \"What's New\" event row on the library home page.",
+			"tab": "Layout",
+			"default": "no",
+			"values": {
+				"no": {},
+				"yes": { "TargetCss": { "affects": ["^Steam$"], "src": "build/options/hide-whats-new.css" } }
+			}
+		}
+	}
+}

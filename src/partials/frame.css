@@ -1,0 +1,211 @@
+/* Main window chrome: title bar, root menus, nav tabs, URL bar, bottom bar. */
+
+/* --- Window ---------------------------------------------------------------- */
+.$(Wrapper@FocusNavigationRoot),
+.$(Wrapper@FocusNavigationRoot).$(ForceOpaqueBackground) {
+	background: var(--gr-bg) !important;
+}
+
+.$(FocusBar) {
+	background: transparent !important;
+}
+
+.$(TopBar@FocusNavigationRoot),
+.$(URLBarReplacement) {
+	background: var(--gr-bg) !important;
+}
+
+/* --- Root menus (Steam / View / Friends / Games / Help) ------------------- */
+.$(RootMenuButton) {
+	color: var(--gr-text-3) !important;
+	font-size: 12.5px !important;
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.$(RootMenuButton):hover,
+.$(RootMenuButton).$(MenuOpen) {
+	color: var(--gr-text) !important;
+}
+.$(SteamButton) .$(Logo@SteamButton) {
+	fill: currentColor;
+}
+
+/* --- Title bar buttons (announcements, notifications, account) ------------ */
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton) {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton):hover {
+	background: var(--gr-hover) !important;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton) svg {
+	color: var(--gr-text-2);
+}
+.$(AnnouncementsButton).$(Active@AnnouncementsButton),
+.$(NotificationsButton).$(HasNew) {
+	background: var(--gr-accent-soft) !important;
+}
+.$(AnnouncementsButton).$(Active@AnnouncementsButton) svg,
+.$(NotificationsButton).$(HasNew) svg {
+	color: var(--gr-accent) !important;
+	fill: var(--gr-accent) !important;
+}
+
+.$(AccountMenu@AnnouncementsButton) {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(AccountMenu@AnnouncementsButton):hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.$(AccountMenu@AnnouncementsButton) img {
+	border-radius: 50% !important;
+}
+.$(WalletBalance@AnnouncementsButton) {
+	color: var(--gr-text-3) !important;
+}
+
+/* --- Window controls --------------------------------------------------------- */
+.title-area-highlight {
+	display: none !important;
+}
+.windowControlButton {
+	border-radius: var(--gr-radius-sm);
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.windowControlButton:hover {
+	background: var(--gr-hover) !important;
+}
+.windowControlButton.closeButton:hover {
+	background: #e5484d !important;
+}
+.title-area-icon-inner {
+	opacity: 0.7;
+}
+.windowControlButton:hover .title-area-icon-inner {
+	opacity: 1;
+}
+
+/* --- Super nav (Store / Library / Community / Profile) ---------------------- */
+.$(SuperNavBar) {
+	background: transparent !important;
+}
+.$(SuperNav) .$(MenuButton@SuperNav) {
+	color: var(--gr-text-2) !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	padding: 0 !important;
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.$(SuperNav) .$(MenuButton@SuperNav) span {
+	text-transform: none !important;
+}
+.$(SuperNavMenu) {
+	padding: 0 12px !important;
+	border-radius: var(--gr-radius-sm);
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(SuperNavMenu):hover {
+	background: var(--gr-hover);
+}
+.$(SuperNavMenu):hover .$(MenuButton@SuperNav) {
+	color: var(--gr-text) !important;
+}
+.$(SuperNavMenu).$(Selected@SuperNav) .$(MenuButton@SuperNav) {
+	color: var(--gr-text) !important;
+	border: none !important;
+	text-shadow: none !important;
+}
+/* Steam draws the active tab underline with borders / pseudo elements */
+.$(SuperNav) .$(MenuButton@SuperNav),
+.$(SuperNavMenu).$(Selected@SuperNav) .$(MenuButton@SuperNav) {
+	border-bottom: none !important;
+}
+.$(SuperNavMenu).$(Selected@SuperNav)::after {
+	content: "";
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: 4px;
+	height: 2px;
+	border-radius: 2px;
+	background: var(--gr-accent);
+}
+.$(SuperNavMenu) {
+	position: relative;
+}
+
+.$(Arrow@SuperNav) {
+	opacity: 0.55;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.$(Arrow@SuperNav):not(.$(Disabled@SuperNav)):hover {
+	opacity: 1;
+}
+.$(Arrow@SuperNav).$(Disabled@SuperNav) {
+	opacity: 0.2;
+}
+
+/* --- URL bar (store / community browser) ------------------------------------ */
+.$(URLBar@URLBarText) {
+	background: var(--gr-bg) !important;
+}
+.$(URL@URLBarText) {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+}
+
+/* --- Bottom bar (add game / downloads / friends) ---------------------------- */
+.$(BottomBar@BottomBarContainer) {
+	background: var(--gr-bg) !important;
+	border-top: 1px solid var(--gr-border) !important;
+	height: 40px !important;
+	min-height: 40px !important;
+}
+.$(BottomBar@BottomBarContainer) .$(AddGameButton),
+.$(BottomBar@BottomBarContainer) .$(FriendsButton),
+.$(BottomBar@BottomBarContainer) .$(DownloadStatus@BottomBarContainer) {
+	color: var(--gr-text-3) !important;
+	border-radius: var(--gr-radius-sm);
+	transition: color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.$(BottomBar@BottomBarContainer) .$(AddGameButton):hover,
+.$(BottomBar@BottomBarContainer) .$(FriendsButton):hover,
+.$(BottomBar@BottomBarContainer) .$(DownloadStatus@BottomBarContainer):hover {
+	color: var(--gr-text) !important;
+	background: var(--gr-hover);
+}
+.$(BottomBar@BottomBarContainer) svg {
+	opacity: 0.8;
+}
+.$(ProgressBar@BottomBarContainer) {
+	background: var(--gr-accent) !important;
+}
+.$(ProgressBarWrapper) {
+	background: var(--gr-surface-3) !important;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+/* --- Update / info alerts above the bottom bar ----------------------------- */
+.$(Alert@ActionAlert) {
+	background: var(--gr-surface-2) !important;
+	border-top: 1px solid var(--gr-border);
+	color: var(--gr-text) !important;
+}
+.$(AlertButton) {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.$(AlertButton):hover {
+	background: color-mix(in srgb, var(--gr-text) 16%, var(--gr-surface-2)) !important;
+}
+.$(PatchNotesLink@ActionAlert) {
+	color: var(--gr-accent) !important;
+}

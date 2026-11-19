@@ -1,0 +1,31 @@
+/* Library: right panel becomes an inset, rounded content card. */
+
+.$(MainPanel@LibraryWindowDivider) {
+	margin: 0 8px 8px 0 !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	overflow: hidden !important;
+	background: var(--gr-surface) !important;
+}
+
+.$(AppDetailsTransitionGroup@LibraryWindowDivider),
+.$(AppDetailsMain@LibraryWindowDivider) {
+	background: var(--gr-surface) !important;
+}
+
+/* Steam's generic page scroller (home, collections, app page) */
+.$(Container@ScrollToTopButton),
+.$(Body@ScrollToTopButton),
+.$(Body@ScrollToTopButton).$(ScrollContainer@HeaderLoaded) {
+	background: var(--gr-surface) !important;
+}
+.$(ScrollToTopButton) {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-2) !important;
+	border-top: 1px solid var(--gr-border);
+}
+
+/* Gradient on top of the library window */
+.$(TopGradient@LibraryWindowDivider) {
+	display: none !important;
+}

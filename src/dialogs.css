@@ -1,0 +1,5 @@
+/* Standalone dialog windows: settings, game properties, confirmations. */
+@import "./partials/tokens.css";
+@import "./partials/base.css";
+@import "./partials/dialogs.css";
+@import "./partials/menus.css";

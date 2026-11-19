@@ -1,0 +1,60 @@
+/* Merge the title bar and the Store/Library/Community tabs into one row.
+   TitleBar becomes display:contents so its children and the SuperNavBar share
+   one flex row; `order` puts the tabs right after the root menus. */
+.$(TopBar@FocusNavigationRoot) {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: center !important;
+	height: 44px !important;
+	min-height: 44px !important;
+	-webkit-app-region: drag;
+}
+.$(TopBar@FocusNavigationRoot) > .$(TitleBar@RootMenuBar+SuperNavBar) {
+	display: contents !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(RootMenuBar@FocusNavigationRoot) {
+	order: 1;
+	height: 44px !important;
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+}
+.$(TopBar@FocusNavigationRoot) > .$(SuperNavBar) {
+	order: 2;
+	height: 44px !important;
+	flex: 0 1 auto;
+	min-width: 0;
+	margin-left: 12px;
+	padding-left: 12px;
+	border-left: 1px solid var(--gr-border);
+	display: flex;
+	align-items: center;
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNav) {
+	height: 32px !important;
+	padding: 0 !important;
+	align-items: center !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNavMenu) {
+	height: 32px !important;
+	display: flex !important;
+	align-items: center !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNavMenu).$(Selected@SuperNav)::after {
+	bottom: 0;
+}
+.$(TopBar@FocusNavigationRoot) .$(DragArea@FocusNavigationRoot) {
+	order: 3;
+	flex: 1 1 0 !important;
+	align-self: stretch;
+	height: auto !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(TitleBarControls@FocusNavigationRoot) {
+	order: 4;
+	align-self: center;
+	margin-top: 0 !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(WindowControls@FocusNavigationRoot) {
+	order: 5;
+	align-self: flex-start;
+}

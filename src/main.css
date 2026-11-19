@@ -1,0 +1,10 @@
+/* Main Steam window (title "Steam"): library, store/community frame. */
+@import "./partials/tokens.css";
+@import "./partials/base.css";
+@import "./partials/frame.css";
+@import "./partials/library-list.css";
+@import "./partials/library-panel.css";
+@import "./partials/library-home.css";
+@import "./partials/library-app.css";
+@import "./partials/menus.css";
+@import "./partials/dialogs.css";

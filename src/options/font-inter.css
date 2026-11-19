@@ -1,0 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+:root:root {
+	--gr-font: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+}

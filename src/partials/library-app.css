@@ -1,0 +1,243 @@
+/* Library: game details page. */
+
+/* Flat content below the hero: drop Steam's blurred backdrop glow */
+.$(ImgBlurBackdrop),
+.$(Backdrop@BackdropGlass),
+.$(BackdropGlass) {
+	display: none !important;
+}
+.$(Container@BackdropGlass).$(Glassy@BackdropGlass) {
+	background: var(--gr-surface) !important;
+}
+/* Fade the hero image into the page */
+.$(TopCapsule)::after {
+	content: "";
+	position: absolute;
+	inset: auto 0 0 0;
+	height: 45%;
+	background: linear-gradient(to bottom, transparent, var(--gr-surface));
+	pointer-events: none;
+	z-index: 1;
+}
+.$(TopCapsule) .$(BoxSizerContainer) {
+	z-index: 2;
+}
+
+/* --- Play bar ------------------------------------------------------------- */
+.$(PlayBar@StatusAndStats),
+.$(PlayBar@StatusAndStats).$(Glassy@HeaderLoaded) {
+	background: transparent !important;
+	box-shadow: none !important;
+}
+.$(PlayBar@StatusAndStats) .$(InnerContainer@StatusAndStats) {
+	background: transparent !important;
+}
+/* sticky copy of the play bar when scrolled */
+.$(Container@StatusAndStats):not(.$(InPage)) .$(PlayBar@StatusAndStats) {
+	background: color-mix(in srgb, var(--gr-surface) 92%, transparent) !important;
+	backdrop-filter: blur(16px);
+	border-bottom: 1px solid var(--gr-border);
+}
+.$(StickyHeaderShadow),
+.$(GameInfoShadow) {
+	display: none !important;
+}
+
+/* Play / Install / Update button */
+.$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer),
+.$(PlayButtonContainer) .$(StreamingSelector) {
+	background: var(--gr-play) !important;
+	color: var(--gr-play-text) !important;
+	box-shadow: none !important;
+	transition: filter var(--gr-fast) var(--gr-ease) !important;
+}
+.$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer) {
+	border-radius: var(--gr-radius) 0 0 var(--gr-radius) !important;
+}
+.$(PlayButtonContainer):not(.$(ShowingStreaming)) .$(PlayButton@PlayButtonContainer) {
+	border-radius: var(--gr-radius) !important;
+}
+.$(PlayButtonContainer) .$(StreamingSelector) {
+	border-radius: 0 var(--gr-radius) var(--gr-radius) 0 !important;
+	border-left: 1px solid color-mix(in srgb, var(--gr-play-text) 18%, transparent) !important;
+}
+.$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer):hover,
+.$(PlayButtonContainer) .$(StreamingSelector):hover {
+	filter: brightness(1.12);
+}
+.$(PlayButtonContainer) .$(ButtonText@PlayButtonContainer) {
+	color: var(--gr-play-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.$(PlayButtonContainer) svg,
+.$(PlayButtonContainer) svg :is(path, polygon, rect, circle) {
+	fill: var(--gr-play-text) !important;
+	color: var(--gr-play-text) !important;
+}
+
+/* Achievement progress bars */
+.$(Unlocked@CompletedCallout) {
+	background: var(--gr-accent) !important;
+}
+/* "Stop" while running */
+.$(PlayButtonContainer) .$(ShutdownAppButton) {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+
+/* Stats next to the play button */
+.$(PlayBarLabel) {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+	letter-spacing: 0.02em !important;
+}
+.$(PlayBarDetailLabel) {
+	color: var(--gr-text) !important;
+	font-size: 13px !important;
+}
+.$(GameStatIcon),
+.$(GameStatIconForced) {
+	opacity: 0.6;
+	filter: grayscale(1);
+}
+.$(DetailsProgressContainer) {
+	background: var(--gr-surface-3) !important;
+	border-radius: 4px;
+	overflow: hidden;
+}
+.$(DetailsProgressBar) {
+	background: var(--gr-accent) !important;
+}
+
+/* Gear / info / favourite buttons */
+.$(AppButtonsContainer) .$(MenuButton@StatusAndStats) {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.$(AppButtonsContainer) .$(MenuButton@StatusAndStats):hover {
+	background: var(--gr-hover) !important;
+}
+.$(AppButtonsContainer) .$(MenuButton@StatusAndStats) svg {
+	color: var(--gr-text-2);
+	fill: var(--gr-text-2);
+}
+.$(AppButtonsContainer) .$(FavoriteButton@StatusAndStats).$(Favorited@StatusAndStats) svg {
+	color: var(--gr-accent) !important;
+	fill: var(--gr-accent) !important;
+}
+
+/* --- Game info (collapsible) ---------------------------------------------- */
+.$(AppGameInfoContainer) {
+	background: transparent !important;
+}
+.$(SectionContainer@GameDescription) {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius) !important;
+	border: 1px solid var(--gr-border) !important;
+}
+.$(GameDescription) {
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Sections ------------------------------------------------------------- */
+.$(AppDetailsSectionContainer),
+.$(AppDetailsSectionContainer).$(AppDetailsSectionHasLabel) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+}
+.$(Highlight@AppDetailsSectionContainer) {
+	background: transparent !important;
+}
+.$(SectionHeader@ShowBoxed),
+.$(HeaderStyles) {
+	background: none !important;
+	box-shadow: none !important;
+}
+.$(SectionHeader@ShowBoxed) .$(Label@ShowBoxed),
+.$(AppActivityDay) {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
+.$(Rule@AppActivityDay) {
+	background: var(--gr-border) !important;
+}
+
+/* Store / DLC / Community hub ... link row */
+.$(LinksSection) .$(AppDetailsSectionContainer) {
+	background: transparent !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	border-radius: 0 !important;
+}
+.$(Links@LinksSectionBody) .$(Link@LinksSectionBody) {
+	color: var(--gr-text-2) !important;
+	border-radius: var(--gr-radius-sm);
+	transition: color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.$(Links@LinksSectionBody) .$(Link@LinksSectionBody):hover {
+	color: var(--gr-text) !important;
+	background: var(--gr-hover) !important;
+}
+
+/* Activity feed & events */
+.$(PartnerEvent@AppActivityDay),
+.$(PartnerEventMediumImage_Container),
+.$(Event@AppActivityDay) {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+.$(PartnerEvent@AppActivityDay) {
+	border: 1px solid var(--gr-border) !important;
+}
+.$(PostTextEntryArea) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text) !important;
+}
+.$(PostTextEntryArea):focus {
+	border-color: color-mix(in srgb, var(--gr-accent) 50%, transparent) !important;
+}
+.$(PostTextEntry@PostTextEntryArea) .$(EmoticonButton),
+.$(PostTextEntry@PostTextEntryArea) .$(PostButton) {
+	background: transparent !important;
+}
+
+/* Frame-rate / survey style banners */
+.$(FramerateReportingBanner) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+
+/* Community content placeholders */
+.$(CommunityItem).$(Blank@CommunityItem) {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.$(CommunityItem) {
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+}
+
+/* Trading cards / workshop backgrounds */
+.$(WorkshopContainer) {
+	background: transparent !important;
+}
+.$(CardContainer) {
+	background: var(--gr-surface-3) !important;
+	border-radius: var(--gr-radius-sm);
+}

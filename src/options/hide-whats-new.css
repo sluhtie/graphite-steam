@@ -1,0 +1,7 @@
+/* Hide the "What's new" event row on the library home page. */
+.$(UpdatesContainer) {
+	display: none !important;
+}
+.$(LibraryHome) {
+	border-top: none !important;
+}

@@ -1,0 +1,148 @@
+/* Library home: "What's new", shelves and game capsules. */
+
+.$(UpdatesContainer),
+.$(LibraryHome),
+.$(LibraryHome) > div {
+	background: transparent !important;
+}
+.$(LibraryHome) {
+	border-top: 1px solid var(--gr-border);
+}
+.$(ShowcaseHeader) + div,
+.$(Showcase) [class*="Subtitle"] {
+	letter-spacing: 0 !important;
+}
+
+/* Section headers */
+.$(HeaderPageControls) .$(Name@HeaderPageControls),
+.$(ShowcaseHeader) .DialogDropDown_CurrentDisplay {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+	text-transform: none !important;
+}
+.$(ShowcaseHeader) .DialogDropDown {
+	background: transparent !important;
+	border: none !important;
+	padding-left: 0 !important;
+}
+.$(ShowcaseHeader) .DialogDropDown:hover {
+	background: transparent !important;
+}
+.$(ShowcaseHeader) .DialogDropDown_Arrow {
+	opacity: 0.5;
+}
+.$(ShowcaseHeader) .$(Rule@ShowcaseHeader),
+.$(AddShowcaseRow) .$(Rule@ShowcaseHeader) {
+	background: var(--gr-border) !important;
+	height: 1px !important;
+	box-shadow: none !important;
+}
+
+.$(AddShowcase) {
+	color: var(--gr-text-3) !important;
+	border-radius: var(--gr-radius-sm);
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.$(AddShowcase):hover {
+	color: var(--gr-text) !important;
+}
+
+/* Paging arrows */
+.$(PageLeft@PageClickContainer),
+.$(PageRight@PageClickContainer),
+.$(PageButtons) > div {
+	border-radius: var(--gr-radius-sm);
+	opacity: 0.6;
+	transition: opacity var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.$(PageLeft@PageClickContainer):hover,
+.$(PageRight@PageClickContainer):hover,
+.$(PageButtons) > div:hover {
+	opacity: 1;
+	background: var(--gr-hover);
+}
+
+/* Dates above capsules */
+.$(EventTime@PartnerEventRowCapsule),
+.$(AddedDate@RecentGame),
+.$(EmptyDate@RecentGame) {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+}
+
+/* "What's new" event cards */
+.$(PartnerEventRowCapsule_Container),
+.$(PartnerEventRowCapsule_MainImageContainer) {
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden !important;
+}
+.$(PartnerEventRowCapsule_Container) {
+	box-shadow: 0 0 0 1px var(--gr-border) !important;
+	transition: box-shadow var(--gr-med) var(--gr-ease), transform var(--gr-med) var(--gr-ease) !important;
+}
+.$(PartnerEventRowCapsule_Container):hover {
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--gr-text) 18%, transparent), var(--gr-shadow) !important;
+}
+.$(EventTimeSpan) {
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600 !important;
+}
+.$(PartnerEventRowCapsule_TextTitle) {
+	color: var(--gr-text) !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+}
+.$(GameIconAndName@PartnerEventRowCapsule) {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.$(GameIconAndName@PartnerEventRowCapsule):hover {
+	color: var(--gr-text) !important;
+}
+
+/* Game capsules */
+.$(LibraryItemBox) {
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden !important;
+	box-shadow: 0 0 0 1px var(--gr-border) !important;
+	transition: transform var(--gr-med) var(--gr-ease), box-shadow var(--gr-med) var(--gr-ease) !important;
+}
+.$(LibraryItemBox):hover {
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--gr-text) 22%, transparent), var(--gr-shadow) !important;
+}
+.$(LibraryItemBoxShine) {
+	display: none !important;
+}
+
+/* Footer of the big "recently played" capsule */
+.$(RecentGameFooter) {
+	background: color-mix(in srgb, var(--gr-surface-2) 92%, transparent) !important;
+	backdrop-filter: none !important;
+}
+.$(FooterBlurImageContainer) {
+	display: none !important;
+}
+.$(PlaytimeDetails@RecentGameFooter) {
+	color: var(--gr-text-2) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.$(PlaytimeDetails@RecentGameFooter).$(Header@RecentGameFooter) {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+
+/* Round play / download button on capsules */
+.$(LibraryItemActionButton) {
+	background: var(--gr-play) !important;
+	color: var(--gr-play-text) !important;
+	border-radius: 50% !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.$(LibraryItemActionButton) svg {
+	fill: var(--gr-play-text) !important;
+	color: var(--gr-play-text) !important;
+}

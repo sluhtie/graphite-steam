@@ -1,0 +1,54 @@
+/* Context menus and dropdown menus. On desktop these are their own popup
+   windows (body.ContextMenuPopupBody) but the same markup is also used inline. */
+
+body.ContextMenuPopupBody {
+	background: var(--gr-surface-2) !important;
+}
+
+.contextMenuContents,
+.$(MenuPopup@MenuWrapper) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	box-shadow: none !important;
+	padding: 4px !important;
+	min-width: 180px;
+}
+
+.contextMenuItem,
+.$(MenuItem@MenuWrapper).$(Item@MenuWrapper) {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	font-size: 13px !important;
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease) !important;
+}
+.contextMenuItem:not(.disabled, .$(Disabled@MenuWrapper)):hover,
+.contextMenuItem.active,
+.contextMenuItem.gpfocus,
+.$(MenuItem@MenuWrapper).$(Item@MenuWrapper):not(.$(Disabled@MenuWrapper)):hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.contextMenuItem.disabled,
+.$(MenuItem@MenuWrapper).$(Disabled@MenuWrapper) {
+	color: var(--gr-text-3) !important;
+	opacity: 0.6;
+}
+
+hr.$(MenuItem@MenuWrapper).$(Separator@MenuWrapper),
+.$(Separator@MenuWrapper) {
+	border: none !important;
+	border-top: 1px solid var(--gr-border) !important;
+	background: none !important;
+	margin: 4px 6px !important;
+	height: 0 !important;
+}
+
+/* Account menu */
+.$(AccountName@LogoutButton) {
+	color: var(--gr-accent) !important;
+}
