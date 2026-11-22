@@ -1,8 +1,12 @@
 # Graphite
 
+![Graphite](docs/thumbnail.jpg)
+
 A clean, minimal and modern theme for the Steam desktop client, built for [Millennium](https://steambrew.app).
 
 Neutral graphite surfaces, one accent color, quiet typography, a single-row header and an inset content panel. No gradients, no glow, no visual noise.
+
+## Screenshots
 
 ![Library](docs/library.jpg)
 

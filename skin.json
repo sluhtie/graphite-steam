@@ -15,7 +15,7 @@
 		"owner": "sluhtie",
 		"repo_name": "graphite-steam"
 	},
-	"header_image": "https://raw.githubusercontent.com/sluhtie/graphite-steam/main/docs/header.jpg",
+	"header_image": "https://raw.githubusercontent.com/sluhtie/graphite-steam/main/docs/thumbnail.jpg",
 	"splash_image": "https://raw.githubusercontent.com/sluhtie/graphite-steam/main/docs/splash.jpg",
 	"RootColors": "colors.css",
 	"Patches": [
