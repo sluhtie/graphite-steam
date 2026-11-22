@@ -32,7 +32,7 @@ Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardco
 
    ```powershell
    cd "C:\Program Files (x86)\Steam\millennium\themes"
-   git clone https://github.com/sluhtie/steamtheme
+   git clone https://github.com/sluhtie/graphite-steam
    ```
 
    (Or download the ZIP and extract it there.)
@@ -68,7 +68,7 @@ Steam's UI uses hashed CSS-module class names (for example `_3pofGqV0buiKAfMPEs3
 If parts of the theme stop applying after a Steam client update, the hashes have probably changed. Rebuild the theme (requires [Node.js](https://nodejs.org) 18+):
 
 ```powershell
-cd "C:\Program Files (x86)\Steam\millennium\themes\steamtheme"
+cd "C:\Program Files (x86)\Steam\millennium\themes\graphite-steam"
 node tools/build.mjs
 ```
 

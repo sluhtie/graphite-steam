@@ -13,10 +13,10 @@
 	],
 	"github": {
 		"owner": "sluhtie",
-		"repo_name": "steamtheme"
+		"repo_name": "graphite-steam"
 	},
-	"header_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/header.jpg",
-	"splash_image": "https://raw.githubusercontent.com/sluhtie/steamtheme/main/docs/splash.jpg",
+	"header_image": "https://raw.githubusercontent.com/sluhtie/graphite-steam/main/docs/header.jpg",
+	"splash_image": "https://raw.githubusercontent.com/sluhtie/graphite-steam/main/docs/splash.jpg",
 	"RootColors": "colors.css",
 	"Patches": [
 		{
