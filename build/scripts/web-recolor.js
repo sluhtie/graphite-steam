@@ -295,6 +295,61 @@
 		}
 	}
 
+	// Store hubs and sale pages (category / genre pages, sales): Valve's React
+	// "SaleSection" blocks. Readable class names do most of the work in
+	// web-hub.css; here the parts without one get gr-hub-* classes, and the
+	// panels we restyle are hooked so recolor leaves their surfaces alone.
+	const hubOn = (els, on) => els.forEach((e) => e.classList.toggle('gr-hub-on', e === on));
+	// the active tab of a tab row: the one with an extra (hashed) class of Valve's
+	const activeTab = (tabs) => {
+		const n = tabs.map((t) => [...t.classList].filter((c) => !c.startsWith('gr-')).length);
+		const common = n.slice().sort((a, b) => n.filter((x) => x === b).length - n.filter((x) => x === a).length)[0];
+		return tabs.find((t, i) => n[i] > common) || null;
+	};
+	function hookHub() {
+		if (location.hostname !== 'store.steampowered.com' || !document.querySelector('.SaleSectionCtn')) return;
+		// sticky tab row ("Trending, Action-Adventure, ...")
+		for (const tc of document.querySelectorAll('.SaleSectionTabContainer')) {
+			if (tc.parentElement) hook(tc.parentElement, 'gr-hub-tabbar');
+			const row = tc.firstElementChild;
+			if (!row) continue;
+			const tabs = [...row.children];
+			tabs.forEach((t) => t.classList.add('gr-hub-tab'));
+			if (tabs.length > 1) hubOn(tabs, activeTab(tabs));
+		}
+		// discovery queue banner, "DLC for your games"
+		for (const q of document.querySelectorAll('.DiscoveryQueueCSS')) hook(q, 'gr-hub-dq');
+		for (const d of document.querySelectorAll('.dlc_for_you > div:not([class=""])')) if (d.querySelector('.SaleSectionCarousel')) hook(d, 'gr-hub-panel');
+		// "browse all" list: tabs, filter column, the big rows
+		for (const sib of document.querySelectorAll('.sale_item_browser .SaleSectionForCustomCSS')) {
+			hook(sib, 'gr-hub-browser');
+			const first = sib.querySelector('.LibraryAssetExpandedDisplay');
+			if (first && first.parentElement.previousElementSibling) first.parentElement.previousElementSibling.classList.add('gr-hub-filter');
+			for (const it of sib.querySelectorAll('.LibraryAssetExpandedDisplay:not(.gr-hub-item)')) it.classList.add('gr-hub-item');
+			// the tab row is the first row with several short text buttons
+			const row = [...sib.querySelectorAll('div')].find((d) => d.children.length >= 4 && [...d.children].filter((c) => c.classList.contains('Focusable') && c.textContent.trim().length < 40).length >= 4);
+			if (row) {
+				const tabs = [...row.children].filter((c) => c.classList.contains('Focusable'));
+				tabs.forEach((t) => t.classList.add('gr-hub-btab'));
+				hubOn(tabs, activeTab(tabs));
+			}
+		}
+		// hover card over a capsule: [media with the star button] [capsule, price, name, tags, ...]
+		for (const txt of document.querySelectorAll('.SaleSectionCtn .WishlistButtonText')) {
+			const star = txt.parentElement;
+			if (!star || star.classList.contains('WishlistButton') || star.closest('.LibraryAssetExpandedDisplay')) continue;
+			const media = star.parentElement;
+			const card = media && media.parentElement;
+			if (!card || card.children.length < 2) continue;
+			hook(card, 'gr-hub-hover');
+			star.classList.add('gr-hub-star');
+			// on the wishlist: Valve swaps the label text
+			star.classList.toggle('gr-on', !/hinzuf|add to/i.test(txt.textContent));
+			const name = [...card.querySelectorAll('a > div')].find((d) => !d.children.length && parseFloat(getComputedStyle(d).fontSize) >= 18);
+			if (name) name.classList.add('gr-hub-hname');
+		}
+	}
+
 	// store navigation search button: Valve paints it bright blue on some pages
 	function hookStoreNav() {
 		if (location.hostname !== 'store.steampowered.com') return;
@@ -343,7 +398,7 @@
 
 	function flush(deadline) {
 		scheduled = false;
-		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); hookStoreHome(); hookAppPage(); } catch (e) { /* never break the page */ }
+		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); hookStoreHome(); hookAppPage(); hookHub(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;

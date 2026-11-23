@@ -418,7 +418,10 @@
 	}
 
 	function mount() {
-		if (root && root.isConnected) return true;
+		// already on the page (React can take our card out for a moment and put
+		// it back, so look at the page, not at the last card we built)
+		const live = document.querySelector('.gr-shero-wrap .gr-shero');
+		if (live) { root = live; return true; }
 		root = null;
 		items = collect();
 		if (!items.length) return false;
@@ -468,9 +471,22 @@
 			// Steam's carousel keeps running in there, so keep its trailers paused,
 			// and if React rebuilds the section, mount again
 			car.prepend(wrap);
+			let gone = 0;
 			const keep = setInterval(() => {
-				if (!wrap.isConnected) { clearInterval(keep); clearInterval(timer); tries = 0; attempt(); return; }
-				car.querySelectorAll('video').forEach((v) => { if (!v.paused) v.pause(); });
+				// only one card; mount again only when ours stays away
+				const all = document.querySelectorAll('.gr-shero-wrap');
+				if (all.length > 1) all.forEach((w) => { if (w !== wrap && wrap.isConnected) w.remove(); });
+				if (!wrap.isConnected) {
+					if (++gone < 3) return;
+					clearInterval(keep);
+					clearInterval(timer);
+					tries = 0;
+					attempt();
+					return;
+				}
+				gone = 0;
+				const sec = hubSection();
+				if (sec) sec.querySelectorAll('video').forEach((v) => { if (!v.paused) v.pause(); });
 			}, 1000);
 		}
 		root = wrap.querySelector('.gr-shero');

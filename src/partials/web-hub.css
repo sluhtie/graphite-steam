@@ -1,0 +1,433 @@
+/* Store hubs and sale pages (/category/action, /genre/..., sales): Valve's React
+   "SaleSection" blocks. Valve keeps readable class names on the important parts
+   (CapsuleBottomBar, StoreSalePriceWidgetContainer, ...); the rest is tagged by
+   web-recolor.js (hookHub: gr-hub-*). The hero at the top is shell.js. */
+
+/* --- Section headings ------------------------------------------------------------- */
+.SaleSectionSubtitle {
+	margin-top: 2px !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	opacity: 0.75;
+}
+.SaleSectionLabelLinkButton {
+	display: inline-flex !important;
+	align-items: center;
+	height: 30px !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.SaleSectionLabelLinkButton:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Tab row (sticky): a floating bar with pill tabs ----------------------------- */
+.gr-hub-tabbar {
+	top: calc(var(--store-menu-floating-height, 0px) + 10px) !important;
+	box-sizing: border-box !important;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: 1200px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	padding: 10px 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: color-mix(in srgb, var(--gr-surface) 86%, transparent) !important;
+	background-image: none !important;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+}
+.gr-hub-tabbar .SaleSectionTabContainer,
+.gr-hub-tabbar .SaleSectionTabContainer > div {
+	height: auto !important;
+	min-height: 0 !important;
+}
+.gr-hub-tabbar .SaleSectionTabContainer > div {
+	gap: 4px;
+}
+.gr-hub-tab {
+	display: flex !important;
+	align-items: center;
+	height: 36px !important;
+	padding: 0 14px !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-hub-tab::before,
+.gr-hub-tab::after,
+.gr-hub-tab *::after {
+	display: none !important;
+}
+.gr-hub-tab * {
+	color: inherit !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	text-decoration: none !important;
+}
+.gr-hub-tab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-tab.gr-hub-on {
+	background: color-mix(in srgb, var(--gr-accent) 16%, transparent) !important;
+	color: var(--gr-accent) !important;
+}
+
+/* --- Capsules: image + a quiet bottom bar, one rounded card -------------------- */
+.SaleSectionCtn a:has(> .CapsuleBottomBar) {
+	display: block;
+	border-radius: 12px;
+	overflow: hidden;
+	outline: 1px solid var(--gr-border);
+	outline-offset: -1px;
+	background: var(--gr-surface-2);
+	transition: outline-color var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn a:has(> .CapsuleBottomBar):hover {
+	outline-color: color-mix(in srgb, var(--gr-text) 24%, transparent);
+}
+.CapsuleBottomBar {
+	box-sizing: border-box;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.CapsuleBottomBar svg {
+	color: var(--gr-text-3) !important;
+	fill: var(--gr-text-3) !important;
+}
+
+/* --- Price: discount pill, struck original, the price ------------------------------ */
+.StoreSalePriceWidgetContainer {
+	align-items: center !important;
+	gap: 8px;
+	height: auto !important;
+	padding-right: 8px !important;
+	background: transparent !important;
+	font-family: var(--gr-font) !important;
+}
+.StoreSaleDiscountBox {
+	height: auto !important;
+	padding: 2px 7px !important;
+	border-radius: 6px !important;
+	background: #4c6b22 !important;
+	color: #beee11 !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.35 !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: baseline !important;
+	gap: 6px;
+	height: auto !important;
+	padding: 0 !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child > div:first-child {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child > div:last-child,
+.StoreSalePriceWidgetContainer:not(.Discounted) div {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+}
+
+/* --- Carousels: side arrows and the scroll track below a row ------------------- */
+.SaleSectionCtn .SliderBody > .carousel__back-button,
+.SaleSectionCtn .SliderBody > .carousel__next-button {
+	width: 36px !important;
+	height: 36px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 50% !important;
+	background: color-mix(in srgb, var(--gr-surface-2) 92%, transparent) !important;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+	color: var(--gr-text) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn .SliderBody > .carousel__back-button:hover,
+.SaleSectionCtn .SliderBody > .carousel__next-button:hover {
+	background: var(--gr-surface-3) !important;
+}
+/* Valve hangs two more arrow buttons on the track; the side arrows are enough */
+.carousel > .SliderBody + div button {
+	display: none !important;
+}
+.carousel > .SliderBody + div > div > div:nth-child(1) {
+	background: var(--gr-border) !important;
+}
+.carousel > .SliderBody + div > div > div:nth-child(2) {
+	border-radius: 3px !important;
+	background: color-mix(in srgb, var(--gr-text) 38%, transparent) !important;
+}
+
+/* --- Discovery queue banner --------------------------------------------------------- */
+.gr-hub-dq > .Panel > div {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+}
+.gr-hub-dq .WidgetHeaderCtn {
+	background: linear-gradient(90deg, var(--gr-surface-2) 40%, transparent 85%) !important;
+}
+.gr-hub-dq .WidgetHeaderCtn > div:first-child {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 20px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+}
+.gr-hub-dq .WidgetHeaderCtn > div:nth-child(2) {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+
+/* --- Panels with a header (DLC for your games, ...) ----------------------------- */
+.gr-hub-panel {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+}
+/* "DLC for" under each capsule */
+.gr-hub-panel .carousel__inner-slide .ImpressionTrackedElement:not(:has(.CapsuleBottomBar)) * {
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.gr-hub-panel .carousel__inner-slide .ImpressionTrackedElement:not(:has(.CapsuleBottomBar)) {
+	border-radius: 0 0 10px 10px;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+
+/* --- "Browse all": tabs, filter column, the big rows ----------------------------- */
+.gr-hub-browser {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+}
+.gr-hub-btab {
+	display: inline-flex !important;
+	align-items: center;
+	height: 32px !important;
+	padding: 0 12px !important;
+	border: 0 !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	cursor: pointer;
+}
+.gr-hub-btab::before,
+.gr-hub-btab::after {
+	display: none !important;
+}
+.gr-hub-btab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-btab.gr-hub-on {
+	background: color-mix(in srgb, var(--gr-accent) 16%, transparent) !important;
+	color: var(--gr-accent) !important;
+}
+.gr-hub-browser .DialogInput {
+	height: 32px !important;
+	padding: 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-filter {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+}
+/* active filters ("German", "Hide ignored") as removable pills */
+.gr-hub-filter > div:nth-child(2) > a {
+	display: inline-flex !important;
+	align-items: center;
+	margin: 0 4px 4px 0 !important;
+	padding: 3px 10px 3px 8px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	text-decoration: none !important;
+}
+.gr-hub-filter > div:nth-child(2) > a * {
+	color: inherit !important;
+	font-size: 12px !important;
+}
+.gr-hub-filter > div:nth-child(2) > a svg {
+	margin-right: 6px;
+	fill: currentColor !important;
+}
+.gr-hub-filter > div:nth-child(2) > a:hover {
+	color: var(--gr-text) !important;
+}
+.gr-hub-filter,
+.gr-hub-filter * {
+	font-family: var(--gr-font) !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.gr-hub-item {
+	margin-bottom: 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+}
+/* the row's bottom bar (platforms, price) and the labels in capitals */
+.gr-hub-item div:has(> div > div > .StoreSalePriceWidgetContainer) {
+	border-top: 1px solid var(--gr-border) !important;
+	background: color-mix(in srgb, var(--gr-surface) 70%, transparent) !important;
+	background-image: none !important;
+}
+.gr-hub-item div:has(> div > div > .StoreSalePriceWidgetContainer) svg {
+	fill: var(--gr-text-3) !important;
+}
+.gr-hub-item * {
+	text-transform: none !important;
+}
+.gr-hub-item .StoreSaleWidgetShortDesc {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	line-height: 1.5 !important;
+}
+.gr-hub-item *,
+.gr-hub-hover * {
+	letter-spacing: 0 !important;
+}
+.WidgetTagTitle {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	text-transform: none !important;
+}
+.WidgetTag {
+	height: 18px !important;
+	padding: 0 7px !important;
+	border-radius: 999px !important;
+	background: rgba(255, 255, 255, 0.07) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	line-height: 18px !important;
+}
+.WidgetTag:hover {
+	background: rgba(255, 255, 255, 0.13) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Hover card over a capsule ------------------------------------------------------- */
+/* Valve builds it fresh on every hover, so it is found by structure right away
+   (the card: [media with the wishlist star] [capsule, price, name, tags ...]);
+   web-recolor.js only adds the wishlist state (gr-on) and keeps recolor off it. */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6) !important;
+	font-family: var(--gr-font) !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div,
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div * {
+	background-color: transparent !important;
+	background-image: none !important;
+	letter-spacing: 0 !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div {
+	background-color: var(--gr-surface-2) !important;
+}
+/* the name */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div > div > div > a:first-child > div {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 18px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.01em !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) .StoreSaleDiscountBox {
+	background: #4c6b22 !important;
+}
+/* the star: a quiet icon button like the hero's heart */
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 34px !important;
+	height: 34px !important;
+	margin: 10px !important;
+	border: 1px solid rgba(255, 255, 255, 0.16) !important;
+	border-radius: 10px !important;
+	background: rgba(11, 11, 13, 0.6) !important;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div):hover {
+	background: rgba(11, 11, 13, 0.8) !important;
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) svg {
+	width: 18px !important;
+	height: 18px !important;
+	padding: 0 !important;
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) svg * {
+	fill: none !important;
+	stroke: #ececf0 !important;
+	stroke-width: 2px !important;
+	stroke-linejoin: round;
+}
+.gr-hub-star.gr-on svg * {
+	fill: var(--gr-accent) !important;
+	stroke: var(--gr-accent) !important;
+}
+/* tags in the hover card keep their pill (the rule above clears the inner backgrounds) */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div .WidgetTag {
+	background-color: rgba(255, 255, 255, 0.07) !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div .WidgetTag:hover {
+	background-color: rgba(255, 255, 255, 0.13) !important;
+}
