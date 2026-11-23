@@ -15,6 +15,8 @@
  * - Runs once on load and then only on newly added DOM subtrees, batched
  *   into idle time.
  * - Fully local; no network access.
+ * - Also tags the parts of a few redesigned React pages (wishlist) with
+ *   stable gr-* classes for the theme CSS; see "Structure hooks".
  */
 (() => {
 	if (window.__graphiteRecolor) return;
@@ -41,6 +43,16 @@
 		if (el.dataset && el.dataset[DONE]) return;
 		const cs = getComputedStyle(el);
 		const set = [];
+		// parts restyled by Graphite's own CSS (see hooks below): leave their
+		// surfaces alone, only fix text colors
+		const hooked = !!(el.closest && el.closest('[data-gr-hook]'));
+		if (hooked) {
+			textColor(el, cs, set);
+			for (const [p, v] of set) el.style.setProperty(p, v, 'important');
+			if (set.length) applied.set(el, set.map(([p]) => p));
+			if (el.dataset) el.dataset[DONE] = '1';
+			return;
+		}
 
 		const bg = parse(cs.backgroundColor);
 		if (bg && bg.a > 0.05) {
@@ -69,15 +81,107 @@
 			if (c && c.a > 0.05 && (isSurfaceBlue(c) || isBrightBlue(c))) set.push([`border-${side}-color`, 'var(--gr-border)']);
 		}
 
-		// light-blue link / label text -> accent (only leaf-ish text elements)
-		if (!set.some(([p]) => p === 'color') && el.childElementCount <= 1) {
-			const t = parse(cs.color);
-			if (t && t.b > 170 && t.b - t.r > 60 && lum(t) > 0.35) set.push(['color', 'var(--gr-accent)']);
-		}
+		textColor(el, cs, set);
 
 		for (const [p, v] of set) el.style.setProperty(p, v, 'important');
 		if (set.length) applied.set(el, set.map(([p]) => p));
 		if (el.dataset) el.dataset[DONE] = '1';
+	}
+
+	// light-blue link / label text -> accent (only leaf-ish text elements)
+	function textColor(el, cs, set) {
+		if (set.some(([p]) => p === 'color') || el.childElementCount > 1) return;
+		const t = parse(cs.color);
+		if (t && t.b > 170 && t.b - t.r > 60 && lum(t) > 0.35) set.push(['color', 'var(--gr-accent)']);
+	}
+
+	/*
+	 * Structure hooks. Some React pages are worth a real redesign, but their
+	 * class names are hashed and change with every store deploy. So the
+	 * parts are found by structure (links, inputs, buttons) and tagged with
+	 * stable gr-* classes that the theme CSS styles (web-wishlist.css).
+	 */
+	const unrecolor = root => {
+		for (const el of [root, ...root.querySelectorAll('*')]) {
+			const props = applied.get(el);
+			if (props) { props.forEach(p => el.style.removeProperty(p)); applied.delete(el); }
+			if (el.dataset) delete el.dataset[DONE];
+		}
+	};
+	const hook = (el, cls) => {
+		if (!el || el.classList.contains(cls)) return;
+		el.classList.add(cls);
+		if (!el.closest('[data-gr-hook]')) { el.dataset.grHook = ''; unrecolor(el); }
+	};
+	const leaves = root => [...root.querySelectorAll('*')].filter(e => !e.children.length && !(e instanceof SVGElement));
+
+	function hookWishlist() {
+		if (!/^\/wishlist\//.test(location.pathname)) return;
+		document.documentElement.classList.add('gr-wishlist');
+
+		// page header and toolbar
+		const search = [...document.querySelectorAll('input[placeholder]')]
+			.find(i => i.type === 'text' && !i.closest('form') && i.getBoundingClientRect().width > 300); // (the store search is a form)
+		if (search) {
+			const bar = search.parentElement;
+			hook(bar, 'gr-wl-toolbar');
+			const count = bar.nextElementSibling;
+			if (count && !count.querySelector('a, input')) hook(count, 'gr-wl-count');
+			const head = bar.previousElementSibling;
+			if (head && head.querySelector('h2')) {
+				hook(head, 'gr-wl-head');
+				// Valve writes the heading in capitals; the page title has the
+				// same words in normal case, so CSS shows that instead (the
+				// React-owned text node itself stays untouched)
+				const h2 = head.querySelector('h2');
+				const title = document.title.replace(/\s*::.*$/, '').trim();
+				if (title && h2.textContent.trim().toUpperCase() === title.toUpperCase()) h2.dataset.grTitle = title;
+			}
+		}
+
+		// one card per wishlist entry: the capsule link (with image) sits
+		// directly in the card, next to title, details, price and "added"
+		for (const cap of document.querySelectorAll('a[href*="/app/"]')) {
+			if (!cap.querySelector('img')) continue;
+			const row = cap.parentElement;
+			if (!row || row.classList.contains('gr-wl-row') || row.getBoundingClientRect().width < 600) continue;
+			hook(row, 'gr-wl-row');
+			cap.classList.add('gr-wl-cap');
+			const rest = [];
+			for (const c of row.children) {
+				if (c === cap) continue;
+				const app = c.querySelector('a[href*="/app/"]');
+				const btn = c.querySelector('button');
+				if (c.querySelector('input') && !app) c.classList.add('gr-wl-rank');
+				else if (app && !btn) c.classList.add('gr-wl-name');
+				else if (app && btn) c.classList.add('gr-wl-buy');
+				else rest.push(c);
+			}
+			// remaining: "added on / remove" (top right), categories, details
+			const rr = row.getBoundingClientRect();
+			const added = rest.find(c => { const r = c.getBoundingClientRect(); return r.top - rr.top < 30 && rr.right - r.right < 40; });
+			if (added) added.classList.add('gr-wl-added');
+			const others = rest.filter(c => c !== added).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+			if (others.length > 1) others[0].classList.add('gr-wl-cats');
+			if (others.length) others[others.length - 1].classList.add('gr-wl-info');
+			for (const l of leaves(row)) if (/:\s*$/.test(l.textContent)) l.classList.add('gr-wl-label');
+			const info = row.querySelector('.gr-wl-info');
+			if (info) info.querySelectorAll('button').forEach(b => b.classList.add('gr-wl-tag'));
+			const buy = row.querySelector('.gr-wl-buy');
+			if (buy) buy.querySelectorAll('button').forEach(b => b.classList.add('gr-wl-cart'));
+		}
+	}
+
+	// store navigation search button: Valve paints it bright blue on some pages
+	function hookStoreNav() {
+		if (location.hostname !== 'store.steampowered.com') return;
+		for (const b of document.querySelectorAll('button')) {
+			if (b.classList.contains('gr-navsearch')) continue;
+			const r = b.getBoundingClientRect();
+			if (r.top > 70 || r.height === 0 || r.width > 60) continue;
+			const bg = parse(getComputedStyle(b).backgroundColor);
+			if (bg && isBrightBlue(bg)) hook(b, 'gr-navsearch');
+		}
 	}
 
 	const queue = new Set();
@@ -86,6 +190,7 @@
 
 	function flush(deadline) {
 		scheduled = false;
+		try { hookWishlist(); hookStoreNav(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;

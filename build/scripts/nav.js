@@ -8,6 +8,9 @@
  *   Store / Library / Community tabs. Those dropdowns only repeat what each
  *   section's own page navigation already offers, so they are switched off
  *   here. Clicking a tab still navigates as usual.
+ *   The bottom bar is hidden too: Downloads and Friends & Chat become two
+ *   icon buttons next to the notifications. They simply click Steam's own
+ *   (hidden) buttons, and the download icon mirrors the download progress.
  * - steamcommunity.com: the community has no navigation of its own inside
  *   the client (it lived in those dropdowns), so a slim sub-navigation is
  *   added on top of every community page: Home, Discussions, Workshop,
@@ -39,6 +42,61 @@
 		for (const type of ['mouseover', 'mouseout', 'pointerover', 'pointerout']) {
 			window.addEventListener(type, stop, true);
 		}
+
+		// Downloads / Friends & Chat in the title bar
+		const CTRL = '._3cykd-VfN_xBxf3Qxriccm';
+		const DL = '._2EQ7ghgqIdjKv9jsQC0Zq9';
+		const FR = '._1TdaAqMFadi0UTqilrkelR';
+		const PB = '.wi0pDywRgOCxhG7OqQNaA';
+		const PCT = '._1-TLiuTZBQNz2fvBGj6aq-';
+		const icon = d => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+		const ICON_DL = icon('<path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/>');
+		const ICON_FR = icon('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18.5 14a6.5 6.5 0 0 1 3 6"/>');
+		// click the innermost first element so the event bubbles through every
+		// element that might carry Steam's handler
+		const press = el => {
+			if (!el) return;
+			let t = el;
+			while (t.firstElementChild && !(t.firstElementChild instanceof SVGElement)) t = t.firstElementChild;
+			t.click();
+		};
+		const mount = () => {
+			const ctrl = document.querySelector(CTRL);
+			if (!ctrl || ctrl.querySelector('.gr-quick')) return;
+			const wrap = document.createElement('div');
+			wrap.className = 'gr-quick';
+			wrap.innerHTML = `<div class="gr-qbtn gr-q-dl">${ICON_DL}<span class="gr-q-bar"><i></i></span></div><div class="gr-qbtn gr-q-fr">${ICON_FR}</div>`;
+			wrap.querySelector('.gr-q-dl').addEventListener('click', () => press(document.querySelector(DL)));
+			wrap.querySelector('.gr-q-fr').addEventListener('click', () => { const f = document.querySelector(FR); if (f) f.click(); });
+			ctrl.prepend(wrap);
+		};
+		// (innerText is empty for the hidden bar, so join the leaf texts)
+		const text = el => [...el.querySelectorAll('*')]
+			.filter(e => !e.children.length && !(e instanceof SVGElement))
+			.map(e => e.textContent.trim()).filter(Boolean).join(' · ');
+		const update = () => {
+			mount();
+			const btn = document.querySelector('.gr-q-dl');
+			const dl = document.querySelector(DL);
+			if (!btn || !dl) return;
+			const bar = dl.querySelector(PB);
+			let pct = null;
+			const label = dl.querySelector(PCT);
+			if (label && /\d/.test(label.textContent)) pct = parseFloat(label.textContent.replace(',', '.'));
+			else if (bar && bar.parentElement) {
+				const w = bar.parentElement.getBoundingClientRect().width;
+				if (w) pct = (bar.getBoundingClientRect().width / w) * 100;
+			}
+			const active = pct !== null && !Number.isNaN(pct);
+			btn.classList.toggle('gr-active', active);
+			btn.style.setProperty('--gr-progress', active ? Math.max(0, Math.min(100, pct)) + '%' : '0%');
+			btn.title = text(dl);
+			const fr = document.querySelector('.gr-q-fr');
+			const f = document.querySelector(FR);
+			if (fr && f) fr.title = text(f);
+		};
+		update();
+		setInterval(update, 1000);
 		return;
 	}
 
@@ -108,8 +166,10 @@
 			addStyle();
 			const place = () => {
 				if (document.querySelector('.gr-points-link')) return true;
+				// the wishlist button of the store navigation: the first wishlist
+				// link on the page that has an icon (star) and a label
 				const wish = [...document.querySelectorAll('a[href*="/wishlist"]')]
-					.find(a => { const r = a.getBoundingClientRect(); return r.height > 0 && r.top < 120; });
+					.find(a => a.querySelector('svg') && a.textContent.trim());
 				if (!wish || !wish.parentElement) return false;
 				const a = document.createElement('a');
 				a.className = 'gr-points-link';
@@ -118,12 +178,15 @@
 				wish.parentElement.insertBefore(a, wish);
 				return true;
 			};
-			// the store header is rendered by React after load
-			if (!place()) {
-				const mo = new MutationObserver(() => { if (place()) mo.disconnect(); });
-				mo.observe(document.body, { childList: true, subtree: true });
-				setTimeout(() => mo.disconnect(), 15000);
-			}
+				// The store header is rendered (and sometimes re-rendered) by React
+			// after load, so keep checking cheaply whenever the DOM changes.
+			let queued = false;
+			new MutationObserver(() => {
+				if (queued) return;
+				queued = true;
+				requestAnimationFrame(() => { queued = false; place(); });
+			}).observe(document.body, { childList: true, subtree: true });
+			place();
 		});
 		return;
 	}

@@ -19,18 +19,18 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 ## What it themes
 
 - **Navigation**: one clean row: Steam logo, back / forward, Store / Library / Community, notifications and account. View / Friends / Games / Help fold away behind the logo (click it and they appear next to the Steam menu). The profile tab and the tabs' hover dropdowns are gone; instead each section uses its own page navigation: the store keeps its nav (plus a Points Shop link), and every community page gets a slim sub-navigation with Home, Discussions, Workshop, Market, Broadcasts and your Activity, Profile, Friends, Groups, Content, Badges and Inventory.
-- **Window frame**: flat window controls, slim bottom bar
+- **Window frame**: flat window controls, round avatar with a status dot. With the clean navigation the bottom bar is gone: Downloads (with a progress bar) and Friends & Chat sit as icons next to the notifications, and the Steam menu no longer repeats "Change account" / "Sign out" from the account menu.
 - **Library**: game list, home page shelves and capsules, hover cards, game details page (hero fade, play bar, sections, activity feed), news / patch notes overlay, downloads page, console
 - **Menus**: root menus, nav dropdowns and context menus
 - **Dialogs**: settings window, toggles, inputs, buttons, modals
 - **Friends**: friends list and chat windows
-- **Store & Community pages** (optional, on by default): store home, game pages, search, discovery queue, wishlist, personal calendar, news hub and charts; community home, hubs, discussions and forum topic lists, workshop, friend activity, profiles, friends & groups, screenshots / artwork / guides, badges, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
+- **Store & Community pages** (optional, on by default): store home, game pages, search, discovery queue, a redesigned wishlist, personal calendar, news hub and charts; community home, hubs, discussions and forum topic lists, workshop, friend activity, profiles, friends & groups, screenshots / artwork / guides, badges, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
 
 The store and community are Valve's web pages. Older parts use stable class names. Newer React parts are built on Valve's web design system, whose color scales (`--color-dull-*`, `--color-accent-*`, ...) Graphite remaps on `:root`, so they follow the theme without relying on hashed class names. A few spots are still matched structurally.
 
-Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardcode their colors behind hashed class names. For those, the option also loads `src/scripts/web-recolor.js`: a small local script that reads computed colors and swaps Valve's dark blue-greys for Graphite surfaces and its bright blues for the accent. It never touches images, game art or status colors and makes no network requests.
+Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardcode their colors behind hashed class names. For those, the option also loads `src/scripts/web-recolor.js`: a small local script that reads computed colors and swaps Valve's dark blue-greys for Graphite surfaces and its bright blues for the accent. It never touches images, game art or status colors and makes no network requests. On the wishlist it also tags the page's parts with stable `gr-wl-*` classes so `web-wishlist.css` can restyle it despite Valve's changing class names.
 
-The clean navigation uses `src/scripts/nav.js`, also fully local: in the main window it stops the tab dropdowns from opening on hover (clicking a tab works as before), and on community pages it adds the sub-navigation. It remembers your custom profile URL in the page's local storage so your own profile pages are highlighted.
+The clean navigation uses `src/scripts/nav.js`, also fully local: in the main window it stops the tab dropdowns from opening on hover (clicking a tab works as before), moves Downloads / Friends & Chat into the title bar (by clicking Steam's own hidden buttons), and on community pages it adds the sub-navigation. It remembers your custom profile URL in the page's local storage so your own profile pages are highlighted.
 
 ## Install
 

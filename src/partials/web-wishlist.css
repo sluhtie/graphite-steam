@@ -1,0 +1,304 @@
+/* Wishlist (store.steampowered.com/wishlist/...).
+   Valve's React wishlist uses hashed class names that change with every
+   store deploy, so src/scripts/web-recolor.js tags its parts with stable
+   gr-wl-* classes (and html.gr-wishlist); everything here targets those.
+   Card heights are left alone: the list is virtualized with fixed rows. */
+
+.gr-wishlist .gr-wl-head,
+.gr-wishlist .gr-wl-toolbar,
+.gr-wishlist .gr-wl-count,
+.gr-wishlist .gr-wl-row,
+.gr-wishlist .gr-wl-row * {
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	text-shadow: none !important;
+}
+
+/* --- Header ------------------------------------------------------------------ */
+.gr-wishlist .gr-wl-head h2 {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 30px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+}
+.gr-wishlist .gr-wl-head h2[data-gr-title] {
+	font-size: 0 !important;
+}
+.gr-wishlist .gr-wl-head h2[data-gr-title]::after {
+	content: attr(data-gr-title);
+	font-size: 30px;
+}
+.gr-wishlist .gr-wl-head a > div,
+.gr-wishlist .gr-wl-head a > div > div {
+	border-radius: 12px !important;
+	overflow: hidden;
+}
+.gr-wishlist .gr-wl-head a img {
+	border-radius: 12px !important;
+}
+
+/* --- Toolbar (search, options, sort, share) ---------------------------------- */
+.gr-wishlist .gr-wl-toolbar input {
+	box-sizing: border-box !important;
+	height: 40px !important;
+	padding: 0 14px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-toolbar input::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+.gr-wishlist .gr-wl-toolbar input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.gr-wishlist .gr-wl-toolbar button {
+	height: 40px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-toolbar button span {
+	color: var(--gr-text) !important;
+}
+.gr-wishlist .gr-wl-toolbar button:hover {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-2) !important;
+}
+.gr-wishlist .gr-wl-toolbar button svg {
+	color: var(--gr-text-2) !important;
+	fill: currentColor;
+}
+.gr-wishlist .gr-wl-count,
+.gr-wishlist .gr-wl-count * {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+
+/* --- Cards ------------------------------------------------------------------- */
+.gr-wishlist .gr-wl-row {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-row:hover {
+	background: var(--gr-surface-2) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 12%, var(--gr-border)) !important;
+}
+
+/* rank + drag handle: quiet until the card is hovered */
+.gr-wishlist .gr-wl-rank {
+	background: transparent !important;
+	border: none !important;
+}
+.gr-wishlist .gr-wl-rank > div:first-child {
+	opacity: 0.25;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-row:hover .gr-wl-rank > div:first-child {
+	opacity: 0.8;
+}
+.gr-wishlist .gr-wl-rank > div:first-child,
+.gr-wishlist .gr-wl-rank > div:first-child * {
+	color: var(--gr-text-2) !important;
+	fill: currentColor !important;
+	background-color: transparent !important;
+}
+.gr-wishlist .gr-wl-rank input {
+	background: transparent !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+}
+.gr-wishlist .gr-wl-rank input:hover,
+.gr-wishlist .gr-wl-rank input:focus {
+	border-color: var(--gr-border) !important;
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	outline: none !important;
+}
+
+/* capsule */
+.gr-wishlist .gr-wl-cap,
+.gr-wishlist .gr-wl-cap > div {
+	border-radius: var(--gr-radius-sm) !important;
+	overflow: hidden;
+}
+.gr-wishlist .gr-wl-cap img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* title */
+.gr-wishlist .gr-wl-name a {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 19px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-name a:hover {
+	color: var(--gr-accent) !important;
+}
+
+/* labels ("Release date:", "Tags:", "My categories:") and values */
+.gr-wishlist .gr-wl-row .gr-wl-label {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+.gr-wishlist .gr-wl-info,
+.gr-wishlist .gr-wl-info div,
+.gr-wishlist .gr-wl-info span:not(.gr-wl-label) {
+	font-size: 12px !important;
+}
+.gr-wishlist .gr-wl-info div:not(.gr-wl-label) {
+	color: var(--gr-text-2);
+}
+
+/* tags as chips */
+.gr-wishlist .gr-wl-tag {
+	height: 22px !important;
+	padding: 0 9px !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11.5px !important;
+	transition: color var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-row:hover .gr-wl-tag {
+	background: var(--gr-surface-3) !important;
+}
+.gr-wishlist .gr-wl-tag:hover {
+	color: var(--gr-text) !important;
+	border-color: color-mix(in srgb, var(--gr-text) 20%, var(--gr-border)) !important;
+}
+
+/* "My categories" + button */
+.gr-wishlist .gr-wl-cats button {
+	background: transparent !important;
+	border: 1px dashed var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-3) !important;
+	transition: color var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-cats button:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.gr-wishlist .gr-wl-cats button svg {
+	fill: currentColor !important;
+}
+
+/* "Added on ..." + remove */
+.gr-wishlist .gr-wl-added,
+.gr-wishlist .gr-wl-added div {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.gr-wishlist .gr-wl-added button {
+	background: transparent !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-3) !important;
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-row:hover .gr-wl-added button {
+	opacity: 1;
+}
+.gr-wishlist .gr-wl-added button span {
+	color: inherit !important;
+}
+.gr-wishlist .gr-wl-added button svg,
+.gr-wishlist .gr-wl-added button svg * {
+	color: currentColor !important;
+	fill: currentColor !important;
+	stroke: currentColor !important;
+}
+.gr-wishlist .gr-wl-added button:hover {
+	background: color-mix(in srgb, #e5484d 14%, transparent) !important;
+	color: #ff6b6f !important;
+}
+
+/* price + add to cart */
+.gr-wishlist .gr-wl-buy > div {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	gap: 8px;
+}
+.gr-wishlist .gr-wl-buy > div > a > div {
+	border-radius: var(--gr-radius-sm) !important;
+	overflow: hidden;
+}
+.gr-wishlist .gr-wl-cart {
+	height: 36px !important;
+	padding: 0 !important;
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.gr-wishlist .gr-wl-cart:hover {
+	background: var(--gr-accent-strong) !important;
+}
+.gr-wishlist .gr-wl-cart > span {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	height: 100% !important;
+	padding: 0 16px !important;
+	background: transparent !important;
+	background-image: none !important;
+	color: var(--gr-bg) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+}
+
+/* --- Store nav search button (blue on some store pages) ---------------------- */
+.gr-navsearch {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.gr-navsearch:hover {
+	color: var(--gr-text) !important;
+}
+.gr-navsearch svg {
+	color: currentColor !important;
+	fill: currentColor !important;
+}

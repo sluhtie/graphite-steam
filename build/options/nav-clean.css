@@ -100,9 +100,81 @@
 	align-items: center;
 	justify-content: center;
 }
+._3LKQ3S_yqrebeNLF6aeiog > svg {
+	/* the monitor glyph sits high in its box */
+	transform: translateY(2px);
+}
 ._3cykd-VfN_xBxf3Qxriccm .tool-tip-source {
 	margin: 0 !important;
 }
 ._3mGEzzp18imtSzGPkduedi {
 	margin: 0 !important;
+}
+
+/* --- Bottom bar -> title bar icons ----------------------------------------- */
+/* The bar is moved out of sight rather than display:none, so nav.js can
+   still read the download progress from it and click its buttons. Update
+   and info alerts (siblings of the bar) stay where they are. */
+._3vCzSrrXZzZjVJFZNg9SGu {
+	position: fixed !important;
+	top: -200px !important;
+	left: 0 !important;
+	width: 1200px !important;
+	visibility: hidden !important;
+	pointer-events: none !important;
+}
+.gr-quick {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	margin-right: 2px;
+	-webkit-app-region: no-drag;
+}
+.gr-qbtn {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 24px;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-qbtn:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.gr-q-bar {
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	bottom: 1px;
+	height: 2px;
+	border-radius: 2px;
+	background: var(--gr-surface-3);
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.gr-q-bar i {
+	display: block;
+	width: var(--gr-progress, 0%);
+	height: 100%;
+	background: var(--gr-accent);
+	transition: width 600ms var(--gr-ease);
+}
+.gr-q-dl.gr-active {
+	color: var(--gr-accent);
+}
+.gr-q-dl.gr-active .gr-q-bar {
+	opacity: 1;
+}
+
+/* --- Steam menu: account switching / sign out live in the account menu ---- */
+/* (this sheet is also loaded into the "Steam Root Menu" popup; Millennium
+   tags that window with .Steam_Root_Menu) */
+.Steam_Root_Menu .contextMenuContents > .MenuItem:nth-child(-n+2) {
+	display: none !important;
 }

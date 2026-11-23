@@ -220,6 +220,9 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 }
 
 ._3yD46y5pd3zOGR7CzKs0mC {
+	gap: 8px;
+	padding: 0 8px 0 4px !important;
+	margin-right: 4px !important;
 	background: transparent !important;
 	border-radius: var(--gr-radius-sm) !important;
 	color: var(--gr-text-2) !important;
@@ -229,9 +232,38 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	background: var(--gr-hover) !important;
 	color: var(--gr-text) !important;
 }
-._3yD46y5pd3zOGR7CzKs0mC img {
-	border-radius: 50% !important;
+/* round avatar with a small status dot instead of Steam's 2px status bar
+   (Steam's own rules use !important, hence the doubled classes) */
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder.avatarHolder.avatarHolder {
+	position: relative;
+	width: 22px !important;
+	height: 22px !important;
 }
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder .avatarStatus.avatarStatus.avatarStatus {
+	display: none !important;
+}
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder img.avatar.avatar.avatar {
+	width: 22px !important;
+	height: 22px !important;
+	border: none !important;
+	border-radius: 50% !important;
+	box-shadow: 0 0 0 1px var(--gr-border);
+}
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder::after {
+	content: "";
+	position: absolute;
+	right: -1px;
+	bottom: -1px;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--gr-text-3);
+	box-shadow: 0 0 0 2px var(--gr-bg);
+}
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder.online::after { background: #57cbde; }
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder.ingame::after { background: #90ba3c; }
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder.offline::after { background: var(--gr-text-3); }
+._3yD46y5pd3zOGR7CzKs0mC .avatarHolder.awayOrSnooze::after { background: #57cbde; opacity: 0.6; }
 ._2jphjrSifC6orDT4g_7Wd {
 	color: var(--gr-text-3) !important;
 }

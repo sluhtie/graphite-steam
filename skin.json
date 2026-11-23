@@ -112,7 +112,8 @@
 				"Clean": {
 					"TargetCss": {
 						"affects": [
-							"^Steam$"
+							"^Steam$",
+							"^Steam Root Menu$"
 						],
 						"src": "build/options/nav-clean.css"
 					},
