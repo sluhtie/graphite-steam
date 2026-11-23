@@ -929,6 +929,27 @@
 			]],
 		],
 	};
+	// page address -> side navigation entry (null: a page without one, e.g. a
+	// game page; undefined: not a store / community address, e.g. while loading)
+	const NAV_URL = [
+		['store', /^\/wishlist/, 'wishlist'], ['store', /^\/points/, 'points'], ['store', /^\/cart/, 'cart'],
+		['store', /^\/explore\/new/, 'new'], ['store', /^\/search\/.*filter=topsellers/, 'top'], ['store', /^\/specials/, 'specials'],
+		['store', /^\/genre\/Free(%20| )to(%20| )Play/i, 'free'], ['store', /^\/category\/action/, 'action'], ['store', /^\/category\/adventure/, 'adventure'],
+		['store', /^\/genre\/Indie/i, 'indie'], ['store', /^\/category\/rpg/, 'rpg'], ['store', /^\/category\/simulation/, 'sim'], ['store', /^\/category\/strategy/, 'strategy'],
+		['store', /^\/news/, 'news'], ['store', /^\/charts/, 'charts'], ['store', /^\/steamdeck/, 'deck'], ['store', /^\/?(\?.*)?$/, 'discover'],
+		['community', /^\/(id|profiles)\/[^/]+\/home/, 'activity'], ['community', /^\/(id|profiles)\/[^/]+\/friends/, 'friends'],
+		['community', /^\/(id|profiles)\/[^/]+\/groups/, 'groups'], ['community', /^\/(id|profiles)\/[^/]+\/inventory/, 'inventory'],
+		['community', /^\/(id|profiles)\/[^/]+\/badges/, 'badges'], ['community', /^\/(id|profiles)\/[^/]+\/(screenshots|images|videos|myworkshopfiles|recommended)/, 'content'],
+		['community', /^\/(id|profiles)\/[^/]+\/?$/, 'profile'], ['community', /^\/discussions/, 'discussions'], ['community', /^\/workshop/, 'workshop'],
+		['community', /^\/market/, 'market'], ['community', /subsection=broadcasts/, 'broadcasts'], ['community', /^\/?$/, 'home'],
+	];
+	const navItemFor = url => {
+		const m = url.match(/^https:\/\/(store\.steampowered\.com|steamcommunity\.com)(\/[^#]*)?/);
+		if (!m) return undefined;
+		const sec = m[1].startsWith('store') ? 'store' : 'community';
+		const hit = NAV_URL.find(([s, re]) => s === sec && re.test(m[2] || '/'));
+		return hit ? hit[2] : null;
+	};
 	let sideFor = '';
 	const renderSide = sec => {
 		if (sideFor === sec + ':' + webItem[sec]) return;
@@ -1357,6 +1378,14 @@
 		if (sec === 'library' && r.startsWith('/library/app/')) lastLibrary = r;
 		const gsOpen = themePage.isOpen();
 		for (const [key, b] of Object.entries(btns)) b.classList.toggle('gr-on', gsOpen ? key === 'theme' : key === sec);
+		// the side navigation's active entry follows the open page (also when it
+		// was reached by a link on the page rather than the side navigation)
+		let url = '';
+		try { url = W.MainWindowBrowserManager.m_URL || ''; } catch (e) { /* not ready */ }
+		if (sec === 'store' || sec === 'community') {
+			const it = navItemFor(url);
+			if (it !== undefined) webItem[sec] = it;
+		}
 		// crumb
 		let a = '';
 		let b = '';
@@ -1381,8 +1410,6 @@
 		// store / community pages draw the frame's rounded corners themselves
 		// (shell.js on the page), so the view can fill the frame; other pages
 		// (checkout, help ...) keep a small inset so their square corners stay inside
-		let url = '';
-		try { url = W.MainWindowBrowserManager.m_URL || ''; } catch (e) { /* not ready */ }
 		document.documentElement.classList.toggle('gr-web-own', web && (url.startsWith('https://store.steampowered.com/') || url.startsWith('https://steamcommunity.com/')));
 		side.hidden = !web;
 		if (web) renderSide(sec);

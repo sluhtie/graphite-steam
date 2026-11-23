@@ -234,7 +234,8 @@
 	}
 
 	function nav() {
-		const label = leafText(document, de ? /^Ihre Punkte$/i : /^Your Points$/i);
+		// the balance label in the menu column (wording differs per language / build)
+		const label = leafText(document, /^(Ihre Punkte|Ihr Guthaben|Your Points|Your Balance)$/i);
 		if (!label) return;
 		let box = label.closest('.Panel') || label.parentElement;
 		const text = box.textContent.trim();
@@ -345,7 +346,7 @@
 	// the dialog that opens on an item: Steam's modal frame, hashed parts inside
 	function modal() {
 		for (const box of document.querySelectorAll('.ModalPosition_Content')) {
-			const lab = [...box.querySelectorAll('div, span')].find((e) => !e.children.length && /^(ihre punkte|your points)$/i.test(e.textContent.trim()));
+			const lab = [...box.querySelectorAll('div, span')].find((e) => !e.children.length && /^(ihre punkte|ihr guthaben|your points|your balance)$/i.test(e.textContent.trim()));
 			if (!lab) continue;
 			box.classList.add('gr-ps-modal');
 			const card = [...box.querySelectorAll('.Panel')].find((e) => getComputedStyle(e).backgroundImage !== 'none' && e.getBoundingClientRect().width > 400);

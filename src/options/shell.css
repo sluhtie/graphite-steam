@@ -1375,6 +1375,8 @@
 	border: 1px solid var(--gr-border);
 	border-radius: 16px;
 	background: var(--gr-surface);
+	/* covers the 8px gutter around it, where the page underneath peeked through */
+	box-shadow: 0 0 0 8px var(--gr-bg);
 	color: var(--gr-text);
 	font-family: var(--gr-font);
 	font-size: 13px;
