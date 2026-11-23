@@ -1,0 +1,179 @@
+/* Graphite 2.0: library game page and home (imported by options/shell.css).
+   Steam's own page, rearranged: the play bar floats as a card over the
+   bottom of the hero, the logo sits above it, the store / DLC / hub links
+   become one quiet row with an underline, sections are cards. */
+
+/* --- Game page: hero ----------------------------------------------------------- */
+/* keep the logo clear of the play bar that now overlaps the hero */
+.$(TopCapsule) .$(BoxSizerContainer) {
+	bottom: 64px !important;
+}
+.$(TopCapsule)::after {
+	height: 60% !important;
+	background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--gr-surface) 70%, transparent) 55%, var(--gr-surface)) !important;
+}
+
+/* --- Game page: play bar as a floating card ------------------------------------- */
+.$(InPage) {
+	position: relative !important;
+	z-index: 3;
+	margin: -48px 24px 0 !important;
+	width: auto !important;
+}
+.$(InPage) .$(PlayBar@StatusAndStats) {
+	border-radius: 14px !important;
+	background: color-mix(in srgb, var(--gr-surface-2) 84%, transparent) !important;
+	border: 1px solid var(--gr-border) !important;
+	backdrop-filter: blur(18px);
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35) !important;
+	overflow: hidden;
+}
+.$(InPage) .$(InnerContainer@StatusAndStats) {
+	padding: 0 6px 0 10px !important;
+}
+.$(InPage) .$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer) {
+	min-width: 148px !important;
+}
+
+/* --- Game page: store / DLC / hub links as one row ------------------------------- */
+.$(LinksSection) {
+	margin: 18px 24px 0 !important;
+	padding: 0 !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.$(LinksSection) .$(AppDetailsSectionContainer) {
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+}
+.$(Links@LinksSectionBody) {
+	gap: 2px !important;
+}
+.$(Links@LinksSectionBody) .$(Link@LinksSectionBody) {
+	height: 40px !important;
+	padding: 0 12px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	box-shadow: none !important;
+}
+.$(Links@LinksSectionBody) .$(Link@LinksSectionBody):hover {
+	background: transparent !important;
+	color: var(--gr-text) !important;
+	box-shadow: inset 0 -2px 0 var(--gr-text-3) !important;
+}
+
+/* --- Game page: content ----------------------------------------------------------- */
+.$(ColumnContainer@Spotlights) {
+	padding: 20px 14px 32px !important;
+}
+
+/* --- Home: "continue playing" (src/scripts/shell.js) ----------------------------- */
+.gr-continue {
+	position: relative;
+	height: 280px;
+	margin: 20px 24px 8px;
+	border-radius: 14px;
+	overflow: hidden;
+	border: 1px solid var(--gr-border);
+	background: var(--gr-bg);
+	font-family: var(--gr-font);
+}
+.gr-continue > img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 30%;
+}
+.gr-continue::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(11, 11, 13, 0.94) 0%, rgba(11, 11, 13, 0.6) 42%, rgba(11, 11, 13, 0) 74%);
+	pointer-events: none;
+}
+.gr-continue-body {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	box-sizing: border-box;
+	max-width: 460px;
+	padding: 26px 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: 12px;
+}
+.gr-continue-label {
+	color: #c9c9d1;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.gr-continue-logo {
+	align-self: flex-start;
+	max-width: 300px;
+	max-height: 92px;
+	object-fit: contain;
+	object-position: left bottom;
+}
+.gr-continue-name {
+	color: #ffffff;
+	font-size: 30px;
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+}
+.gr-continue-meta {
+	color: #c9c9d1;
+	font-size: 13px;
+}
+.gr-continue-actions {
+	display: flex;
+	gap: 8px;
+}
+.gr-continue-actions button {
+	height: 40px;
+	padding: 0 16px;
+	border-radius: var(--gr-radius);
+	font: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	transition: filter var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.gr-continue-play {
+	padding-left: 14px !important;
+	border: 0;
+	background: var(--gr-play);
+	color: var(--gr-play-text);
+}
+.gr-continue-play:hover {
+	filter: brightness(1.06);
+}
+.gr-continue-play svg {
+	width: 16px;
+	height: 16px;
+}
+.gr-continue-open {
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	background: rgba(255, 255, 255, 0.08);
+	color: #ececf0;
+	backdrop-filter: blur(12px);
+	font-weight: 500 !important;
+}
+.gr-continue-open:hover {
+	background: rgba(255, 255, 255, 0.14);
+}
