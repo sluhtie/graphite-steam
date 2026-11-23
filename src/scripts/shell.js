@@ -734,7 +734,7 @@
 		b.type = 'button';
 		b.innerHTML = (it.ring ? '<svg class="gr-rail-ring" viewBox="0 0 28 28"><circle class="gr-track" cx="14" cy="14" r="12.5"/><circle class="gr-fill" cx="14" cy="14" r="12.5"/></svg>' : '') + svg(it.icon);
 		if (it.ring) b.lastElementChild.classList.add('gr-rail-dl');
-		b.addEventListener('click', () => { if (it.key !== 'theme') themePage.close(); it.run(); setTimeout(update, 60); });
+		b.addEventListener('click', () => { if (it.key !== 'theme') themePage.close({ back: false }); it.run(); setTimeout(update, 60); });
 		b.addEventListener('mouseenter', () => {
 			tip.textContent = it.label();
 			b.setAttribute('aria-label', tip.textContent);
@@ -1400,7 +1400,8 @@
 	const start = () => {
 		update();
 		// navigating anywhere closes the Graphite page
-		try { const unlisten = history().listen(() => { themePage.close(); setTimeout(update, 0); }); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
+		// (not for the page's own switch to the library and back)
+		try { const unlisten = history().listen(() => { if (!themePage.ownNav()) themePage.close({ back: false }); setTimeout(update, 0); }); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
 		const tabs = document.querySelector('.$(SuperNav)');
 		if (tabs) {
 			const mo = new MutationObserver(() => update());

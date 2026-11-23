@@ -1669,31 +1669,52 @@
 			}
 		}
 
+		// Over a store / community page Steam's browser view keeps taking the mouse
+		// even when hidden, so the page could be seen but not used. Going to the
+		// library unmounts the view the way Steam does it itself (the store keeps
+		// its page), so opening from there switches to the library underneath and
+		// closing goes back to the store page.
+		let fromStore = false;
+		let ownNavAt = 0;
+		const ownNav = () => Date.now() - ownNavAt < 1500;
 		const onKey = e => { if (e.key === 'Escape' && isOpen()) close(); };
 		function open() {
 			if (!page) build();
 			page.hidden = false;
-			overlay('graphite', true);
 			document.documentElement.classList.add('gr-gs-open');
+			if (route().startsWith('/browser')) {
+				fromStore = true;
+				ownNavAt = Date.now();
+				go('/library/home');
+			} else overlay('graphite', true);
 			load();
 			window.addEventListener('keydown', onKey);
 		}
-		function close() {
+		// back: false when the page closes because the user went somewhere else
+		function close(opts) {
 			if (!page || page.hidden) return;
 			page.hidden = true;
 			overlay('graphite', false);
 			document.documentElement.classList.remove('gr-gs-open');
 			window.removeEventListener('keydown', onKey);
-			if (colorsChanged) {
-				colorsChanged = false;
+			const reloadStore = colorsChanged;
+			colorsChanged = false;
+			if (fromStore) {
+				fromStore = false;
+				if (!(opts && opts.back === false)) {
+					ownNavAt = Date.now();
+					try { const h = history(); if (h.canGo(-1)) h.goBack(); else go('/browser/'); } catch (e) { go('/browser/'); }
+				}
+			}
+			if (reloadStore) {
 				flushColors().then(() => {
 					try { W.MainWindowBrowserManager.m_browser.Reload(); } catch (e) { /* no store page */ }
 				});
 			}
 		}
 		const isOpen = () => !!page && !page.hidden;
-		cleanup.push(() => { close(); if (page) page.remove(); });
-		return { open, close, isOpen };
+		cleanup.push(() => { close({ back: false }); if (page) page.remove(); });
+		return { open, close, isOpen, ownNav };
 	})();
 
 
@@ -1718,7 +1739,7 @@
 		b.type = 'button';
 		b.innerHTML = (it.ring ? '<svg class="gr-rail-ring" viewBox="0 0 28 28"><circle class="gr-track" cx="14" cy="14" r="12.5"/><circle class="gr-fill" cx="14" cy="14" r="12.5"/></svg>' : '') + svg(it.icon);
 		if (it.ring) b.lastElementChild.classList.add('gr-rail-dl');
-		b.addEventListener('click', () => { if (it.key !== 'theme') themePage.close(); it.run(); setTimeout(update, 60); });
+		b.addEventListener('click', () => { if (it.key !== 'theme') themePage.close({ back: false }); it.run(); setTimeout(update, 60); });
 		b.addEventListener('mouseenter', () => {
 			tip.textContent = it.label();
 			b.setAttribute('aria-label', tip.textContent);
@@ -2384,7 +2405,8 @@
 	const start = () => {
 		update();
 		// navigating anywhere closes the Graphite page
-		try { const unlisten = history().listen(() => { themePage.close(); setTimeout(update, 0); }); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
+		// (not for the page's own switch to the library and back)
+		try { const unlisten = history().listen(() => { if (!themePage.ownNav()) themePage.close({ back: false }); setTimeout(update, 0); }); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
 		const tabs = document.querySelector('._2D64jIEK7wpUR_NlObDW76');
 		if (tabs) {
 			const mo = new MutationObserver(() => update());
