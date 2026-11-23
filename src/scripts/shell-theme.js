@@ -14,12 +14,12 @@
 			accent: 'Akzentfarbe', accentHint: 'Für Auswahl, Links, Fortschritt und die wichtigsten Buttons.', custom: 'Eigene Farbe',
 			colors: 'Alle Farben', colorsHint: 'Flächen, Text und Linien einzeln einstellen.', reset: 'Standard', resetAll: 'Alle Farben zurücksetzen',
 			look: 'Darstellung', font: 'Schrift', fontHint: 'Inter lädt von Google Fonts, System nutzt Segoe UI.', corners: 'Ecken', cornersHint: 'Karten, Buttons und der Inhaltsbereich.',
-			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 baut das Hauptfenster neu auf (Beta).', header: 'Kopfzeile', headerHint: 'Menü und Reiter in einer Zeile.',
+			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 baut das Hauptfenster neu auf.', header: 'Kopfzeile', headerHint: 'Menü und Reiter in einer Zeile.',
 			web: 'Shop & Community im Graphite-Stil', webHint: 'Shop-, Community- und Hilfeseiten im selben Look.', url: 'Adressleiste ausblenden', urlHint: 'Die Zeile mit der Adresse über Shop- und Community-Seiten.',
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
 			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
 			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
-			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0 (beta)': 'Graphite 2.0' },
+			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0' },
 			colorNames: { '--gr-accent': 'Akzent', '--gr-bg': 'Hintergrund', '--gr-border': 'Linien', '--gr-play': 'Spielen-Button', '--gr-play-text': 'Spielen-Button, Text', '--gr-surface': 'Fläche', '--gr-surface-2': 'Fläche 2', '--gr-surface-3': 'Fläche 3', '--gr-text': 'Text', '--gr-text-2': 'Text, gedämpft', '--gr-text-3': 'Text, leise' },
 			colorHints: { '--gr-accent': 'Auswahl, Links, Hauptbuttons', '--gr-bg': 'Fenster, Titelleiste, Spieleliste', '--gr-border': 'Trennlinien und Rahmen', '--gr-play': 'Hintergrund des Spielen-/Installieren-Buttons', '--gr-play-text': 'Schrift auf dem Spielen-Button', '--gr-surface': 'Inhaltsbereich und Dialoge', '--gr-surface-2': 'Karten, Menüs, Eingabefelder', '--gr-surface-3': 'Hover und Buttons', '--gr-text': 'Überschriften und wichtiger Text', '--gr-text-2': 'Normaler Text', '--gr-text-3': 'Beschriftungen und Hinweise' },
 		} : {
@@ -27,7 +27,7 @@
 			accent: 'Accent color', accentHint: 'Selection, links, progress and the main buttons.', custom: 'Custom color',
 			colors: 'All colors', colorsHint: 'Surfaces, text and lines one by one.', reset: 'Default', resetAll: 'Reset all colors',
 			look: 'Appearance', font: 'Font', fontHint: 'Inter loads from Google Fonts, System uses Segoe UI.', corners: 'Corners', cornersHint: 'Cards, buttons and the content panel.',
-			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 rebuilds the main window (beta).', header: 'Header', headerHint: 'Menu and tabs in one row.',
+			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 rebuilds the main window.', header: 'Header', headerHint: 'Menu and tabs in one row.',
 			web: 'Store & Community in Graphite style', webHint: 'Store, community and help pages in the same look.', url: 'Hide the URL bar', urlHint: 'The address line above store and community pages.',
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
 			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
@@ -40,7 +40,7 @@
 			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
 		};
 		// order of the choices as shown (2.0 first)
-		const ORDER = { Navigation: ['Graphite 2.0 (beta)', 'Clean', 'Classic'] };
+		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'] };
 		const PRESETS = ['#8fa8ff', '#6cc6ff', '#5eead4', '#8fd16a', '#ffc46b', '#ff9a6c', '#ff7a90', '#f08fd8', '#b79cff', '#ececf0'];
 
 		const api = (m, args = []) => W.Millennium.callServerMethod('core', m, args).then(r => (typeof r === 'string' ? JSON.parse(r) : r));
