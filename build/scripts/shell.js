@@ -351,10 +351,11 @@
 	if (location.hostname !== 'store.steampowered.com' || !location.pathname.startsWith('/points')) return;
 	const de = (document.documentElement.lang || '').startsWith('de');
 	const T = de
-		? { kicker: 'Steam-Punkteshop', title: 'Mach Steam zu deinem.', lead: 'Avatare, Hintergründe, Sticker, Chateffekte und mehr, bezahlt mit Punkten aus deinen Käufen.', points: 'Punkte', how: 'So funktionieren Punkte', history: 'Punkteverlauf' }
-		: { kicker: 'Steam Points Shop', title: 'Make Steam yours.', lead: 'Avatars, backgrounds, stickers, chat effects and more, paid with points from your purchases.', points: 'points', how: 'How points work', history: 'Points history' };
+		? { kicker: 'Steam-Punkteshop', title: 'Mach Steam zu deinem.', lead: 'Avatare, Hintergründe, Sticker, Chateffekte und mehr, bezahlt mit Punkten aus deinen Käufen.', points: 'Punkte', how: 'So funktionieren Punkte', history: 'Punkteverlauf', shop: 'Zum Punkteshop' }
+		: { kicker: 'Steam Points Shop', title: 'Make Steam yours.', lead: 'Avatars, backgrounds, stickers, chat effects and more, paid with points from your purchases.', points: 'points', how: 'How points work', history: 'Points history', shop: 'Back to the shop' };
 	const css = `
-		[data-gr-ps="banner"], [data-gr-ps="nav"] { display: none !important; }
+		html:not(.gr-ps-off) [data-gr-ps="banner"], html:not(.gr-ps-off) [data-gr-ps="nav"] { display: none !important; }
+		html.gr-ps-off .gr-ps-hero, html.gr-ps-off .gr-ps-cats { display: none !important; }
 		/* one wide, centred column instead of menu + 1070px column */
 		[data-gr-ps="layout"] { justify-content: center !important; position: relative; z-index: 0; background: var(--gr-bg) !important; }
 		/* banner and chips as wide as Steam's sections (fixed width, measured) */
@@ -441,10 +442,36 @@
 	};
 	let subtitle = '';
 
+	// "How points work": Steam's explanation stays, framed like the shop (compact
+	// banner with the balance and a way back, the category chips)
+	function howBanner() {
+		const main = document.querySelector('[data-gr-ps="main"]');
+		if (!main) return;
+		if (!hero || !hero.isConnected) {
+			hero = document.createElement('section');
+			hero.className = 'gr-ps-hero';
+			hero.innerHTML =
+				'<div class="gr-ps-mosaic" aria-hidden="true"></div>' +
+				'<div class="gr-ps-hero-text"><span class="gr-ps-kicker">' + T.kicker + '</span><h1></h1><p></p>' +
+				'<div class="gr-ps-actions"><div class="gr-ps-balance"><b>–</b><span>' + T.points + '</span></div>' +
+				'<a class="gr-ps-btn" data-gr-how href="/points/howitworks">' + T.how + '</a>' +
+				'<a class="gr-ps-btn" data-gr-history href="/pointssummary/">' + T.history + '</a></div></div>';
+			const col = main.querySelector('div') || main;
+			col.prepend(hero);
+		}
+		hero.classList.add('gr-ps-compact');
+		hero.querySelector('h1').textContent = T.how;
+		// here the second button leads back to the shop
+		const how = hero.querySelector('[data-gr-how]');
+		if (how) { how.textContent = T.shop; how.setAttribute('href', '/points/shop'); }
+	}
+
 	// Steam's header: the comic banner on the start page (it links to "how it
 	// works"), a smaller "The Points Shop / <category>" header on category pages
 	function banner() {
 		const main = document.querySelector('[data-gr-ps="main"]') || document.body;
+		const howBtn = hero && hero.querySelector('[data-gr-how]');
+		if (howBtn) { howBtn.textContent = T.how; howBtn.setAttribute('href', '/points/howitworks'); }
 		const how = [...main.querySelectorAll('a[href*="howitworks"]')].find((a) => !inBanner(a) && !a.closest('[data-gr-ps="nav"]') && a.getBoundingClientRect().width > 0 && a.getBoundingClientRect().top < 300);
 		let old = null;
 		subtitle = '';
@@ -466,7 +493,7 @@
 				'<div class="gr-ps-mosaic" aria-hidden="true"></div>' +
 				'<div class="gr-ps-hero-text"><span class="gr-ps-kicker">' + T.kicker + '</span><h1></h1><p>' + T.lead + '</p>' +
 				'<div class="gr-ps-actions"><div class="gr-ps-balance"><b>–</b><span>' + T.points + '</span></div>' +
-				'<a class="gr-ps-btn" href="/points/howitworks">' + T.how + '</a>' +
+				'<a class="gr-ps-btn" data-gr-how href="/points/howitworks">' + T.how + '</a>' +
 				'<a class="gr-ps-btn" data-gr-history href="/pointssummary/">' + T.history + '</a></div></div>';
 			(old || main.firstElementChild).before(hero);
 		}
@@ -648,9 +675,18 @@
 	}
 
 	let queued = false;
+	// only the shop itself (/points/shop...): other points pages (how it works,
+	// profile) keep Steam's layout; a client-side switch there hides ours
 	const run = () => {
 		queued = false;
-		try { nav(); banner(); nav(); rows(); features(); cards(); mosaic(); widths(); } catch (e) { /* page still building */ }
+		const shop = location.pathname.startsWith('/points/shop');
+		const how = location.pathname.startsWith('/points/howitworks');
+		document.documentElement.classList.toggle('gr-ps-off', !shop && !how);
+		if (!shop && !how) return;
+		try {
+			if (shop) { nav(); banner(); nav(); rows(); features(); cards(); mosaic(); widths(); }
+			else { nav(); howBanner(); nav(); widths(); }
+		} catch (e) { /* page still building */ }
 	};
 	const start = () => {
 		const st = document.createElement('style');

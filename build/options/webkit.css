@@ -1356,6 +1356,156 @@ form[role="search"] button::before {
 	color: var(--gr-text) !important;
 }
 
+/* Points history (store.steampowered.com/pointssummary) and the account pages
+   built from the same blocks (account_header_line + account_settings_container). */
+
+/* page title */
+.page_content .breadcrumbs,
+.page_content .breadcrumbs a {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.page_content .breadcrumbs + h2.pageheader,
+.page_content h2.pageheader {
+	margin: 4px 0 20px !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 22px !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.02em !important;
+	text-transform: none !important;
+}
+
+/* the points history reads better narrower */
+.page_content:has(.rewards_token_summary),
+.page_header_ctn:has(+ .page_content_ctn .rewards_token_summary) .page_content {
+	max-width: 860px !important;
+	margin: 0 auto !important;
+}
+.page_header_ctn:has(+ .page_content_ctn .rewards_token_summary) {
+	padding-top: 24px !important;
+	background: transparent !important;
+	border: 0 !important;
+}
+
+/* a block = a title and a card */
+.account_header_line {
+	height: auto !important;
+	margin: 0 0 10px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: 0 !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
+}
+.account_header_line > div {
+	padding: 0 !important;
+}
+.account_settings_container {
+	margin-bottom: 24px !important;
+	padding: 18px 20px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+
+/* the summary: label | value | details, one line per row */
+.rewards_token_summary {
+	margin-top: 12px !important;
+}
+.rewards_token_summary .cell {
+	display: flex !important;
+	box-sizing: border-box;
+	min-height: 48px;
+	align-items: center !important;
+	padding: 0 4px !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13.5px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+/* the value column: numbers right-aligned, tabular */
+.rewards_token_summary--3cols .cell:nth-child(3n + 2) {
+	justify-content: flex-end !important;
+	padding-right: 28px !important;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	font-variant-numeric: tabular-nums;
+}
+.rewards_token_summary .view_details {
+	justify-content: flex-end !important;
+}
+.rewards_token_summary .view_details span {
+	padding: 5px 10px;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+	text-transform: none !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.rewards_token_summary .view_details span:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text) !important;
+}
+/* totals */
+.rewards_token_summary .total_points {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.rewards_token_summary .cell:last-child,
+.rewards_token_summary .total_current + .cell,
+.rewards_token_summary .cell:empty {
+	min-height: 18px;
+	border-bottom: 0 !important;
+}
+.rewards_token_summary .total_spent {
+	color: #f0918a !important;
+}
+.rewards_token_summary .total_current {
+	border-bottom: 0 !important;
+	color: var(--gr-accent) !important;
+	font-weight: 700 !important;
+}
+.rewards_token_summary--3cols .total_current:nth-child(3n + 2) {
+	font-size: 20px !important;
+	color: var(--gr-accent) !important;
+}
+
+/* the history list ("show details") */
+#audit_history table {
+	width: 100%;
+	border-collapse: collapse !important;
+	background: transparent !important;
+}
+#audit_history th,
+#audit_history td {
+	padding: 10px 8px !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	text-align: left;
+}
+#audit_history th {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+
 /* steamcommunity.com */
 
 /* --- Page backgrounds ------------------------------------------------------ */
@@ -3634,6 +3784,46 @@ h1.market_header,
 .gr-navsearch svg {
 	color: currentColor !important;
 	fill: currentColor !important;
+}
+
+/* dialogs inside a row ("manage categories"): a solid card instead of a see-through layer */
+.gr-wishlist dialog[open] {
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-wishlist dialog[open]::backdrop {
+	background: rgba(0, 0, 0, 0.55);
+}
+.gr-wishlist dialog[open] > div {
+	opacity: 1 !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.gr-wishlist dialog[open] input[type="text"],
+.gr-wishlist dialog[open] input:not([type]) {
+	box-sizing: border-box;
+	height: 34px !important;
+	padding: 0 10px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.gr-wishlist dialog[open] input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.gr-wishlist dialog[open] button {
+	border-color: var(--gr-border) !important;
+	border-radius: 999px !important;
 }
 
 /* News hub (store.steampowered.com/news). Valve's React classes are hashed,

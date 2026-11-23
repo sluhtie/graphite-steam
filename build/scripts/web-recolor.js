@@ -180,7 +180,7 @@
 			const role = new Map();
 			const rest = [];
 			for (const c of row.children) {
-				if (c === cap) continue;
+				if (c === cap || c.tagName === 'DIALOG') continue;
 				const app = c.querySelector('a[href*="/app/"]');
 				const btn = c.querySelector('button');
 				if (c.querySelector('input') && !app) role.set(c, 'gr-wl-rank');
