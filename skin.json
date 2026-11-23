@@ -109,9 +109,9 @@
 			}
 		},
 		"Navigation": {
-			"description": "Clean: one navigation row. Graphite 2.0: a new app layout with an icon rail on the left, one search in the title bar and a side navigation for the store and community. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
+			"description": "Graphite 2.0 (default): an app layout with an icon rail on the left, one search in the title bar, a side navigation for the store and community and a friends dock. Clean: one navigation row; View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
 			"tab": "Layout",
-			"default": "Clean",
+			"default": "Graphite 2.0",
 			"values": {
 				"Clean": {
 					"TargetCss": {
