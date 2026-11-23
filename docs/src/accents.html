@@ -1,0 +1,36 @@
+<!doctype html>
+<!--
+  Source for docs/accents.png (1800x1240). The rows are real captures of the
+  wishlist with the accent set to each color (shots/accent1..5.jpg).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graphite accents</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet">
+<style>
+	:root { --bg: #0b0b0d; --surface: #111114; --border: #26262c; --text: #ececf0; --text-2: #a1a1ab; --text-3: #6b6b75; }
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	html, body { width: 100vw; height: 100vh; overflow: hidden; background: var(--bg); }
+	body { font-family: "Inter", "Segoe UI", sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; padding: 70px 80px; position: relative; }
+	body::before { content: ""; position: absolute; inset: 0; background: radial-gradient(1000px 500px at 70% 50%, rgba(255,255,255,.035), transparent 70%); }
+	.rows { position: relative; display: flex; flex-direction: column; gap: 18px; }
+	.row { display: grid; grid-template-columns: 250px 1fr; align-items: center; gap: 28px; }
+	.label { display: flex; align-items: center; gap: 18px; }
+	.sw { width: 54px; height: 54px; border-radius: 16px; background: var(--c); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 10px 30px color-mix(in srgb, var(--c) 35%, transparent); }
+	.name { font-size: 24px; font-weight: 600; letter-spacing: -.01em; }
+	.hex { margin-top: 4px; font-family: "JetBrains Mono", Consolas, monospace; font-size: 16px; color: var(--text-3); }
+	.shot { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+	.shot img { display: block; width: 100%; }
+</style>
+</head>
+<body>
+	<div class="rows">
+		<div class="row" style="--c:#8fa8ff"><div class="label"><div class="sw"></div><div><div class="name">Graphite</div><div class="hex">#8fa8ff</div></div></div><div class="shot"><img src="shots/accent1.jpg" alt=""></div></div>
+		<div class="row" style="--c:#6ee7b7"><div class="label"><div class="sw"></div><div><div class="name">Mint</div><div class="hex">#6ee7b7</div></div></div><div class="shot"><img src="shots/accent2.jpg" alt=""></div></div>
+		<div class="row" style="--c:#fbbf24"><div class="label"><div class="sw"></div><div><div class="name">Amber</div><div class="hex">#fbbf24</div></div></div><div class="shot"><img src="shots/accent3.jpg" alt=""></div></div>
+		<div class="row" style="--c:#fb7185"><div class="label"><div class="sw"></div><div><div class="name">Rose</div><div class="hex">#fb7185</div></div></div><div class="shot"><img src="shots/accent4.jpg" alt=""></div></div>
+		<div class="row" style="--c:#c4b5fd"><div class="label"><div class="sw"></div><div><div class="name">Lavender</div><div class="hex">#c4b5fd</div></div></div><div class="shot"><img src="shots/accent5.jpg" alt=""></div></div>
+	</div>
+</body>
+</html>

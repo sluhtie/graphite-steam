@@ -1,9 +1,8 @@
 <!doctype html>
 <!--
   Source for docs/thumbnail.jpg (the theme's header_image on steambrew.app).
-  Regenerate from the repo root with Chrome:
-    chrome --headless --hide-scrollbars --window-size=1920,1080 \
-      --screenshot=docs/thumbnail.jpg docs/thumbnail.html
+  Regenerate from the repo root:
+    node tools/render-docs.mjs still docs/src/thumbnail.html docs/thumbnail.jpg 1920 1080
 -->
 <html lang="en">
 <head>
@@ -132,8 +131,8 @@
 	</div>
 
 	<div class="stage">
-		<div class="win back"><img src="library.jpg" alt=""></div>
-		<div class="win front"><img src="game.jpg" alt=""></div>
+		<div class="win back"><img src="shots/library.jpg" alt=""></div>
+		<div class="win front"><img src="shots/game.jpg" alt=""></div>
 	</div>
 
 	<div class="fade"></div>

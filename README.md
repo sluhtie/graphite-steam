@@ -1,65 +1,94 @@
+![Graphite – a clean, minimal and modern theme for the Steam client](docs/banner.webp)
+
 # Graphite
 
-![Graphite](docs/thumbnail.jpg)
+**A clean, minimal and modern theme for the Steam desktop client, built for [Millennium](https://steambrew.app).**
 
-A clean, minimal and modern theme for the Steam desktop client, built for [Millennium](https://steambrew.app).
+Neutral graphite surfaces, one accent color you choose, quiet typography and a single-row header. Graphite restyles the whole client, from the library and menus to the store, community and friends chat, without gradients, glow or visual noise.
 
-Neutral graphite surfaces, one accent color, quiet typography, a single-row header and an inset content panel. No gradients, no glow, no visual noise.
+[![Millennium theme](https://img.shields.io/badge/Millennium-theme-8fa8ff?style=for-the-badge&labelColor=18181c&logo=steam&logoColor=ececf0)](https://steambrew.app/theme/AhWCRyHBVXoohiaVWWBW)
+[![Version](https://img.shields.io/github/package-json/v/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=8fa8ff&label=version)](https://github.com/sluhtie/graphite-steam/commits/main)
+[![Last commit](https://img.shields.io/github/last-commit/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=2c2c33&label=updated)](https://github.com/sluhtie/graphite-steam/commits/main)
+[![Stars](https://img.shields.io/github/stars/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=2c2c33&logo=github&logoColor=ececf0)](https://github.com/sluhtie/graphite-steam/stargazers)
+[![License](https://img.shields.io/github/license/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=2c2c33)](LICENSE)
+
+---
+
+## Highlights
+
+![Graphite highlights](docs/features.jpg)
 
 ## Screenshots
 
+**Library**
+
 ![Library](docs/library.jpg)
 
-| Game page | Store |
+| **Game details** | **Store** |
 | --- | --- |
-| ![Game page](docs/game.jpg) | ![Store](docs/store.jpg) |
+| ![Game details](docs/game.jpg) | ![Store](docs/store.jpg) |
+| **Store game page** | **Wishlist** |
+| ![Store game page](docs/app.jpg) | ![Wishlist](docs/wishlist.jpg) |
 | **Community Market** | **Settings** |
-| ![Community Market](docs/market.jpg) | ![Settings](docs/settings.png) |
+| ![Community Market](docs/market.jpg) | ![Settings](docs/settings.jpg) |
 
 ## What it themes
 
-- **Navigation**: one clean row: Steam logo, back / forward, Store / Library / Community, notifications and account. View / Friends / Games / Help fold away behind the logo (click it and they appear next to the Steam menu). The profile tab and the tabs' hover dropdowns are gone; instead each section uses its own page navigation: the store keeps its nav (plus a Points Shop link), and every community page gets a slim sub-navigation with Home, Discussions, Workshop, Market, Broadcasts and your Activity, Profile, Friends, Groups, Content, Badges and Inventory.
-- **Window frame**: flat window controls, round avatar with a status dot. With the clean navigation the bottom bar is gone: Downloads (with a progress bar) and Friends & Chat sit as icons next to the notifications, and the Steam menu no longer repeats "Change account" / "Sign out" from the account menu.
-- **Library**: game list, home page shelves and capsules, hover cards, game details page (hero fade, play bar, sections, activity feed), news / patch notes overlay, downloads page, console
-- **Menus**: root menus, nav dropdowns and context menus
-- **Dialogs**: settings window, toggles, inputs, buttons, modals
-- **Friends**: friends list and chat windows
-- **Store & Community pages** (optional, on by default): store home, redesigned game pages (flat background, one card per purchase option with price and button in one row, plain feature and link lists), search, discovery queue, a redesigned wishlist, personal calendar, news hub and charts; community home, hubs, discussions and forum topic lists, workshop, friend activity, profiles, friends & groups, screenshots / artwork / guides, badges, inventory and the Community Market (home, search, item pages incl. the new beta pages). Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
+| | Area | What changes |
+| --- | --- | --- |
+| 🧭 | **Navigation** | One row: Steam logo, back / forward, Store / Library / Community, downloads, friends, notifications and account. View / Friends / Games / Help fold away behind the logo. The store keeps its own nav (plus a Points Shop link), community pages get a slim sub-navigation incl. your profile, inventory and badges. |
+| 🪟 | **Window frame** | Own icon set for the title bar and window controls, round avatar with a status dot. The bottom bar is gone: Downloads (with progress) and Friends & Chat live in the title bar. |
+| 🎮 | **Library** | Game list, home shelves and capsules, hover cards, game details (hero, play bar, sections, activity), news and patch notes overlay, downloads, console. |
+| 🛒 | **Store** | Calm store front with one rounded hero, redesigned game pages (one card per purchase option, plain feature and link lists), wishlist, search, discovery queue, news hub, calendar and charts. |
+| 👥 | **Community** | Home, hubs, discussions, workshop, activity, profiles, friends and groups, screenshots / artwork / guides, badges, inventory and the Community Market incl. the new item pages. |
+| 💬 | **Friends & chat** | Friends list with status dots and tidy group chats, a roomy chat window, emoji picker. |
+| 🧩 | **Menus & dialogs** | Root menus, nav dropdowns, context menus, the settings window, toggles, inputs, buttons and modals. |
 
-The store and community are Valve's web pages. Older parts use stable class names. Newer React parts are built on Valve's web design system, whose color scales (`--color-dull-*`, `--color-accent-*`, ...) Graphite remaps on `:root`, so they follow the theme without relying on hashed class names. A few spots are still matched structurally.
+Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
 
-Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardcode their colors behind hashed class names. For those, the option also loads `src/scripts/web-recolor.js`: a small local script that reads computed colors and swaps Valve's dark blue-greys for Graphite surfaces and its bright blues for the accent. It never touches images, game art or status colors and makes no network requests. On the wishlist and game pages it also tags the page's parts with stable `gr-wl-*` / `gr-app-*` / `gr-rv-*` classes so `web-wishlist.css` and `web-app.css` can restyle them despite Valve's changing class names.
+## Make it yours
 
-The clean navigation uses `src/scripts/nav.js`, also fully local: in the main window it stops the tab dropdowns from opening on hover (clicking a tab works as before), moves Downloads / Friends & Chat into the title bar (by clicking Steam's own hidden buttons), and on community pages it adds the sub-navigation. It remembers your custom profile URL in the page's local storage so your own profile pages are highlighted.
+![Accent colors](docs/accents.jpg)
+
+Everything is set in **Millennium → Themes → Graphite**:
+
+| Option | Choices |
+| --- | --- |
+| **Colors** | Accent, play button, background, surfaces, borders and three text levels, all editable |
+| **Font** | Inter (default), System (Segoe UI), Motiva Sans |
+| **Corners** | Rounded (default), Sharp |
+| **Header** | Single row (default), Classic two-row layout |
+| **Navigation** | Clean (default), Classic (Steam's own menus and hover dropdowns) |
+| **Store & community pages** | Restyle the in-client web pages (on by default) |
+| **Extras** | Hide URL bar (on by default), Hide What's New |
 
 ## Install
 
 1. Install [Millennium](https://steambrew.app).
-2. Install Graphite from [steambrew.app/themes](https://steambrew.app/themes), or manually clone this repo into Steam's theme folder:
+2. Get Graphite from its page on [steambrew.app](https://steambrew.app/theme/AhWCRyHBVXoohiaVWWBW), or clone it into Steam's theme folder:
 
    ```powershell
    cd "C:\Program Files (x86)\Steam\millennium\themes"
    git clone https://github.com/sluhtie/graphite-steam
    ```
 
-   (Or download the ZIP and extract it there.)
+   You can also download the ZIP and extract it there.
 3. Restart Steam, open **Steam → Millennium → Themes** and select **Graphite**.
 
-## Customize
+## After a Steam update
 
-In **Millennium → Themes → Graphite**:
+Steam's UI uses hashed class names (like `_3pofGqV0buiKAfMPEs3_82`) that can change with client updates. If parts of the theme stop applying, rebuild it against your install (needs [Node.js](https://nodejs.org) 18+):
 
-- **Colors**: accent, play button, background, surfaces, borders and three text levels are all editable.
-- **Font**: Inter (default, loaded from Google Fonts), System (Segoe UI) or Steam's Motiva Sans.
-- **Corners**: Rounded or Sharp.
-- **Header**: Single row (default) or Classic two-row layout.
-- **Navigation**: Clean (default) or Classic (Steam's own menus, profile tab and hover dropdowns).
-- **Store & community pages**: restyle the in-client web pages (on by default).
-- **Hide URL bar** (on by default) and **Hide What's New**.
+```powershell
+cd "C:\Program Files (x86)\Steam\millennium\themes\graphite-steam"
+node tools/build.mjs
+```
+
+Then restart Steam. The build lists any class it can no longer find.
 
 ## How it works
 
-Steam's UI uses hashed CSS-module class names (for example `_3pofGqV0buiKAfMPEs3_82`) that change with client updates. Graphite's source CSS in `src/` uses readable tokens instead, and a small build step resolves them against your Steam install:
+Graphite's source CSS in `src/` uses readable tokens instead of hashes, and a small build step resolves them against your Steam install:
 
 ```css
 /* src/partials/frame.css */
@@ -67,30 +96,23 @@ Steam's UI uses hashed CSS-module class names (for example `_3pofGqV0buiKAfMPEs3
 ```
 
 - `$(Key)` is the class `Key` from Steam's CSS modules. It must be unique.
-- `$(Key@Anchor)` is `Key` from the module that also defines `Anchor`, which disambiguates common names like `Container`.
+- `$(Key@Anchor)` is `Key` from the module that also defines `Anchor`, for common names like `Container`.
 
-`tools/build.mjs` reads Steam's `steamui/*.js` bundles, extracts every module's `name -> hash` map and writes the resolved CSS (and scripts from `src/scripts/`) to `build/`. That output is committed, so the theme works without a build step.
+`tools/build.mjs` reads Steam's `steamui/*.js` bundles, extracts every module's `name -> hash` map and writes the resolved CSS and scripts to `build/`. That output is committed, so the theme works without a build step.
 
-### After a Steam update
+The store and community are Valve's web pages. Older parts use stable class names; newer React parts use Valve's web design system, whose color scales Graphite remaps on `:root`. Two small local scripts handle the rest. Neither makes network requests.
 
-If parts of the theme stop applying after a Steam client update, the hashes have probably changed. Rebuild the theme (requires [Node.js](https://nodejs.org) 18+):
+- **`src/scripts/web-recolor.js`** (Store & community option): swaps the hardcoded blue-greys of Valve's newest React pages for Graphite surfaces. It also tags the parts of the wishlist, game pages, news hub and event overlay with stable `gr-*` classes, so the theme can restyle them despite Valve's changing class names.
+- **`src/scripts/nav.js`** (Clean navigation): stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation.
 
-```powershell
-cd "C:\Program Files (x86)\Steam\millennium\themes\graphite-steam"
-node tools/build.mjs
-```
-
-Then restart Steam. The build lists any token it can no longer find.
-
-### Development
+## Development
 
 | Command | Purpose |
 | --- | --- |
 | `npm run build` | Resolve tokens and write `build/` |
 | `npm run live` | Inject the built theme into a running Steam started with `-dev` (DevTools on port 8080), without restarting Steam |
 | `node tools/lookup.mjs <Key or hash>` | Show which Steam module defines a class, plus unique anchors |
-
-Layout:
+| `node tools/render-docs.mjs ...` | Render the README images from `docs/src` (see [docs/src/README.md](docs/src/README.md)) |
 
 ```text
 skin.json        Millennium manifest: window patches and options
@@ -104,9 +126,10 @@ src/             Source CSS with $(Token) class references
   options/       Stylesheets toggled by theme options (webkit.css = store/community)
   scripts/       nav.js (clean navigation), web-recolor.js (React web pages)
 build/           Generated output loaded by Millennium (do not edit)
-tools/           Build, live preview and lookup scripts
+tools/           Build, live preview, lookup and docs render scripts
+docs/            README images; docs/src holds their HTML sources
 ```
 
 ## License
 
-MIT
+[MIT](LICENSE)

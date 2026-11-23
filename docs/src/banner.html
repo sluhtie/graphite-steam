@@ -1,0 +1,123 @@
+<!doctype html>
+<!--
+  Source for docs/banner.webp (animated README header, 9 s loop).
+  Every animation runs on the same 9 s period, so frames 0..n loop seamlessly.
+  Rendered frame by frame with tools in docs/src/README.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graphite banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=block" rel="stylesheet">
+<style>
+	:root {
+		--bg: #0b0b0d; --surface: #111114; --surface-2: #18181c; --border: #26262c;
+		--text: #ececf0; --text-2: #a1a1ab; --text-3: #6b6b75; --accent: #8fa8ff;
+		--L: 9s;
+		--ease: cubic-bezier(.65, 0, .25, 1);
+	}
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	html, body { width: 1280px; height: 560px; overflow: hidden; background: var(--bg); }
+	body {
+		position: relative;
+		font-family: "Inter", "Segoe UI", sans-serif; color: var(--text);
+		-webkit-font-smoothing: antialiased;
+	}
+	.glow {
+		position: absolute; inset: 0;
+		background:
+			radial-gradient(520px 380px at 930px 300px, rgba(143, 168, 255, .16), transparent 70%),
+			radial-gradient(420px 300px at 140px 560px, rgba(143, 168, 255, .06), transparent 70%);
+	}
+	.grid {
+		position: absolute; inset: 0;
+		background-image: radial-gradient(rgba(255, 255, 255, .05) 1px, transparent 1.2px);
+		background-size: 24px 24px;
+		-webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.2) 50%, transparent 75%);
+	}
+
+	/* --- copy --------------------------------------------------------------- */
+	.copy { position: absolute; left: 72px; top: 0; bottom: 0; width: 470px; display: flex; flex-direction: column; justify-content: center; z-index: 5; }
+	.mark { width: 54px; height: 54px; margin-bottom: 26px; overflow: visible; }
+	.mark .core { transform-origin: 27px 27px; animation: core var(--L) var(--ease) infinite; }
+	.mark .ring { stroke-dasharray: 112 29; animation: ring var(--L) linear infinite; }
+	@keyframes core { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 80% { transform: rotate(60deg) scale(.82); } 90% { transform: rotate(60deg) scale(1); } }
+	@keyframes ring { 0% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -282; } }
+
+	h1 {
+		font-size: 92px; font-weight: 650; letter-spacing: -.045em; line-height: .95;
+		background: linear-gradient(100deg, var(--text) 0%, var(--text) 40%, #ffffff 47%, var(--accent) 50%, #ffffff 53%, var(--text) 60%, var(--text) 100%);
+		background-size: 300% 100%;
+		-webkit-background-clip: text; background-clip: text; color: transparent;
+		animation: shine var(--L) var(--ease) infinite;
+	}
+	@keyframes shine { 0% { background-position: 100% 0; } 22%, 100% { background-position: 0% 0; } }
+	.tagline { margin-top: 20px; font-size: 23px; line-height: 1.38; color: var(--text-2); letter-spacing: -.01em; }
+	.chips { display: flex; gap: 8px; margin-top: 30px; }
+	.chip {
+		display: flex; align-items: center; gap: 8px;
+		font-size: 14px; font-weight: 500; white-space: nowrap; color: var(--text);
+		padding: 7px 13px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border);
+	}
+	.dot { width: 10px; height: 10px; border-radius: 50%; animation: accent var(--L) steps(1, end) infinite; }
+	@keyframes accent {
+		0% { background: #8fa8ff; } 20% { background: #6ee7b7; } 40% { background: #fbbf24; }
+		60% { background: #fb7185; } 80% { background: #c4b5fd; }
+	}
+	.foot { margin-top: 30px; font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); }
+
+	/* --- window stack ----------------------------------------------------------- */
+	.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 560px; perspective: 1800px; z-index: 2; }
+	.win {
+		position: absolute; left: 575px; top: 108px; width: 690px;
+		border-radius: 14px; overflow: hidden; border: 1px solid #2c2c33; background: var(--surface);
+		box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 10px 26px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+		transform-origin: 50% 50%;
+		animation: deck var(--L) var(--ease) infinite;
+	}
+	.win img { display: block; width: 100%; height: auto; }
+	.win:nth-child(2) { animation-delay: calc(var(--L) / -3 * 2); }
+	.win:nth-child(3) { animation-delay: calc(var(--L) / -3); }
+	/* one card's path: front -> slides out -> back of the stack -> middle -> front */
+	@keyframes deck {
+		0%, 27% { transform: translate3d(0, 0, 0) rotateY(-16deg) rotateX(4deg) scale(1); opacity: 1; filter: brightness(1); z-index: 3; }
+		33.2% { transform: translate3d(-90px, 70px, 120px) rotateY(-16deg) rotateX(4deg) scale(1.04); opacity: 0; filter: brightness(1); z-index: 4; }
+		33.4% { transform: translate3d(170px, -120px, -280px) rotateY(-16deg) rotateX(4deg) scale(.86); opacity: 0; filter: brightness(.45); z-index: 1; }
+		39%, 60% { transform: translate3d(170px, -120px, -280px) rotateY(-16deg) rotateX(4deg) scale(.86); opacity: .8; filter: brightness(.45); z-index: 1; }
+		66.6%, 93.4% { transform: translate3d(85px, -60px, -140px) rotateY(-16deg) rotateX(4deg) scale(.93); opacity: 1; filter: brightness(.68); z-index: 2; }
+		100% { transform: translate3d(0, 0, 0) rotateY(-16deg) rotateX(4deg) scale(1); opacity: 1; filter: brightness(1); z-index: 3; }
+	}
+	.fade {
+		position: absolute; inset: 0; z-index: 4; pointer-events: none;
+		background: linear-gradient(90deg, transparent 88%, var(--bg) 100%), linear-gradient(180deg, transparent 80%, rgba(11,11,13,.85) 100%);
+	}
+</style>
+</head>
+<body>
+	<div class="glow"></div>
+	<div class="grid"></div>
+
+	<div class="stage">
+		<div class="win"><img src="shots/library.jpg" alt=""></div>
+		<div class="win"><img src="shots/store.jpg" alt=""></div>
+		<div class="win"><img src="shots/app.jpg" alt=""></div>
+	</div>
+	<div class="fade"></div>
+
+	<div class="copy">
+		<svg class="mark" viewBox="0 0 54 54" fill="none">
+			<path class="ring" d="M27 3.5 47.4 15.25v23.5L27 50.5 6.6 38.75v-23.5L27 3.5Z" stroke="#8fa8ff" stroke-width="3" stroke-linejoin="round"/>
+			<path class="core" d="M27 16.5 36 21.75v10.5L27 37.5l-9-5.25v-10.5L27 16.5Z" fill="#8fa8ff" fill-opacity=".92"/>
+		</svg>
+		<h1>Graphite</h1>
+		<p class="tagline">A clean, minimal and modern<br>theme for the Steam client.</p>
+		<div class="chips">
+			<span class="chip">Library</span>
+			<span class="chip">Store</span>
+			<span class="chip">Community</span>
+			<span class="chip"><span class="dot"></span>Your accent</span>
+		</div>
+		<p class="foot">Theme for Millennium</p>
+	</div>
+</body>
+</html>
