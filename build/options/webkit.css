@@ -3684,7 +3684,8 @@ h1.market_header,
 .carousel_container .arrow {
 	box-sizing: border-box !important;
 	padding: 0 !important;
-	top: 50% !important;
+	/* centre on the slides, not slides + the 24px dot row below them */
+	top: calc(50% - 12px) !important;
 	bottom: auto !important;
 	min-height: 0 !important;
 	max-height: 36px !important;
@@ -3702,7 +3703,20 @@ h1.market_header,
 	color: var(--gr-text-2);
 	opacity: 1 !important;
 	z-index: 5;
-	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+	/* Valve shifts the arrows with translateY(-50% + 37px) and animates
+	   "all" in wide mode: arrows sat low and jumped on hover */
+	transform: none !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease) !important;
+}
+.carousel_container .arrow:hover,
+.carousel_container.maincap .arrow:hover {
+	transform: none !important;
+}
+/* Valve fades the neighbouring slide while an arrow is hovered */
+.carousel_wide_mode.arrow_hover_next .carousel_container .store_main_capsule.next,
+.carousel_wide_mode.arrow_hover_prev .carousel_container .store_main_capsule.prev {
+	filter: none !important;
+	opacity: 1 !important;
 }
 .carousel_container .arrow.left {
 	left: -18px !important;
