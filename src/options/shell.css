@@ -533,6 +533,55 @@
 .gr-shell-web .$(URLBar@FocusNavigationRoot) {
 	display: none !important;
 }
+/* page loading bar on the frame's top edge (shell.js sets position and --p) */
+.gr-load {
+	position: fixed;
+	z-index: 10000;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+.gr-load::before,
+.gr-load::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	border-radius: 2px;
+}
+.gr-load::before {
+	left: 0;
+	width: 100%;
+	transform-origin: left center;
+	transform: scaleX(var(--p, 0));
+	background: var(--gr-accent);
+	box-shadow: 0 0 10px color-mix(in srgb, var(--gr-accent) 70%, transparent);
+	transition: transform 0.25s ease;
+}
+/* a brighter head at the tip */
+.gr-load::after {
+	left: calc(var(--p, 0) * 100% - 90px);
+	width: 90px;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55));
+	transition: left 0.25s ease;
+}
+.gr-load.gr-on {
+	opacity: 1;
+}
+.gr-load.gr-done {
+	opacity: 0;
+	transition: opacity 0.3s ease 0.25s;
+}
+.gr-load.gr-done::before {
+	transform: scaleX(1);
+}
+.gr-load.gr-done::after {
+	left: calc(100% - 90px);
+}
 .gr-side {
 	position: fixed;
 	left: var(--gr-shell-rail);

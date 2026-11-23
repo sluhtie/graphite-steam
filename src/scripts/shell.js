@@ -149,18 +149,22 @@
 })();
 
 /*
- * Store front: Steam's featured carousel becomes one large hero card - the
+ * Store hero: Steam's featured carousel becomes one large hero card - the
  * game's library art and logo, its short description and tags, the price,
  * "add to cart" and the wishlist heart, with dots and arrows to page through.
- * Data comes from the page itself (GStoreItemData, GDynamicStore) and the
- * store's appdetails API; cart and wishlist use Steam's own functions.
+ * - Store front: the "Featured & recommended" carousel; data from the page
+ *   itself (GStoreItemData).
+ * - Category / genre hubs (/category/action ...): the trailer carousel; its
+ *   game list comes from the React component, the rest from appdetails.
+ * Cart and wishlist use Steam's own functions (GDynamicStore, AddItemToCart).
  */
 (() => {
-	if (location.hostname !== 'store.steampowered.com' || location.pathname !== '/') return;
+	if (location.hostname !== 'store.steampowered.com') return;
+	const front = location.pathname === '/';
 	const de = (document.documentElement.lang || '').startsWith('de');
 	const T = de
-		? { cart: 'In den Warenkorb', inCart: 'Im Warenkorb', adding: 'Wird hinzugefügt …', owned: 'In der Bibliothek', free: 'Kostenlos spielen', view: 'Ansehen', wish: 'Zur Wunschliste hinzufügen', unwish: 'Von der Wunschliste entfernen', prev: 'Vorheriges', next: 'Nächstes', cats: 'Stöbern nach Kategorie', action: 'Action', adventure: 'Abenteuer', rpg: 'Rollenspiel', sim: 'Simulation', strategy: 'Strategie', sports: 'Sport & Rennspiele', free2p: 'Kostenlos spielbar', specials: 'Angebote' }
-		: { cart: 'Add to cart', inCart: 'In cart', adding: 'Adding …', owned: 'In library', free: 'Play for free', view: 'View', wish: 'Add to wishlist', unwish: 'Remove from wishlist', prev: 'Previous', next: 'Next', cats: 'Browse by category', action: 'Action', adventure: 'Adventure', rpg: 'Role-playing', sim: 'Simulation', strategy: 'Strategy', sports: 'Sports & racing', free2p: 'Free to play', specials: 'Specials' };
+		? { cart: 'In den Warenkorb', inCart: 'Im Warenkorb', adding: 'Wird hinzugefügt …', owned: 'In der Bibliothek', free: 'Kostenlos spielen', view: 'Ansehen', wish: 'Zur Wunschliste hinzufügen', unwish: 'Von der Wunschliste entfernen', prev: 'Vorheriges', next: 'Nächstes', cats: 'Stöbern nach Kategorie', action: 'Action', adventure: 'Abenteuer', rpg: 'Rollenspiel', sim: 'Simulation', strategy: 'Strategie', sports: 'Sport & Rennspiele', free2p: 'Kostenlos spielbar', specials: 'Angebote', rec: 'Empfohlen', recSub: 'passend zu deinen Spielen', top: 'Topseller' }
+		: { cart: 'Add to cart', inCart: 'In cart', adding: 'Adding …', owned: 'In library', free: 'Play for free', view: 'View', wish: 'Add to wishlist', unwish: 'Remove from wishlist', prev: 'Previous', next: 'Next', cats: 'Browse by category', action: 'Action', adventure: 'Adventure', rpg: 'Role-playing', sim: 'Simulation', strategy: 'Strategy', sports: 'Sports & racing', free2p: 'Free to play', specials: 'Specials', rec: 'Recommended', recSub: 'based on what you play', top: 'Top seller' };
 	const ART = 'https://shared.steamstatic.com/store_item_assets/steam/apps/';
 	const ICON = {
 		heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
@@ -169,7 +173,9 @@
 	};
 	const css = `
 		html.gr-shero-on #home_maincap_v7 { display: none !important; }
+		html.gr-shero-on .contenthubmaincarousel > :not(.gr-shero-wrap) { display: none !important; }
 		.gr-shero-wrap { box-sizing: border-box; max-width: 1200px; margin: 24px auto 0; padding: 0; font-family: var(--gr-font); color: var(--gr-text); }
+		.gr-shero-wrap.gr-hub { width: 100%; margin: 0 auto 30px; }
 		.gr-shero { position: relative; height: 400px; border-radius: 14px; overflow: hidden; border: 1px solid var(--gr-border); background: var(--gr-bg); cursor: pointer; }
 		.gr-shero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; transition: opacity .35s ease; }
 		.gr-shero-img.gr-fade { opacity: 0; }
@@ -240,7 +246,54 @@
 	let timer = 0;
 	let root = null;
 
-	function collect() {
+	// the hub carousel (React): its props carry the games it cycles through
+	const hubSection = () => document.querySelector('.contenthubmaincarousel');
+	function hubCapsules(sec) {
+		const el = sec && (sec.querySelector('.Panel') || sec.firstElementChild);
+		const key = el && Object.keys(el).find((k) => k.startsWith('__reactFiber'));
+		for (let f = key && el[key], n = 0; f && n < 30; f = f.return, n++) {
+			const p = f.memoizedProps;
+			if (p && Array.isArray(p.rgCapsulesToShow)) return p.rgCapsulesToShow;
+		}
+		return null;
+	}
+	function collectHub() {
+		const caps = hubCapsules(hubSection());
+		if (!caps) return [];
+		const seen = new Set();
+		const out = [];
+		for (const c of caps) {
+			if (c.item_type !== 'app' || seen.has(c.id)) continue;
+			seen.add(c.id);
+			const r = c.recommendation || {};
+			out.push({
+				id: String(c.id),
+				href: '/app/' + c.id + '/',
+				name: '', tags: [], price: '', free: false, shot: '', cap: '',
+				label: r.reason === 4 ? T.top : r.reason === 0 && r.statusString ? r.statusString : T.rec,
+				sub: r.reason === 3 ? T.recSub : '',
+				hub: true,
+			});
+		}
+		// details for all of them right away, so paging is instant
+		out.forEach((it) => getDetails(it.id));
+		return out;
+	}
+	// hub items get name, genres, price and fallback art from appdetails
+	function fill(it, d) {
+		if (!d || it.filled) return;
+		it.filled = true;
+		it.name = d.name || '';
+		it.tags = (d.genres || []).slice(0, 3).map((g) => g.description);
+		it.free = !!d.is_free;
+		const p = d.price_overview;
+		it.price = !p ? '' : (p.discount_percent ? '<b>-' + p.discount_percent + '%</b><s>' + esc(p.initial_formatted) + '</s>' : '') + esc(p.final_formatted);
+		it.shot = d.screenshots?.[0]?.path_full || '';
+		it.cap = d.header_image || '';
+	}
+	const collect = () => (front ? collectFront() : collectHub());
+
+	function collectFront() {
 		const car = document.getElementById('home_maincap_v7');
 		const data = window.GStoreItemData?.rgAppData;
 		if (!car || !data) return [];
@@ -293,37 +346,46 @@
 		wish.setAttribute('aria-label', wish.title);
 	}
 
+	// label, name, tags, price and buttons of the current item
+	function text(it) {
+		root.querySelector('.gr-shero-label').innerHTML = esc(it.label) + (it.sub ? ' <i>' + esc(it.sub) + '</i>' : '');
+		root.querySelector('.gr-shero-name').textContent = it.name;
+		root.querySelector('.gr-shero-logo').alt = it.name;
+		root.querySelector('.gr-shero-tags').innerHTML = it.tags.map((t) => '<span>' + esc(t) + '</span>').join('');
+		root.querySelector('.gr-shero-price').innerHTML = it.free ? '' : it.price;
+		buttons();
+	}
+
 	function show(i, fade = true) {
 		idx = (i + items.length) % items.length;
 		const it = items[idx];
 		const img = root.querySelector('.gr-shero-img');
 		const set = () => {
+			if (items[idx] !== it) return;
 			const srcs = [ART + it.id + '/library_hero.jpg', it.shot, it.cap].filter(Boolean);
 			let n = 0;
 			img.onerror = () => { if (++n < srcs.length) img.src = srcs[n]; };
 			img.onload = () => img.classList.remove('gr-fade');
 			img.src = srcs[0];
 		};
-		if (fade) { img.classList.add('gr-fade'); setTimeout(set, 180); } else set();
-		root.querySelector('.gr-shero-label').innerHTML = esc(it.label) + (it.sub ? ' <i>' + esc(it.sub) + '</i>' : '');
 		const logo = root.querySelector('.gr-shero-logo');
 		const name = root.querySelector('.gr-shero-name');
-		name.textContent = it.name;
 		name.hidden = true;
 		logo.hidden = false;
-		logo.alt = it.name;
 		logo.onerror = () => { logo.hidden = true; name.hidden = false; };
 		logo.src = ART + it.id + '/logo.png';
-		root.querySelector('.gr-shero-tags').innerHTML = it.tags.map((t) => '<span>' + esc(t) + '</span>').join('');
-		root.querySelector('.gr-shero-price').innerHTML = it.free ? '' : it.price;
+		text(it);
 		const blurb = root.querySelector('.gr-shero-blurb');
 		blurb.textContent = '';
-		getDetails(it.id).then((d) => {
-			if (items[idx] !== it || !d) return;
-			blurb.textContent = parse(d.short_description).body.textContent.trim();
+		const ready = getDetails(it.id).then((d) => {
+			if (items[idx] !== it) return;
+			if (it.hub) { fill(it, d); text(it); }
+			if (d) blurb.textContent = parse(d.short_description).body.textContent.trim();
 		});
+		// hub items only know their fallback art once the details are in
+		const after = it.hub ? (fn) => ready.then(fn) : (fn) => fn();
+		if (fade) { img.classList.add('gr-fade'); setTimeout(() => after(set), 180); } else after(set);
 		root.querySelectorAll('.gr-shero-dots button').forEach((b, n) => b.classList.toggle('gr-on', n === idx));
-		buttons();
 	}
 
 	function play() {
@@ -355,16 +417,19 @@
 	}
 
 	function mount() {
-		if (root || document.querySelector('.gr-shero-wrap')) return true;
+		if (root && root.isConnected) return true;
+		root = null;
 		items = collect();
 		if (!items.length) return false;
-		const car = document.getElementById('home_maincap_v7');
-		const st = document.createElement('style');
-		st.id = 'gr-shero-css';
-		st.textContent = css;
-		document.head.append(st);
+		const car = front ? document.getElementById('home_maincap_v7') : hubSection();
+		if (!document.getElementById('gr-shero-css')) {
+			const st = document.createElement('style');
+			st.id = 'gr-shero-css';
+			st.textContent = css;
+			document.head.append(st);
+		}
 		const wrap = document.createElement('div');
-		wrap.className = 'gr-shero-wrap';
+		wrap.className = front ? 'gr-shero-wrap' : 'gr-shero-wrap gr-hub';
 		wrap.innerHTML =
 			'<section class="gr-shero" role="region" aria-roledescription="carousel">' +
 			'<img class="gr-shero-img" alt="">' +
@@ -381,21 +446,32 @@
 			'</div><button type="button" class="gr-shero-prev" aria-label="' + T.prev + '">' + ICON.left + '</button>' +
 			'<button type="button" class="gr-shero-next" aria-label="' + T.next + '">' + ICON.right + '</button></div>' +
 			'</section>' +
-			'<div class="gr-shero-cats"><h2>' + T.cats + '</h2><div class="gr-shero-chips">' +
+			(!front ? '' : '<div class="gr-shero-cats"><h2>' + T.cats + '</h2><div class="gr-shero-chips">' +
 			[['action', '/category/action/'], ['adventure', '/category/adventure/'], ['rpg', '/category/rpg/'], ['sim', '/category/simulation/'], ['strategy', '/category/strategy/'], ['sports', '/category/sports_and_racing/'], ['free2p', '/genre/Free%20to%20Play/'], ['specials', '/specials/']]
 				.map(([k, href]) => '<a href="' + href + '">' + T[k] + '</a>')
 				.join('') +
-			'</div></div>';
-		car.before(wrap);
+			'</div></div>');
 		document.documentElement.classList.add('gr-shero-on');
-		// as wide as Steam's content column (narrower when the friends dock is open)
-		const fit = () => {
-			const col = [...document.querySelectorAll('.home_page_content')].find((e) => e.getBoundingClientRect().width > 0);
-			if (col) wrap.style.maxWidth = Math.round(col.getBoundingClientRect().width) + 'px';
-		};
-		fit();
-		addEventListener('resize', fit);
-		setTimeout(fit, 1500);
+		if (front) {
+			car.before(wrap);
+			// as wide as Steam's content column (narrower when the friends dock is open)
+			const fit = () => {
+				const col = [...document.querySelectorAll('.home_page_content')].find((e) => e.getBoundingClientRect().width > 0);
+				if (col) wrap.style.maxWidth = Math.round(col.getBoundingClientRect().width) + 'px';
+			};
+			fit();
+			addEventListener('resize', fit);
+			setTimeout(fit, 1500);
+		} else {
+			// inside the carousel's section (its own content is hidden by the CSS);
+			// Steam's carousel keeps running in there, so keep its trailers paused,
+			// and if React rebuilds the section, mount again
+			car.prepend(wrap);
+			const keep = setInterval(() => {
+				if (!wrap.isConnected) { clearInterval(keep); clearInterval(timer); tries = 0; attempt(); return; }
+				car.querySelectorAll('video').forEach((v) => { if (!v.paused) v.pause(); });
+			}, 1000);
+		}
 		root = wrap.querySelector('.gr-shero');
 		root.addEventListener('click', (e) => {
 			const b = e.target.closest('button');
@@ -416,8 +492,9 @@
 		return true;
 	}
 
+	// the hub carousel is React and comes later than the store front's markup
 	let tries = 0;
-	const attempt = () => { if (!mount() && ++tries < 40) setTimeout(attempt, 250); };
+	const attempt = () => { if (!mount() && ++tries < (front ? 40 : 80)) setTimeout(attempt, 250); };
 	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attempt, { once: true });
 	else attempt();
 })();
@@ -1290,6 +1367,43 @@
 		// an open chat refreshes faster (new messages, typing)
 		const chatTimer = setInterval(() => { if (chatId) renderChat(); }, 400);
 		cleanup.push(() => clearInterval(chatTimer));
+		// Page loading: a thin accent bar on the frame's top edge (the only part of
+		// the frame the browser view doesn't cover) while Steam's browser loads.
+		// Steam only says "loading" or not, so it moves like most web apps' bars:
+		// quickly to ~15 %, then ever slower towards 90 %, full when done.
+		const load = document.createElement('div');
+		load.className = 'gr-load';
+		document.body.append(load);
+		let loadP = -1;
+		let loadOff = 0;
+		const loadTick = () => {
+			let busy = false;
+			try { busy = !!W.MainWindowBrowserManager.m_bLoading; } catch (e) { /* no browser */ }
+			const web = document.documentElement.classList.contains('gr-shell-web') && overlays.size === 0;
+			if (busy && web) {
+				if (loadP < 0) {
+					clearTimeout(loadOff);
+					loadP = 0.15;
+					load.classList.remove('gr-done');
+					load.classList.add('gr-on');
+				} else loadP += (0.9 - loadP) * 0.06;
+			} else if (loadP >= 0) {
+				loadP = -1;
+				load.classList.add('gr-done');
+				loadOff = setTimeout(() => load.classList.remove('gr-on', 'gr-done'), web ? 550 : 0);
+			}
+			if (!load.classList.contains('gr-on')) return;
+			const frame = document.querySelector('.$(BrowserWrapper@FocusNavigationRoot)');
+			const r = frame && frame.getBoundingClientRect();
+			if (r && r.width) {
+				load.style.left = r.left + 16 + 'px';
+				load.style.top = r.top - 1 + 'px';
+				load.style.width = r.width - 32 + 'px';
+			}
+			if (loadP >= 0) load.style.setProperty('--p', loadP.toFixed(3));
+		};
+		const loadTimer = setInterval(loadTick, 100);
+		cleanup.push(() => { clearInterval(loadTimer); load.remove(); });
 		cleanup.push(() => {
 			[rail, side, crumb, searchBox, libHead, tip, dock, cont].forEach(n => n.remove());
 			document.documentElement.classList.remove('gr-shell-web', 'gr-dock-is-open', 'gr-dock-is-mini', 'gr-dock-overlay');
