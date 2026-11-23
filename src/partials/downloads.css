@@ -57,9 +57,34 @@
 	color: var(--gr-text) !important;
 }
 /* Steam tints the hero blue (multiply); fade it into the page instead */
+/* the active download sits on a card (surface-2): fade the hero into it,
+   so there is no seam where the image ends and the graph continues */
+.$(HeroAndLogo@GraphAndStats):not(.$(Empty@GraphAndStats)) {
+	background: var(--gr-surface-2) !important;
+}
 .$(HeroAndLogo@GraphAndStats) .$(HeroGradient) {
-	background: linear-gradient(to right, transparent 35%, var(--gr-bg) 100%) !important;
+	background: linear-gradient(to right, transparent 35%, var(--gr-surface-2) 100%) !important;
 	mix-blend-mode: normal !important;
+}
+
+/* content types over the graph ("game content", "workshop content") */
+.$(ContentTypes@DownloadsPage) {
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em !important;
+	line-height: 18px !important;
+}
+.$(ContentTypes@DownloadsPage) .$(ContentType@DownloadsPage) {
+	gap: 6px !important;
+	color: var(--gr-text-3) !important;
+}
+.$(ContentTypes@DownloadsPage) .$(ContentType@DownloadsPage).$(Highlight@DownloadsPage) {
+	color: var(--gr-text) !important;
+}
+.$(ContentTypes@DownloadsPage) .$(Icon@DownloadsPage) {
+	width: 14px !important;
+	height: 14px !important;
 }
 
 /* legend: small swatches instead of Steam's bar icons */
