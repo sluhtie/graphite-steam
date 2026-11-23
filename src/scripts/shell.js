@@ -415,6 +415,7 @@
 		community: 'M5.8 8a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0M3.5 19a5.5 5.5 0 0 1 11 0M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.2a5.5 5.5 0 0 1 3 4.8',
 		downloads: 'M12 5v10M7.5 11 12 15.5 16.5 11M7 19.5h10',
 		settings: 'M4 7h9M17 7h3M4 17h3M11 17h9M13 7a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M7 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0',
+		palette: 'M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.7 1.6-1.5 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6h1.9a4.4 4.4 0 0 0 4.4-4.4C20.5 6.8 16.7 3.5 12 3.5zM7.6 12.2h.01M9.4 8.3h.01M14.3 8.1h.01M16.8 11.6h.01',
 		search: 'M4.5 11a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0M16 16l4 4',
 		compass: 'M3.5 12a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0M15.5 8.5l-2 5-5 2 2-5z',
 		heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
@@ -475,6 +476,8 @@
 		try { const a = W.appStore.GetAppOverviewByAppID(Number(id)); return a ? a.display_name : ''; } catch (e) { return ''; }
 	};
 
+/* @include shell-theme.js */
+
 	/* --- Rail ------------------------------------------------------------------------- */
 	const rail = el('nav', 'gr-rail');
 	rail.setAttribute('aria-label', 'Graphite');
@@ -485,6 +488,7 @@
 		{ key: 'community', label: () => tabLabel(2) || T.community, icon: I.community, run: () => { webItem.community = 'home'; steamUrl('steam://url/CommunityHome'); } },
 		null,
 		{ key: 'downloads', label: () => T.downloads, icon: I.downloads, run: () => go('/library/downloads'), ring: true },
+		{ key: 'theme', label: () => 'Graphite', icon: I.palette, run: () => (themePage.isOpen() ? themePage.close() : themePage.open()) },
 		{ key: 'settings', label: () => T.settings, icon: I.settings, run: () => steamUrl('steam://open/settings') },
 	];
 	const tip = el('div', 'gr-rail-tip');
@@ -495,7 +499,7 @@
 		b.type = 'button';
 		b.innerHTML = (it.ring ? '<svg class="gr-rail-ring" viewBox="0 0 28 28"><circle class="gr-track" cx="14" cy="14" r="12.5"/><circle class="gr-fill" cx="14" cy="14" r="12.5"/></svg>' : '') + svg(it.icon);
 		if (it.ring) b.lastElementChild.classList.add('gr-rail-dl');
-		b.addEventListener('click', () => { it.run(); setTimeout(update, 60); });
+		b.addEventListener('click', () => { if (it.key !== 'theme') themePage.close(); it.run(); setTimeout(update, 60); });
 		b.addEventListener('mouseenter', () => {
 			tip.textContent = it.label();
 			b.setAttribute('aria-label', tip.textContent);
@@ -1073,7 +1077,8 @@
 		const sec = section();
 		const r = route();
 		if (sec === 'library' && r.startsWith('/library/app/')) lastLibrary = r;
-		for (const [key, b] of Object.entries(btns)) b.classList.toggle('gr-on', key === sec);
+		const gsOpen = themePage.isOpen();
+		for (const [key, b] of Object.entries(btns)) b.classList.toggle('gr-on', gsOpen ? key === 'theme' : key === sec);
 		// crumb
 		let a = '';
 		let b = '';
@@ -1109,7 +1114,8 @@
 
 	const start = () => {
 		update();
-		try { const unlisten = history().listen(() => setTimeout(update, 0)); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
+		// navigating anywhere closes the Graphite page
+		try { const unlisten = history().listen(() => { themePage.close(); setTimeout(update, 0); }); if (typeof unlisten === 'function') cleanup.push(unlisten); } catch (e) { /* polling below */ }
 		const tabs = document.querySelector('.$(SuperNav)');
 		if (tabs) {
 			const mo = new MutationObserver(() => update());
