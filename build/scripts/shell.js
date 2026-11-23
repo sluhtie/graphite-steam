@@ -299,6 +299,14 @@
 			'</div></div>';
 		car.before(wrap);
 		document.documentElement.classList.add('gr-shero-on');
+		// as wide as Steam's content column (narrower when the friends dock is open)
+		const fit = () => {
+			const col = [...document.querySelectorAll('.home_page_content')].find((e) => e.getBoundingClientRect().width > 0);
+			if (col) wrap.style.maxWidth = Math.round(col.getBoundingClientRect().width) + 'px';
+		};
+		fit();
+		addEventListener('resize', fit);
+		setTimeout(fit, 1500);
 		root = wrap.querySelector('.gr-shero');
 		root.addEventListener('click', (e) => {
 			const b = e.target.closest('button');
@@ -979,6 +987,17 @@
 	const go = path => { try { W.SteamUIStore.Navigate(path); } catch (e) { /* ignore */ } };
 	const steamUrl = url => { try { W.SteamClient.URL.ExecuteSteamURL(url); } catch (e) { /* ignore */ } };
 	const openWeb = url => steamUrl('steam://openurl/' + url);
+	// The store / community page is Steam's native browser view, drawn on top of
+	// this window: anything of ours over it (the Graphite page, the search
+	// popup) would end up underneath. Hide the view while one of them is open.
+	const overlays = new Set();
+	const overlay = (key, on) => {
+		if (on) overlays.add(key); else overlays.delete(key);
+		try {
+			const view = W.MainWindowBrowserManager.m_browser;
+			if (view && route().startsWith('/browser')) view.SetVisible(overlays.size === 0);
+		} catch (e) { /* no browser view */ }
+	};
 
 	/* --- Language --------------------------------------------------------------- */
 	const steamLang = (() => {
@@ -994,7 +1013,7 @@
 			catAction: 'Action', catAdventure: 'Adventure', catIndie: 'Indie', catRpg: 'RPG', catSim: 'Simulation', catStrategy: 'Strategy',
 			activity: 'Activity', profile: 'Profile', friends: 'Friends', groups: 'Groups', explore: 'Explore', discussions: 'Discussions',
 			workshop: 'Workshop', market: 'Market', inventory: 'Inventory', badges: 'Badges', console: 'Console',
-			inGame: 'In game', online: 'Online', away: 'Away', offline: 'Offline', searchFriends: 'Search friends', groupChats: 'Group chats',
+			inGame: 'In game', online: 'Online', away: 'Away', offline: 'Offline', invisible: 'Invisible', dnd: 'Do not disturb', dndHint: 'No notifications or chat sounds', setStatus: 'Set your status', searchFriends: 'Search friends', groupChats: 'Group chats',
 			addFriend: 'Add a friend', collapse: 'Collapse', expand: 'Show friends', chatWith: 'Chat with',
 			back: 'Back to friends', popout: 'Open in chat window', send: 'Send', messageTo: 'Message', typing: 'is typing …',
 			today: 'Today', yesterday: 'Yesterday', olderMessages: 'Load older messages', noMessages: 'No messages yet', gameInvite: 'Game invite',
@@ -1011,7 +1030,7 @@
 			catAction: 'Action', catAdventure: 'Abenteuer', catIndie: 'Indie', catRpg: 'Rollenspiel', catSim: 'Simulation', catStrategy: 'Strategie',
 			activity: 'Aktivität', profile: 'Profil', friends: 'Freunde', groups: 'Gruppen', explore: 'Entdecken', discussions: 'Diskussionen',
 			workshop: 'Workshop', market: 'Markt', inventory: 'Inventar', badges: 'Abzeichen', console: 'Konsole',
-			inGame: 'Im Spiel', online: 'Online', away: 'Abwesend', offline: 'Offline', searchFriends: 'Freunde suchen', groupChats: 'Gruppenchats',
+			inGame: 'Im Spiel', online: 'Online', away: 'Abwesend', offline: 'Offline', invisible: 'Unsichtbar', dnd: 'Nicht stören', dndHint: 'Keine Benachrichtigungen und Chat-Töne', setStatus: 'Status festlegen', searchFriends: 'Freunde suchen', groupChats: 'Gruppenchats',
 			addFriend: 'Freund hinzufügen', collapse: 'Einklappen', expand: 'Freunde ausklappen', chatWith: 'Chat mit',
 			back: 'Zurück zu den Freunden', popout: 'Im Chatfenster öffnen', send: 'Senden', messageTo: 'Nachricht an', typing: 'schreibt …',
 			today: 'Heute', yesterday: 'Gestern', olderMessages: 'Ältere Nachrichten laden', noMessages: 'Noch keine Nachrichten', gameInvite: 'Spieleinladung',
@@ -1031,6 +1050,8 @@
 		community: 'M5.8 8a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0M3.5 19a5.5 5.5 0 0 1 11 0M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.2a5.5 5.5 0 0 1 3 4.8',
 		downloads: 'M12 5v10M7.5 11 12 15.5 16.5 11M7 19.5h10',
 		settings: 'M4 7h9M17 7h3M4 17h3M11 17h9M13 7a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M7 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0',
+		moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
+		check: 'M5 12.5l4.5 4.5L19 7.5',
 		palette: 'M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.7 1.6-1.5 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6h1.9a4.4 4.4 0 0 0 4.4-4.4C20.5 6.8 16.7 3.5 12 3.5zM7.6 12.2h.01M9.4 8.3h.01M14.3 8.1h.01M16.8 11.6h.01',
 		search: 'M4.5 11a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0M16 16l4 4',
 		compass: 'M3.5 12a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0M15.5 8.5l-2 5-5 2 2-5z',
@@ -1294,6 +1315,7 @@
 		function open() {
 			if (!page) build();
 			page.hidden = false;
+			overlay('graphite', true);
 			document.documentElement.classList.add('gr-gs-open');
 			load();
 			window.addEventListener('keydown', onKey);
@@ -1301,6 +1323,7 @@
 		function close() {
 			if (!page) return;
 			page.hidden = true;
+			overlay('graphite', false);
 			document.documentElement.classList.remove('gr-gs-open');
 			window.removeEventListener('keydown', onKey);
 		}
@@ -1414,7 +1437,7 @@
 	const renderPop = () => {
 		const raw = input.value.trim();
 		const q = raw.toLowerCase();
-		if (!q) { pop.hidden = true; return; }
+		if (!q) { pop.hidden = true; overlay('search', false); return; }
 		const lib = games().filter(a => (a.display_name || '').toLowerCase().includes(q))
 			.sort((a, b) => (b.rt_last_time_played || 0) - (a.rt_last_time_played || 0)).slice(0, 4);
 		const mine = new Set(games().map(a => a.appid));
@@ -1433,6 +1456,7 @@
 			}).join('') : '')
 			+ `<div class="gr-search-sep"></div><button type="button" class="gr-search-row gr-search-store" data-store="1">${svg(I.store)}<b>${esc(T.searchStore)} „${esc(raw)}“</b></button>`;
 		pop.hidden = false;
+		overlay('search', true);
 		askStore(raw);
 	};
 	const pick = i => {
@@ -1441,6 +1465,7 @@
 		else if (r && r.store) openWeb('https://store.steampowered.com/app/' + r.store.appid + '/');
 		input.value = '';
 		pop.hidden = true;
+		overlay('search', false);
 		input.blur();
 	};
 	const searchStore = () => {
@@ -1448,16 +1473,17 @@
 		if (q) openWeb('https://store.steampowered.com/search/?term=' + encodeURIComponent(q));
 		input.value = '';
 		pop.hidden = true;
+		overlay('search', false);
 		input.blur();
 	};
 	input.addEventListener('input', () => { active = 0; renderPop(); });
 	input.addEventListener('focus', renderPop);
-	input.addEventListener('blur', () => setTimeout(() => { pop.hidden = true; }, 120));
+	input.addEventListener('blur', () => setTimeout(() => { pop.hidden = true; overlay('search', false); }, 120));
 	input.addEventListener('keydown', e => {
 		if (e.key === 'ArrowDown') { active = Math.min(active + 1, results.length - 1); renderPop(); e.preventDefault(); }
 		else if (e.key === 'ArrowUp') { active = Math.max(active - 1, 0); renderPop(); e.preventDefault(); }
 		else if (e.key === 'Enter') { if (results.length) pick(active); else searchStore(); e.preventDefault(); }
-		else if (e.key === 'Escape') { input.value = ''; pop.hidden = true; input.blur(); }
+		else if (e.key === 'Escape') { input.value = ''; pop.hidden = true; overlay('search', false); input.blur(); }
 	});
 	pop.addEventListener('mousedown', e => {
 		const row = e.target.closest('.gr-search-row');
@@ -1602,12 +1628,16 @@
 		try { me = friendView(fs.self); } catch (e) { /* ignore */ }
 		let groups = 0;
 		try { groups = chatStore().currentChatRoomGroups.length; } catch (e) { /* ignore */ }
-		const key = dockMode + '|' + friendQuery + '|' + JSON.stringify(closedSections) + '|' + JSON.stringify(me) + '|' + groups + '|'
+		let dndKey = '';
+		try { dndKey = String(fs.GetUserDoNotDisturb()) + fs.m_eUserPersonaState; } catch (e) { /* ignore */ }
+		const key = dockMode + '|' + dndKey + '|' + friendQuery + '|' + JSON.stringify(closedSections) + '|' + JSON.stringify(me) + '|' + groups + '|'
 			+ friends.map(v => [v.id, v.st, v.status, v.unread, v.avatar, v.icon, v.name].join(':')).join(',');
 		if (key === lastDock) return;
 		lastDock = key;
 		if (me) {
-			dockMe.innerHTML = `<div class="gr-dock-self">${avatarHtml(me, 36)}<span class="gr-dock-who"><b>${esc(me.name)}</b><small class="gr-tx-${me.st}">${esc(me.status)}</small></span></div>`
+			let dnd = false;
+			try { dnd = fs.GetUserDoNotDisturb(); } catch (e) { /* ignore */ }
+			dockMe.innerHTML = `<div class="gr-dock-self">${avatarHtml(me, 36)}<span class="gr-dock-who"><b>${esc(me.name)}</b><button type="button" class="gr-dock-status gr-tx-${me.st}" data-act="status" aria-haspopup="menu" title="${esc(T.setStatus)}">${dnd ? svg(I.moon, 2) : ''}<span>${esc(me.status)}</span>${svg(I.chevron, 2.2)}</button></span></div>`
 				+ `<button type="button" class="gr-dock-btn" data-act="add" aria-label="${esc(T.addFriend)}" title="${esc(T.addFriend)}">${svg(I.userPlus)}</button>`
 				+ `<button type="button" class="gr-dock-btn" data-act="mini" aria-label="${esc(T.collapse)}" title="${esc(T.collapse)}">${svg(I.panelR)}</button>`;
 		}
@@ -1628,12 +1658,48 @@
 		dockStrip.innerHTML = friends.filter(v => v.st !== 'offline').sort((a, b) => order[a.st] - order[b.st] || a.name.localeCompare(b.name))
 			.map(v => `<button type="button" class="gr-dock-btn gr-dock-pic" data-id="${v.id}" aria-label="${esc(T.chatWith + ' ' + v.name)}" title="${esc(v.name + ' · ' + v.status)}">${avatarHtml(v, 34)}${v.unread ? `<em class="gr-badge">${v.unread}</em>` : ''}</button>`).join('');
 	}
+	// own status: Steam's states (Online 1, Away 3, Invisible 7, Offline 0) and Do Not Disturb
+	const statusMenu = el('div', 'gr-status-menu');
+	statusMenu.setAttribute('role', 'menu');
+	statusMenu.hidden = true;
+	const STATES = [[1, 'online', () => T.online], [3, 'away', () => T.away], [7, 'invisible', () => T.invisible], [0, 'offline', () => T.offline]];
+	const closeStatusMenu = () => { statusMenu.hidden = true; };
+	function toggleStatusMenu(anchor) {
+		if (!statusMenu.hidden) { closeStatusMenu(); return; }
+		const fs = friendStore();
+		let cur = 1;
+		let dnd = false;
+		try { cur = fs.m_eUserPersonaState; dnd = fs.GetUserDoNotDisturb(); } catch (e) { /* ignore */ }
+		statusMenu.innerHTML = STATES.map(([v, cls, label]) => `<button type="button" role="menuitemradio" aria-checked="${v === cur}" data-state="${v}"><i class="gr-dot gr-dot-${cls}"></i><span>${esc(label())}</span>${v === cur ? svg(I.check, 2.2) : ''}</button>`).join('')
+			+ `<hr><button type="button" role="menuitemcheckbox" aria-checked="${dnd}" data-dnd="1">${svg(I.moon, 1.9)}<span>${esc(T.dnd)}<small>${esc(T.dndHint)}</small></span><b class="gr-mini-switch${dnd ? ' gr-on' : ''}"></b></button>`;
+		const r = anchor.getBoundingClientRect();
+		const d = dock.getBoundingClientRect();
+		statusMenu.style.top = (r.bottom - d.top + 6) + 'px';
+		statusMenu.hidden = false;
+	}
+	statusMenu.addEventListener('click', e => {
+		const b = e.target.closest('button');
+		if (!b) return;
+		const fs = friendStore();
+		try {
+			if (b.dataset.dnd) fs.SetUserDoNotDisturb(!fs.GetUserDoNotDisturb());
+			else fs.SetUserPersonaState(Number(b.dataset.state));
+		} catch (err) { /* ignore */ }
+		closeStatusMenu();
+		lastDock = '';
+		setTimeout(renderDock, 300);
+	});
+	dock.append(statusMenu);
+	const onDocDown = e => { const t = e.target; if (!statusMenu.hidden && !statusMenu.contains(t) && !(t.closest && t.closest('.gr-dock-status'))) closeStatusMenu(); };
+	document.addEventListener('mousedown', onDocDown, true);
+	cleanup.push(() => document.removeEventListener('mousedown', onDocDown, true));
 	dock.addEventListener('click', e => {
 		const t = e.target.closest('button');
 		if (!t) return;
 		if (t.classList.contains('gr-dock-expand')) { setDock('open'); return; }
 		if (t.dataset.act === 'mini') { setDock('mini'); return; }
 		if (t.dataset.act === 'add') { steamUrl('steam://friends/add'); return; }
+		if (t.dataset.act === 'status') { toggleStatusMenu(t); return; }
 		if (t.classList.contains('gr-dock-groups')) { const b = qs('._1TdaAqMFadi0UTqilrkelR'); if (b) b.click(); return; }
 		if (t.dataset.sec) {
 			closedSections = Object.assign({}, closedSections, { [t.dataset.sec]: !closedSections[t.dataset.sec] });

@@ -200,6 +200,7 @@
 		function open() {
 			if (!page) build();
 			page.hidden = false;
+			overlay('graphite', true);
 			document.documentElement.classList.add('gr-gs-open');
 			load();
 			window.addEventListener('keydown', onKey);
@@ -207,6 +208,7 @@
 		function close() {
 			if (!page) return;
 			page.hidden = true;
+			overlay('graphite', false);
 			document.documentElement.classList.remove('gr-gs-open');
 			window.removeEventListener('keydown', onKey);
 		}
