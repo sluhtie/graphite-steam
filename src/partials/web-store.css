@@ -213,25 +213,42 @@
 	background-image: none !important;
 	border-bottom: 1px solid var(--gr-border);
 }
-.discovery_queue_overlay_bg::before {
-	background: var(--gr-play) !important;
-	background-image: none !important;
-	border-radius: var(--gr-radius-lg);
-	box-shadow: var(--gr-shadow);
+/* "start your queue": a compact glass pill over the covers (it used to be a
+   wide light bar), accent on hover */
+.discovery_queue_overlay_bg {
+	display: inline-flex !important;
+	align-items: center;
 	width: auto !important;
-	right: 0 !important;
-	transform: scale(0.92);
-	transform-origin: left center;
-	transition: transform var(--gr-med) var(--gr-ease);
+	height: auto !important;
+	min-height: 0 !important;
+	padding: 12px 22px !important;
+}
+.discovery_queue_overlay_bg::before {
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	background: rgba(11, 11, 13, 0.72) !important;
+	background-image: none !important;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 999px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(14px);
+	transform: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
 }
 .discovery_queue_overlay:hover .discovery_queue_overlay_bg::before {
-	transform: scale(0.95);
+	background: var(--gr-accent) !important;
+	border-color: transparent;
 }
 .discovery_queue_overlay_message {
 	position: relative;
-	color: var(--gr-play-text) !important;
+	color: #ececf0 !important;
+	font-size: 14px !important;
 	font-weight: 600 !important;
 	text-shadow: none !important;
+}
+.discovery_queue_overlay:hover .discovery_queue_overlay_message {
+	color: var(--gr-bg) !important;
 }
 .discovery_queue_customize_ctn,
 .explore_rightcol_box {
@@ -351,4 +368,27 @@ form[role="search"] button::before {
 }
 :has(> form[role="search"]) > div > div > div a:hover {
 	background: var(--gr-hover) !important;
+}
+
+/* horizontal sliders under the carousels: Steam's dark track with blue
+   triangles -> a thin track, quiet arrows */
+.slider_ctn.store_autoslider .slider_left,
+.slider_ctn.store_autoslider .slider_right {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	opacity: 0.6;
+	filter: grayscale(1) brightness(1.6);
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.slider_ctn.store_autoslider .slider_left:hover,
+.slider_ctn.store_autoslider .slider_right:hover {
+	opacity: 1;
+}
+.slider_ctn.store_autoslider .slider {
+	background: var(--gr-surface-2) !important;
+	border-radius: 999px !important;
+}
+.slider_ctn.store_autoslider .handle {
+	background: var(--gr-surface-3, #2a2a31) !important;
+	border-radius: 999px !important;
 }

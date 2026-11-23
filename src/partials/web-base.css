@@ -196,6 +196,35 @@ input[type="image"][src*="search"] {
 	box-shadow: var(--gr-shadow) !important;
 	color: var(--gr-text-2) !important;
 }
+/* game hover card (store lists): readable title, rounded media, tag pills */
+#global_hover .hover_title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em;
+}
+#global_hover .hover_release,
+#global_hover .tags_title {
+	color: var(--gr-text-3) !important;
+}
+#global_hover .hover_screenshots {
+	border-radius: var(--gr-radius-sm);
+	overflow: hidden;
+}
+#global_hover .hover_review_summary {
+	padding: 8px 10px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+}
+#global_hover .hover_tag_row .app_tag {
+	padding: 2px 8px !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+}
 .hover_arrow_left,
 .hover_arrow_right {
 	display: none !important;

@@ -85,7 +85,13 @@ for (const entry of entries) {
 // one Millennium TargetJs can carry several scripts (shell.js includes nav.js).
 const SCRIPT_DIR = path.join(ENTRY_DIR, 'scripts');
 const INCLUDE_RE = /^[ \t]*\/\*\s*@include\s+([\w.-]+\.js)\s*\*\/[ \t]*$/gm;
-for (const f of fs.readdirSync(SCRIPT_DIR).filter(f => f.endsWith('.js'))) {
+// Files that are only ever @included (and not loaded by skin.json themselves)
+// get no output of their own.
+const skin = fs.readFileSync(path.join(root, 'skin.json'), 'utf8');
+const scriptFiles = fs.readdirSync(SCRIPT_DIR).filter(f => f.endsWith('.js'));
+const includedOnly = new Set(scriptFiles.flatMap(f => [...fs.readFileSync(path.join(SCRIPT_DIR, f), 'utf8').matchAll(INCLUDE_RE)].map(m => m[1]))
+  .filter(name => !skin.includes('build/scripts/' + name)));
+for (const f of scriptFiles.filter(f => !includedOnly.has(f))) {
   const entry = 'scripts/' + f;
   const src = fs.readFileSync(path.join(SCRIPT_DIR, f), 'utf8')
     .replace(INCLUDE_RE, (_, name) => fs.readFileSync(path.join(SCRIPT_DIR, name), 'utf8'));
