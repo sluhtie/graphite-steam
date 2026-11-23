@@ -46,7 +46,9 @@
 		'.game_purchase_action', '#category_block', '.details_block',
 		'.recommendation_noinfo', '#shareEmbedRow', '.sysreq_tabs', '.game_area_play_stats',
 		'.game_area_already_owned', '.game_area_purchase_not_refundable',
-		'.steam_curators_block .block_header'
+		'.steam_curators_block .block_header',
+		// search page: filter column and result rows (web-search.css)
+		'#additional_search_options', '#search_resultsRows', '.searchbar'
 	].join(',');
 
 	function recolor(el) {

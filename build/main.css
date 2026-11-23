@@ -1111,7 +1111,7 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	box-shadow: none !important;
 }
 ._1Q2q_tQ9_Eq8YdEHNAHS3F ._1SQ30LQnUhED7sXI79rmas,
-.S2Fu9HxHCA5MaCLGrN2ib {
+.S2Fu9HxHCA5MaCLGrN2ib ._19LfMT7PFWg2xHOqNjR99q {
 	color: var(--gr-text-3) !important;
 	font-size: 11.5px !important;
 	font-weight: 600 !important;
@@ -1149,6 +1149,47 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 ._1AYE16384J_ecLpN0sEYc5 {
 	border: 1px solid var(--gr-border) !important;
 }
+
+/* feed: calmer days and cards */
+.S2Fu9HxHCA5MaCLGrN2ib {
+	margin-bottom: 20px !important;
+	padding-top: 0 !important;
+	letter-spacing: normal !important;
+}
+.S2Fu9HxHCA5MaCLGrN2ib ._19LfMT7PFWg2xHOqNjR99q {
+	margin-bottom: 8px !important;
+	font-size: 11px !important;
+	text-transform: uppercase;
+}
+._1wJJQwnV-ssGrL0xveFujy {
+	align-items: center;
+	padding: 12px 14px !important;
+}
+._1Cva_kor3lWBIoeu9cQxJq {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+._1ujzuoxGhLunHZQqHAqRgg {
+	margin-bottom: 2px;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+._1gljEIuhbsQpFCWuVhdKTJ {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+.Ru7OBQzSxqIo3jIsbtV9g {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	letter-spacing: normal !important;
+}
 ._1JlC29Ic6L-QvL-39X_d-X {
 	background: var(--gr-surface-2) !important;
 	border: 1px solid var(--gr-border) !important;
@@ -1169,6 +1210,16 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	border: 1px solid var(--gr-border) !important;
 	border-radius: var(--gr-radius) !important;
 	box-shadow: none !important;
+}
+.v66w8s0IBeRURM9hD5nAw ._2T8UwmbZ9jJzntqjQU4czU {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.v66w8s0IBeRURM9hD5nAw ._2d9pc_ziCjBFV-KGQ-nsCh {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.5 !important;
 }
 
 /* Community content placeholders */
@@ -1539,6 +1590,130 @@ hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
 	border: none !important;
 }
 
+/* bell dropdown and its entries */
+/* Notifications: the bell dropdown in the title bar and the desktop toasts.
+   Both use the same entry templates. */
+
+/* --- Bell dropdown --------------------------------------------------------------- */
+.NotificationHeader {
+	align-items: center;
+	margin-bottom: 4px;
+	padding: 6px 4px 10px 8px !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.AllNotificationsTitle {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+}
+.AllNotificationsButton {
+	height: 28px;
+	padding: 0 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.AllNotificationsButton:hover {
+	background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3)) !important;
+}
+.EmptyNotificationsCtn {
+	padding: 18px 16px 16px !important;
+	font-family: var(--gr-font) !important;
+}
+.EmptyNotificationsTitle {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.EmptyNotificationsBody {
+	padding-top: 6px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 1.5;
+}
+
+/* --- Entries (bell list, "all notifications", toasts) ----------------------------------- */
+:is(._1GcAugE5c4nbBUwrA4_xwS,._3B8wRA4H7e_oSksYNqpSPv,._2uW9K6fqc6jZX1XBjnLjw,.jD4XY_gqDiLlX0jZqK1MA),
+:is(.j9jQA6QaLJ23lyfuo9nY6,._3k90ug209sE23xAMqcM74s,.alS2LW_qAwNkYk_GPUC_3,._1-8YObrVay-md19IJJ5mDK),
+:is(._1xvIUtLkTrdEk2Ob1MqFcQ,.QFW0BtI4l77AFmv1xLAkx,.d9RJTj9G8qU-U9-he2cQx,._3Ak7cNRtzpDWtFgnn6n0-J),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) {
+	border-radius: var(--gr-radius-sm);
+	font-family: var(--gr-font) !important;
+}
+:is(._1GcAugE5c4nbBUwrA4_xwS,._3B8wRA4H7e_oSksYNqpSPv,._2uW9K6fqc6jZX1XBjnLjw,.jD4XY_gqDiLlX0jZqK1MA):hover,
+:is(.j9jQA6QaLJ23lyfuo9nY6,._3k90ug209sE23xAMqcM74s,.alS2LW_qAwNkYk_GPUC_3,._1-8YObrVay-md19IJJ5mDK):hover,
+:is(._1xvIUtLkTrdEk2Ob1MqFcQ,.QFW0BtI4l77AFmv1xLAkx,.d9RJTj9G8qU-U9-he2cQx,._3Ak7cNRtzpDWtFgnn6n0-J):hover {
+	background: var(--gr-hover) !important;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._1KIwOtwkYQUtRoPyxlh3G-,._1VRx9qVxigUC4qeM0NWNMR,._3n8vALReUk851YHiEiWEfQ,._32niVn3s7EKoKY0-pASwDJ),
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._1KIwOtwkYQUtRoPyxlh3G-,._1VRx9qVxigUC4qeM0NWNMR,._3n8vALReUk851YHiEiWEfQ,._32niVn3s7EKoKY0-pASwDJ) img,
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._1KIwOtwkYQUtRoPyxlh3G-,._1VRx9qVxigUC4qeM0NWNMR,._3n8vALReUk851YHiEiWEfQ,._32niVn3s7EKoKY0-pASwDJ),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._1KIwOtwkYQUtRoPyxlh3G-,._1VRx9qVxigUC4qeM0NWNMR,._3n8vALReUk851YHiEiWEfQ,._32niVn3s7EKoKY0-pASwDJ) img {
+	border-radius: 8px;
+	overflow: hidden;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._18PwvOcpWfW3M8j2-bEPPJ,._2MGSmn9lIFnmLVIX49POSx,._2x6qMHeQndH78e6sL2XHk_,._3qzN6IWtviRjB1kzFOzHMF),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._18PwvOcpWfW3M8j2-bEPPJ,._2MGSmn9lIFnmLVIX49POSx,._2x6qMHeQndH78e6sL2XHk_,._3qzN6IWtviRjB1kzFOzHMF) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.02em;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._2F0wqsu2mqsHxBSJcu1sPJ,._2auM-VHPU-KKomAWyuWrSV,._1piyUE09t3QXktcD3FrCwJ,.opgc6NZ8PywRs05bi__E7),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._2F0wqsu2mqsHxBSJcu1sPJ,._2auM-VHPU-KKomAWyuWrSV,._1piyUE09t3QXktcD3FrCwJ,.opgc6NZ8PywRs05bi__E7) {
+	color: var(--gr-text-3) !important;
+	fill: var(--gr-text-3) !important;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._3fUrGm-WHq3qxIpSqRZDgc,._26v9mHAi56x63OwY-jxett,.Wh50moO-nKvfE3l4Buav,.zB56AM55vMjPKSZPL0A24),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._3fUrGm-WHq3qxIpSqRZDgc,._26v9mHAi56x63OwY-jxett,.Wh50moO-nKvfE3l4Buav,.zB56AM55vMjPKSZPL0A24) {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._2yUEtF_eCucoxdu85zlOCp,._3hEeummFKRey8l5VXxZwxz,._2T5BxMT87QHfYWXDHFzpT1,.EVwRp-YAbTHPb2cfgH-Mu),
+:is(._3ENh9LzRnZgfTyfxp_J2rr,._2NdiftmP-B3C4LPWnNGTCB,.QbSr4hMpMfp0Qtsg4qOh5,.vW8HMuHYS7fdibpUYwTg3) :is(._2yUEtF_eCucoxdu85zlOCp,._3hEeummFKRey8l5VXxZwxz,._2T5BxMT87QHfYWXDHFzpT1,.EVwRp-YAbTHPb2cfgH-Mu) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12px !important;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._26rvbcKFCQjLKx-pD7BhvY,._7XKFnSNjW_tHfyxaezoD3,.w1Bf_xO8scHETzsfr2HtM,._3q7nNrnxIUlXvIZkxi5mom) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._2zZKXEnYcEZsL5OGHzkKv2,.CRYjulQaQOjokS7b_8cOH,.sdjVIgKSOKqyi7O2VDy70,.Mw9um1iqqk5o-lFCRUwbG) {
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600;
+}
+:is(._2yhmcyeUOyM8lt__Skbk9O,._30fVm4Rsel-4nUKEiPJgz9,._1lqXpJpRlYvyM2fBx6beHd,._1hFrV3_0BponiGRcGE_jg3) :is(._2XSwzNWGiJvW0zTgqT0DUI,._10165iFPxrqzt0kfV00tbu,._3xh1N-yvA3u7rLrq-DYZ1U,._3uw_GTY6HwY9Tq23mBDutA) {
+	color: var(--gr-tx-ingame, #a3d16a) !important;
+}
+
+/* --- Desktop toast window ----------------------------------------------------------------- */
+._1OOQPJx0nCNP9ME9toCmV7 {
+	box-sizing: border-box;
+	border: 1px solid var(--gr-border);
+	background: var(--gr-surface-2) !important;
+}
+/* no blue hover glow, no Steam logo watermark */
+._1OOQPJx0nCNP9ME9toCmV7::before,
+._1OOQPJx0nCNP9ME9toCmV7 ._3RkGkNRNheAkoRA3migph5 {
+	display: none !important;
+}
+._1OOQPJx0nCNP9ME9toCmV7:hover {
+	background: var(--gr-surface-3) !important;
+}
+
+
 /* --- Account menu ------------------------------------------------------------------------ */
 ._11phBiBefcVQdzrnrezkKa {
 	color: var(--gr-accent) !important;
@@ -1688,11 +1863,17 @@ body.ModalDialogBody,
 }
 
 /* --- Paged settings dialog ------------------------------------------------- */
+/* page list = the 2.0 side navigation: 34px rows, 18px icons, the open page
+   lifted with an accent icon. Rows keep their height (Steam lets them shrink
+   to fit the window, which cut off the last entries); the list scrolls. */
 .PagedSettingsDialog_PageListColumn {
 	background: var(--gr-bg) !important;
 	border-right: 1px solid var(--gr-border);
+	overflow-y: auto !important;
+	font-family: var(--gr-font) !important;
 }
 .PagedSettingsDialog_Title {
+	padding: 0 14px 0 16px !important;
 	color: var(--gr-text) !important;
 	font-size: 15px !important;
 	font-weight: 600 !important;
@@ -1700,12 +1881,18 @@ body.ModalDialogBody,
 	letter-spacing: -0.01em !important;
 }
 .PagedSettingsDialog_PageListItem {
-	color: var(--gr-text-2) !important;
-	background: transparent !important;
-	border-radius: var(--gr-radius-sm) !important;
-	margin: 1px 8px !important;
+	flex-shrink: 0 !important;
+	box-sizing: border-box !important;
+	gap: 10px;
 	width: auto !important;
 	height: 34px !important;
+	margin: 1px 8px !important;
+	padding: 0 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13.5px !important;
+	font-weight: 400 !important;
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
 .PagedSettingsDialog_PageListItem:hover {
@@ -1713,20 +1900,32 @@ body.ModalDialogBody,
 	color: var(--gr-text) !important;
 }
 .PagedSettingsDialog_PageListItem.Active {
-	background: var(--gr-active) !important;
+	background: var(--gr-surface-2) !important;
 	color: var(--gr-text) !important;
 }
 .PagedSettingsDialog_PageListItem .PageListItem_Icon {
-	opacity: 0.7;
+	flex: none;
+	width: 18px !important;
+	height: 18px !important;
+	margin: 0 !important;
+	color: var(--gr-text-3) !important;
+	opacity: 1;
+}
+.PagedSettingsDialog_PageListItem:hover .PageListItem_Icon {
+	color: var(--gr-text-2) !important;
 }
 .PagedSettingsDialog_PageListItem.Active .PageListItem_Icon {
-	opacity: 1;
-	color: var(--gr-accent);
+	color: var(--gr-accent) !important;
 }
 .PagedSettingsDialog_PageListItem .PageListItem_Title {
-	font-size: 13px !important;
+	font-size: 13.5px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .PageListSeparator {
+	flex-shrink: 0;
+	margin: 8px 16px !important;
 	background: var(--gr-border) !important;
 }
 .PagedSettingDialog_ContentColumn,

@@ -60,6 +60,462 @@
 })();
 
 /*
+ * Store front: Steam's featured carousel becomes one large hero card - the
+ * game's library art and logo, its short description and tags, the price,
+ * "add to cart" and the wishlist heart, with dots and arrows to page through.
+ * Data comes from the page itself (GStoreItemData, GDynamicStore) and the
+ * store's appdetails API; cart and wishlist use Steam's own functions.
+ */
+(() => {
+	if (location.hostname !== 'store.steampowered.com' || location.pathname !== '/') return;
+	const de = (document.documentElement.lang || '').startsWith('de');
+	const T = de
+		? { cart: 'In den Warenkorb', inCart: 'Im Warenkorb', adding: 'Wird hinzugefügt …', owned: 'In der Bibliothek', free: 'Kostenlos spielen', view: 'Ansehen', wish: 'Zur Wunschliste hinzufügen', unwish: 'Von der Wunschliste entfernen', prev: 'Vorheriges', next: 'Nächstes', cats: 'Stöbern nach Kategorie', action: 'Action', adventure: 'Abenteuer', rpg: 'Rollenspiel', sim: 'Simulation', strategy: 'Strategie', sports: 'Sport & Rennspiele', free2p: 'Kostenlos spielbar', specials: 'Angebote' }
+		: { cart: 'Add to cart', inCart: 'In cart', adding: 'Adding …', owned: 'In library', free: 'Play for free', view: 'View', wish: 'Add to wishlist', unwish: 'Remove from wishlist', prev: 'Previous', next: 'Next', cats: 'Browse by category', action: 'Action', adventure: 'Adventure', rpg: 'Role-playing', sim: 'Simulation', strategy: 'Strategy', sports: 'Sports & racing', free2p: 'Free to play', specials: 'Specials' };
+	const ART = 'https://shared.steamstatic.com/store_item_assets/steam/apps/';
+	const ICON = {
+		heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+		left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+		right: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+	};
+	const css = `
+		html.gr-shero-on #home_maincap_v7 { display: none !important; }
+		.gr-shero-wrap { box-sizing: border-box; max-width: 1200px; margin: 24px auto 0; padding: 0; font-family: var(--gr-font); color: var(--gr-text); }
+		.gr-shero { position: relative; height: 400px; border-radius: 14px; overflow: hidden; border: 1px solid var(--gr-border); background: var(--gr-bg); cursor: pointer; }
+		.gr-shero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; transition: opacity .35s ease; }
+		.gr-shero-img.gr-fade { opacity: 0; }
+		.gr-shero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11,11,13,.94) 0%, rgba(11,11,13,.62) 44%, rgba(11,11,13,0) 76%); }
+		.gr-shero-body { position: relative; z-index: 1; box-sizing: border-box; height: 100%; max-width: 520px; padding: 32px 34px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; }
+		.gr-shero-label { color: #c9c9d1; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+		.gr-shero-label i { font-style: normal; color: #9a9aa4; letter-spacing: .02em; text-transform: none; font-weight: 500; }
+		.gr-shero-label i::before { content: "·"; margin: 0 6px 0 2px; }
+		.gr-shero-logo { align-self: flex-start; max-width: 300px; max-height: 96px; object-fit: contain; object-position: left bottom; }
+		.gr-shero-name { color: #fff; font-size: 30px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; }
+		.gr-shero-blurb { margin: 0; color: #d4d4da; font-size: 13.5px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.9em; }
+		.gr-shero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+		.gr-shero-tags span { padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.1); color: #ececf0; font-size: 12px; }
+		.gr-shero-buy { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+		.gr-shero-price { height: 40px; padding: 0 14px; box-sizing: border-box; border-radius: 10px; background: rgba(11,11,13,.6); border: 1px solid rgba(255,255,255,.12); display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; }
+		.gr-shero-price:empty { display: none; }
+		.gr-shero-price b { padding: 1px 6px; border-radius: 5px; background: #4c6b22; color: #beee11; font-size: 13px; }
+		.gr-shero-price s { color: #9a9aa4; font-size: 13px; font-weight: 400; }
+		.gr-shero button { font-family: inherit; cursor: pointer; }
+		.gr-shero button:focus { outline: none; }
+		.gr-shero button:focus-visible { outline: 2px solid var(--gr-accent); outline-offset: 2px; }
+		.gr-shero-cart { height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: var(--gr-accent); color: var(--gr-bg); font-size: 14px; font-weight: 600; white-space: nowrap; transition: filter .15s ease; }
+		.gr-shero-cart:hover { filter: brightness(1.08); }
+		.gr-shero-cart.gr-quiet { background: rgba(28,28,34,.9); color: var(--gr-text); border: 1px solid rgba(255,255,255,.12); }
+		.gr-shero-icon, .gr-shero-nav button { display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.14); color: #ececf0; transition: background .15s ease; }
+		.gr-shero-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,.08); }
+		.gr-shero-icon:hover, .gr-shero-nav button:hover { background: rgba(255,255,255,.16); }
+		.gr-shero-icon svg { width: 18px; height: 18px; }
+		.gr-shero-icon.gr-on { color: #ff7a90; }
+		.gr-shero-icon.gr-on svg { fill: currentColor; }
+		.gr-shero-icon[hidden] { display: none; }
+		.gr-shero-nav { position: absolute; z-index: 1; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 10px; }
+		.gr-shero-dots { display: flex; gap: 6px; }
+		.gr-shero-dots button { width: 6px; height: 6px; padding: 0; border: 0 !important; border-radius: 3px; background: rgba(255,255,255,.35) !important; transition: width .2s ease, background .2s ease; }
+		.gr-shero-dots button.gr-on { width: 22px; background: #ececf0 !important; }
+		.gr-shero-nav > button { width: 36px; height: 36px; border-radius: 50%; background: rgba(11,11,13,.5); }
+		.gr-shero-nav > button svg { width: 16px; height: 16px; }
+		.gr-shero-cats { margin-top: 28px; }
+		.gr-shero-cats h2 { margin: 0 0 12px !important; padding: 0 !important; color: var(--gr-text); font-size: 16px; font-weight: 600; letter-spacing: -.01em; text-transform: none; }
+		.gr-shero-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+		.gr-shero-chips a { height: 34px; padding: 0 14px; box-sizing: border-box; display: inline-flex; align-items: center; border: 1px solid var(--gr-border); border-radius: 999px; background: var(--gr-surface-2); color: var(--gr-text-2) !important; font-size: 13px; text-decoration: none; transition: background .15s ease, color .15s ease; }
+		.gr-shero-chips a:hover { background: var(--gr-surface-3, #1c1c22); color: var(--gr-text) !important; }
+	`;
+	const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+	const parse = (html) => new DOMParser().parseFromString(String(html || ''), 'text/html');
+	const details = {};
+	const getDetails = (id) =>
+		details[id] ||
+		(details[id] = fetch('/api/appdetails?appids=' + id + '&l=' + (de ? 'german' : 'english'))
+			.then((r) => r.json())
+			.then((j) => (j && j[id] && j[id].success ? j[id].data : null))
+			.catch(() => null));
+	const priceHtml = (block) => {
+		const d = parse(block);
+		const fin = d.querySelector('.discount_final_price');
+		if (!fin) return '';
+		const pct = d.querySelector('.discount_pct');
+		const orig = d.querySelector('.discount_original_price');
+		return (pct ? '<b>' + esc(pct.textContent.trim()) + '</b>' : '') + (orig ? '<s>' + esc(orig.textContent.trim()) + '</s>' : '') + esc(fin.textContent.trim());
+	};
+	const store = () => window.GDynamicStore;
+	const owned = (id) => { try { return !!store()?.BIsAppOwned(+id); } catch { return false; } };
+	const wished = (id) => { try { return !!store()?.BIsAppOnWishlist(+id); } catch { return false; } };
+	const inCart = (id) => { const c = store()?.s_rgAppsInCart; return !!(c && (Array.isArray(c) ? c.includes(+id) : c[id])); };
+
+	let items = [];
+	let idx = 0;
+	let timer = 0;
+	let root = null;
+
+	function collect() {
+		const car = document.getElementById('home_maincap_v7');
+		const data = window.GStoreItemData?.rgAppData;
+		if (!car || !data) return [];
+		const seen = new Set();
+		const out = [];
+		for (const c of car.querySelectorAll('.store_main_capsule[data-ds-appid]')) {
+			const id = c.dataset.dsAppid;
+			if (seen.has(id) || !data[id]) continue;
+			seen.add(id);
+			const d = data[id];
+			// "Topseller" / "Platz #2 in Ihrer Region", "Empfohlen", "Kostenlos spielen bis ...":
+			// the text pieces of the reason, without its tag list
+			const parts = [];
+			const main = c.querySelector('.reason .main') || c.querySelector('.reason');
+			if (main) {
+				const walk = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
+				for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+					const t = n.textContent.trim();
+					if (t && !n.parentElement.closest('.tags')) parts.push(t);
+				}
+			}
+			if (parts[1] && /^[,:;]/.test(parts[1])) parts.length = 1;
+			out.push({
+				id,
+				href: c.href,
+				name: d.name,
+				tags: (d.tags || []).slice(0, 3),
+				price: priceHtml(d.discount_block),
+				free: /data-price-final="0"/.test(d.discount_block || ''),
+				shot: c.querySelector('.large_screenshot')?.dataset.backgroundImageUrl || '',
+				cap: d.main_capsule_2x || d.main_capsule || '',
+				label: parts[0] || '',
+				sub: parts.slice(1).join(' ').replace(/\s+/g, ' '),
+			});
+		}
+		return out;
+	}
+
+	function buttons() {
+		const it = items[idx];
+		const cart = root.querySelector('.gr-shero-cart');
+		const wish = root.querySelector('.gr-shero-icon');
+		const isOwned = owned(it.id);
+		cart.classList.toggle('gr-quiet', isOwned || inCart(it.id));
+		cart.textContent = isOwned ? T.owned : inCart(it.id) ? T.inCart : it.free ? T.free : T.cart;
+		wish.hidden = isOwned;
+		const w = wished(it.id);
+		wish.classList.toggle('gr-on', w);
+		wish.title = w ? T.unwish : T.wish;
+		wish.setAttribute('aria-label', wish.title);
+	}
+
+	function show(i, fade = true) {
+		idx = (i + items.length) % items.length;
+		const it = items[idx];
+		const img = root.querySelector('.gr-shero-img');
+		const set = () => {
+			const srcs = [ART + it.id + '/library_hero.jpg', it.shot, it.cap].filter(Boolean);
+			let n = 0;
+			img.onerror = () => { if (++n < srcs.length) img.src = srcs[n]; };
+			img.onload = () => img.classList.remove('gr-fade');
+			img.src = srcs[0];
+		};
+		if (fade) { img.classList.add('gr-fade'); setTimeout(set, 180); } else set();
+		root.querySelector('.gr-shero-label').innerHTML = esc(it.label) + (it.sub ? ' <i>' + esc(it.sub) + '</i>' : '');
+		const logo = root.querySelector('.gr-shero-logo');
+		const name = root.querySelector('.gr-shero-name');
+		name.textContent = it.name;
+		name.hidden = true;
+		logo.hidden = false;
+		logo.alt = it.name;
+		logo.onerror = () => { logo.hidden = true; name.hidden = false; };
+		logo.src = ART + it.id + '/logo.png';
+		root.querySelector('.gr-shero-tags').innerHTML = it.tags.map((t) => '<span>' + esc(t) + '</span>').join('');
+		root.querySelector('.gr-shero-price').innerHTML = it.free ? '' : it.price;
+		const blurb = root.querySelector('.gr-shero-blurb');
+		blurb.textContent = '';
+		getDetails(it.id).then((d) => {
+			if (items[idx] !== it || !d) return;
+			blurb.textContent = parse(d.short_description).body.textContent.trim();
+		});
+		root.querySelectorAll('.gr-shero-dots button').forEach((b, n) => b.classList.toggle('gr-on', n === idx));
+		buttons();
+	}
+
+	function play() {
+		clearInterval(timer);
+		timer = setInterval(() => { if (!root.matches(':hover') && !document.hidden) show(idx + 1); }, 8000);
+	}
+
+	function addToCart(it, btn) {
+		if (owned(it.id)) { location.href = 'steam://nav/games/details/' + it.id; return; }
+		if (inCart(it.id)) { location.href = '/cart/'; return; }
+		if (it.free || typeof window.AddItemToCart !== 'function') { location.href = it.href; return; }
+		btn.textContent = T.adding;
+		getDetails(it.id).then((d) => {
+			const pkg = d?.packages?.[0];
+			if (!pkg) { location.href = it.href; return; }
+			window.AddItemToCart(pkg);
+			// the store updates GDynamicStore once its request is done
+			let n = 0;
+			const check = setInterval(() => { if (inCart(it.id) || ++n > 20) { clearInterval(check); if (items[idx] === it) buttons(); } }, 250);
+		});
+	}
+
+	function toggleWish(it, btn) {
+		const s = store();
+		if (!s?.ModifyWishlist || !window.$J) { location.href = it.href; return; }
+		const remove = wished(it.id);
+		s.ModifyWishlist(window.$J(btn), +it.id, remove, () => { if (items[idx] === it) buttons(); }, () => { if (items[idx] === it) buttons(); });
+		btn.classList.toggle('gr-on', !remove);
+	}
+
+	function mount() {
+		if (root || document.querySelector('.gr-shero-wrap')) return true;
+		items = collect();
+		if (!items.length) return false;
+		const car = document.getElementById('home_maincap_v7');
+		const st = document.createElement('style');
+		st.id = 'gr-shero-css';
+		st.textContent = css;
+		document.head.append(st);
+		const wrap = document.createElement('div');
+		wrap.className = 'gr-shero-wrap';
+		wrap.innerHTML =
+			'<section class="gr-shero" role="region" aria-roledescription="carousel">' +
+			'<img class="gr-shero-img" alt="">' +
+			'<div class="gr-shero-body">' +
+			'<span class="gr-shero-label"></span>' +
+			'<img class="gr-shero-logo" alt=""><span class="gr-shero-name" hidden></span>' +
+			'<p class="gr-shero-blurb"></p>' +
+			'<div class="gr-shero-tags"></div>' +
+			'<div class="gr-shero-buy"><span class="gr-shero-price"></span><button type="button" class="gr-shero-cart"></button>' +
+			'<button type="button" class="gr-shero-icon">' + ICON.heart + '</button></div>' +
+			'</div>' +
+			'<div class="gr-shero-nav"><div class="gr-shero-dots">' +
+			items.map((it) => '<button type="button" aria-label="' + esc(it.name) + '"></button>').join('') +
+			'</div><button type="button" class="gr-shero-prev" aria-label="' + T.prev + '">' + ICON.left + '</button>' +
+			'<button type="button" class="gr-shero-next" aria-label="' + T.next + '">' + ICON.right + '</button></div>' +
+			'</section>' +
+			'<div class="gr-shero-cats"><h2>' + T.cats + '</h2><div class="gr-shero-chips">' +
+			[['action', '/category/action/'], ['adventure', '/category/adventure/'], ['rpg', '/category/rpg/'], ['sim', '/category/simulation/'], ['strategy', '/category/strategy/'], ['sports', '/category/sports_and_racing/'], ['free2p', '/genre/Free%20to%20Play/'], ['specials', '/specials/']]
+				.map(([k, href]) => '<a href="' + href + '">' + T[k] + '</a>')
+				.join('') +
+			'</div></div>';
+		car.before(wrap);
+		document.documentElement.classList.add('gr-shero-on');
+		root = wrap.querySelector('.gr-shero');
+		root.addEventListener('click', (e) => {
+			const b = e.target.closest('button');
+			const it = items[idx];
+			if (!b) { location.href = it.href; return; }
+			e.stopPropagation();
+			if (b.classList.contains('gr-shero-prev')) { show(idx - 1); play(); }
+			else if (b.classList.contains('gr-shero-next')) { show(idx + 1); play(); }
+			else if (b.classList.contains('gr-shero-cart')) addToCart(it, b);
+			else if (b.classList.contains('gr-shero-icon')) toggleWish(it, b);
+			else if (b.parentElement.classList.contains('gr-shero-dots')) { show([...b.parentElement.children].indexOf(b)); play(); }
+		});
+		show(0, false);
+		play();
+		// owned / wishlist / cart state arrives a bit later
+		setTimeout(buttons, 1500);
+		setTimeout(buttons, 4000);
+		return true;
+	}
+
+	let tries = 0;
+	const attempt = () => { if (!mount() && ++tries < 40) setTimeout(attempt, 250); };
+	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attempt, { once: true });
+	else attempt();
+})();
+
+/*
+ * Points shop (store.steampowered.com/points): a Graphite page on top of
+ * Valve's React shop. Its class names are hashed per build, so the parts are
+ * found by structure and marked with data-gr-ps; the CSS below styles those
+ * marks. Steam's comic banner gives way to a calm header with the balance.
+ */
+(() => {
+	if (location.hostname !== 'store.steampowered.com' || !location.pathname.startsWith('/points')) return;
+	const de = (document.documentElement.lang || '').startsWith('de');
+	const T = de
+		? { title: 'Punkteshop', lead: 'Profil, Chat und Steam nach deinem Geschmack, bezahlt mit Punkten aus deinen Käufen.', balance: 'Deine Punkte', how: 'So funktionieren Punkte', history: 'Punkteverlauf' }
+		: { title: 'Points Shop', lead: 'Make your profile, chat and Steam yours, paid with points from your purchases.', balance: 'Your points', how: 'How points work', history: 'Points history' };
+	const css = `
+		[data-gr-ps="banner"] { display: none !important; }
+		.gr-ps-hero { box-sizing: border-box; display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin: 28px 0 24px; padding: 28px 30px; border: 1px solid var(--gr-border); border-radius: 14px; font-family: var(--gr-font); color: var(--gr-text);
+			background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--gr-accent) 22%, transparent) 0%, transparent 55%), var(--gr-surface-2); }
+		.gr-ps-hero-text { flex: 1 1 320px; min-width: 0; }
+		.gr-ps-hero h1 { margin: 0 0 6px; color: var(--gr-text); font-size: 28px; font-weight: 700; letter-spacing: -.03em; text-transform: none; }
+		.gr-ps-hero p { margin: 0; color: var(--gr-text-2); font-size: 14px; line-height: 1.5; }
+		.gr-ps-hero-side { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+		.gr-ps-balance { display: flex; flex-direction: column; gap: 2px; padding: 10px 16px; border-radius: 12px; background: rgba(11,11,13,.5); border: 1px solid var(--gr-border); }
+		.gr-ps-balance span { color: var(--gr-text-3); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+		.gr-ps-balance b { color: var(--gr-text); font-size: 22px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+		.gr-ps-hero a.gr-ps-btn { height: 36px; padding: 0 14px; display: inline-flex; align-items: center; border-radius: var(--gr-radius-sm); background: var(--gr-surface-3, #1c1c22); color: var(--gr-text) !important; font-size: 13px; font-weight: 500; text-decoration: none; transition: background .15s ease; }
+		.gr-ps-hero a.gr-ps-btn:hover { background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3, #1c1c22)); }
+
+		/* side menu */
+		[data-gr-ps="nav"] { background: transparent !important; }
+		[data-gr-ps="navlabel"] { margin: 16px 0 4px !important; padding: 0 8px !important; color: var(--gr-text-3) !important; font-family: var(--gr-font) !important; font-size: 11px !important; font-weight: 600 !important; letter-spacing: .06em !important; text-transform: uppercase !important; }
+		[data-gr-ps="navlink"] { display: flex !important; align-items: center; min-height: 32px; box-sizing: border-box; padding: 0 8px !important; border-radius: var(--gr-radius-sm); transition: background .15s ease; }
+		[data-gr-ps="navlink"], [data-gr-ps="navlink"] * { color: var(--gr-text-2) !important; font-family: var(--gr-font) !important; font-size: 13px !important; }
+		[data-gr-ps="navlink"]:hover { background: var(--gr-hover); }
+		[data-gr-ps="navlink"]:hover, [data-gr-ps="navlink"]:hover * { color: var(--gr-text) !important; }
+		[data-gr-ps="navbalance"] { display: none !important; }
+
+		/* featured sections: dark cards instead of blue-tinted banners */
+		[data-gr-ps="feature"] { border: 1px solid var(--gr-border) !important; border-radius: 14px !important; overflow: hidden; background-color: var(--gr-surface-2) !important; box-shadow: none !important; }
+		[data-gr-ps="featuretitle"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 22px !important; font-weight: 700 !important; letter-spacing: -.02em !important; }
+
+		/* rows: title, "show all", line, arrows */
+		[data-gr-ps="rowtitle"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 16px !important; font-weight: 600 !important; letter-spacing: -.01em !important; text-transform: none !important; }
+		[data-gr-ps="pill"] { height: 26px; padding: 0 10px !important; border: 0 !important; border-radius: 999px !important; background: var(--gr-surface-2) !important; color: var(--gr-text-2) !important; font-family: var(--gr-font) !important; font-size: 12px !important; letter-spacing: 0 !important; text-transform: none !important; }
+		[data-gr-ps="pill"]:hover { background: var(--gr-surface-3, #1c1c22) !important; color: var(--gr-text) !important; }
+		[data-gr-ps="rowline"] { background: var(--gr-border) !important; opacity: 1 !important; }
+
+		/* item cards */
+		[data-gr-ps="card"] { border: 1px solid var(--gr-border) !important; border-radius: 12px !important; overflow: hidden; background: var(--gr-surface-2) !important; box-shadow: none !important; transition: transform .18s ease, border-color .18s ease, background .18s ease !important; }
+		[data-gr-ps="card"]:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--gr-text) 18%, transparent) !important; background: var(--gr-surface-3, #1c1c22) !important; }
+		[data-gr-ps="cardinfo"] { background: transparent !important; background-image: none !important; }
+		[data-gr-ps="cardname"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0 !important; text-transform: none !important; background: none !important; -webkit-text-fill-color: currentColor !important; }
+		[data-gr-ps="price"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-weight: 600 !important; font-variant-numeric: tabular-nums; }
+	`;
+
+	const leafText = (root, re) => [...root.querySelectorAll('*')].find((e) => e.children.length === 0 && re.test(e.textContent.trim()));
+	// Graphite's web recolor (web-recolor.js) pins colors inline with !important;
+	// on the parts styled here, drop those and tell it to leave them alone
+	const own = (el) => {
+		for (const e of [el, ...el.querySelectorAll('*')].slice(0, 300)) {
+			if (e.style) for (const prop of [...e.style]) if (e.style.getPropertyPriority(prop) === 'important') e.style.removeProperty(prop);
+			if (e.dataset) e.dataset.grRecolored = '1';
+		}
+	};
+	const mark = (el, v) => {
+		if (!el || el.dataset.grPs === v) return;
+		el.dataset.grPs = v;
+		own(el);
+	};
+	let hero = null;
+
+	function header() {
+		const how = [...document.querySelectorAll('a[href*="howitworks"]')].find((a) => !a.closest('.gr-ps-hero, [data-gr-ps="banner"]') && a.getBoundingClientRect().top < 300);
+		if (!how && document.querySelector('[data-gr-ps="banner"]') && hero && hero.isConnected) return;
+		if (!how) return;
+		// the banner: the first ancestor that is wide (the page column) - its parent is the column
+		let banner = how;
+		while (banner.parentElement && banner.parentElement.getBoundingClientRect().height < 400) banner = banner.parentElement;
+		if (banner === document.body) return;
+		mark(banner, 'banner');
+		if (!hero || !hero.isConnected) {
+			hero = document.createElement('section');
+			hero.className = 'gr-ps-hero';
+			hero.innerHTML =
+				'<div class="gr-ps-hero-text"><h1>' + T.title + '</h1><p>' + T.lead + '</p></div>' +
+				'<div class="gr-ps-hero-side"><div class="gr-ps-balance"><span>' + T.balance + '</span><b>–</b></div>' +
+				'<a class="gr-ps-btn" href="/points/howitworks">' + T.how + '</a>' +
+				'<a class="gr-ps-btn" href="/points/history">' + T.history + '</a></div>';
+			banner.before(hero);
+		}
+	}
+
+	function nav() {
+		const label = leafText(document, de ? /^Ihre Punkte$/i : /^Your Points$/i);
+		if (!label) return;
+		let box = label.closest('.Panel') || label.parentElement;
+		// include the coin icon next to it: climb while there is no other text
+		const own = box.textContent.trim();
+		while (box.parentElement && box.parentElement.textContent.trim() === own && box.parentElement.getBoundingClientRect().height < 120) box = box.parentElement;
+		mark(box, 'navbalance');
+		const value = [...box.querySelectorAll('*')].map((e) => (e.children.length === 0 ? e.textContent.trim() : '')).find((t) => /^[\d.,\s]+$/.test(t) && t.length > 0);
+		if (value && hero) hero.querySelector('.gr-ps-balance b').textContent = value;
+		// the whole menu column: climb while still narrow
+		let navRoot = box;
+		while (navRoot.parentElement && navRoot.parentElement.getBoundingClientRect().width < 320) navRoot = navRoot.parentElement;
+		mark(navRoot, 'nav');
+		for (const a of navRoot.querySelectorAll('a')) if (!a.contains(box)) mark(a, 'navlink');
+		for (const e of navRoot.querySelectorAll('div')) {
+			if (e.children.length || e.closest('a') || box.contains(e)) continue;
+			if (e.textContent.trim() && getComputedStyle(e).textTransform === 'uppercase') mark(e, 'navlabel');
+		}
+	}
+
+	function rows() {
+		for (const btn of document.querySelectorAll('a[href*="/points/shop/c/"] > button')) {
+			mark(btn, 'pill');
+			const wrap = btn.parentElement.parentElement;
+			const title = wrap && wrap.previousElementSibling;
+			if (title && !title.children.length) {
+				// featured sections have a large title, plain rows a small one
+				const big = parseFloat(getComputedStyle(title).fontSize) >= 24;
+				mark(title, big ? 'featuretitle' : 'rowtitle');
+				if (big) {
+					let sec = title;
+					for (let i = 0; i < 8 && sec.parentElement; i++) {
+						sec = sec.parentElement;
+						if (sec.getBoundingClientRect().height > 300) break;
+					}
+					mark(sec, 'feature');
+				}
+			}
+			const line = wrap && wrap.nextElementSibling;
+			if (line && !line.children.length && !line.textContent.trim()) mark(line, 'rowline');
+		}
+	}
+
+	// featured sections: a large title (Steam sets ~29px) over a background
+	function features() {
+		const col = document.querySelector('[data-gr-ps="nav"]');
+		for (const t of document.querySelectorAll('div')) {
+			if (t.children.length || t.dataset.grPs || (col && col.contains(t)) || t.closest('.gr-ps-hero')) continue;
+			if (!t.textContent.trim() || parseFloat(getComputedStyle(t).fontSize) < 24) continue;
+			mark(t, 'featuretitle');
+			let sec = t;
+			for (let i = 0; i < 8 && sec.parentElement; i++) {
+				sec = sec.parentElement;
+				if (sec.getBoundingClientRect().height > 300) break;
+			}
+			mark(sec, 'feature');
+			const btn = t.nextElementSibling && t.nextElementSibling.querySelector('button');
+			if (btn) mark(btn, 'pill');
+		}
+	}
+
+	function cards() {
+		for (const c of document.querySelectorAll('[role="button"].Panel')) {
+			if (c.dataset.grPs === 'card') continue;
+			const r = c.getBoundingClientRect();
+			if (r.width < 100 || r.width > 320 || !c.querySelector('img')) continue;
+			const price = leafText(c, /^\d{1,3}([.,\s]\d{3})*$/);
+			if (!price) continue;
+			mark(c, 'card');
+			mark(price, 'price');
+			const info = c.lastElementChild;
+			if (info && info.contains(price)) mark(info, 'cardinfo');
+			const name = [...c.querySelectorAll('div')].find((e) => e.children.length === 0 && e.textContent.trim() && e !== price && !/^\d/.test(e.textContent.trim()));
+			if (name) mark(name, 'cardname');
+		}
+	}
+
+	let queued = false;
+	const run = () => {
+		queued = false;
+		try { header(); nav(); rows(); features(); cards(); } catch (e) { /* page still building */ }
+	};
+	const start = () => {
+		const st = document.createElement('style');
+		st.id = 'gr-ps-css';
+		st.textContent = css;
+		document.head.append(st);
+		run();
+		new MutationObserver(() => {
+			if (queued) return;
+			queued = true;
+			setTimeout(run, 150);
+		}).observe(document.body, { childList: true, subtree: true });
+	};
+	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+	else start();
+})();
+
+
+/*
  * Graphite clean navigation.
  *
  * Runs in three places (skin.json "Navigation" option):
@@ -386,7 +842,7 @@
 		english: {
 			home: 'Home', library: 'Library', store: 'Store', community: 'Community', downloads: 'Downloads', settings: 'Settings',
 			search: 'Search your library and the store', searchStore: 'Search the store for', library_head: 'Library', none: 'No game in your library',
-			collections: 'Collections', notInstalled: 'Not installed', h: 'h', min: 'min',
+			collections: 'Collections', notInstalled: 'Not installed', storeHead: 'Store', free: 'Free', h: 'h', min: 'min',
 			discover: 'Discover', wishlist: 'Wishlist', points: 'Points Shop', cart: 'Cart', browse: 'Browse', newTrending: 'New & trending',
 			topSellers: 'Top sellers', specials: 'Specials', free: 'Free to play', categories: 'Categories',
 			catAction: 'Action', catAdventure: 'Adventure', catIndie: 'Indie', catRpg: 'RPG', catSim: 'Simulation', catStrategy: 'Strategy',
@@ -403,7 +859,7 @@
 		german: {
 			home: 'Startseite', library: 'Bibliothek', store: 'Shop', community: 'Community', downloads: 'Downloads', settings: 'Einstellungen',
 			search: 'Bibliothek und Shop durchsuchen', searchStore: 'Im Shop suchen nach', library_head: 'Bibliothek', none: 'Kein Spiel in deiner Bibliothek gefunden',
-			collections: 'Sammlungen', notInstalled: 'Nicht installiert', h: 'Std.', min: 'Min.',
+			collections: 'Sammlungen', notInstalled: 'Nicht installiert', storeHead: 'Shop', free: 'Kostenlos', h: 'Std.', min: 'Min.',
 			discover: 'Entdecken', wishlist: 'Wunschliste', points: 'Punkteshop', cart: 'Warenkorb', browse: 'Stöbern', newTrending: 'Neu & angesagt',
 			topSellers: 'Topseller', specials: 'Angebote', free: 'Kostenlos spielbar', categories: 'Kategorien',
 			catAction: 'Action', catAdventure: 'Abenteuer', catIndie: 'Indie', catRpg: 'Rollenspiel', catSim: 'Simulation', catStrategy: 'Strategie',
@@ -535,22 +991,88 @@
 	const games = () => {
 		try { return W.appStore.allApps.filter(a => a.visible_in_game_list !== false && (a.app_type === 1 || a.app_type === 4 || a.app_type === 1073741824)); } catch (e) { return []; }
 	};
+	// Store suggestions while typing. The store's web APIs are blocked (CORS) in
+	// this window, so this uses Steam's own StoreQuery.SearchSuggestions service
+	// over the client's connection, found once in Steam's module registry.
+	let storeQuery;
+	const getStoreQuery = () => {
+		if (storeQuery !== undefined) return storeQuery;
+		storeQuery = null;
+		try {
+			let req;
+			W.webpackChunksteamui.push([[Symbol('graphite')], {}, r => { req = r; }]);
+			const id = Object.keys(req.m).find(k => String(req.m[k]).includes('StoreQuery.SearchSuggestions#1'));
+			const mod = id ? req(id) : null;
+			storeQuery = (mod && Object.values(mod).find(v => v && typeof v === 'object' && typeof v.SearchSuggestions === 'function')) || null;
+		} catch (e) { storeQuery = null; }
+		return storeQuery;
+	};
+	const country = (() => { try { return new URL(W.location.href).searchParams.get('COUNTRY') || ''; } catch (e) { return ''; } })();
+	let storeItems = [];
+	let storeFor = '';
+	let storeAsked = '';
+	let storeTimer = 0;
+	const askStore = raw => {
+		const q = raw.toLowerCase();
+		if (storeAsked === q) return;
+		storeAsked = q;
+		clearTimeout(storeTimer);
+		if (q.length < 2) return;
+		storeTimer = setTimeout(async () => {
+			const ns = getStoreQuery();
+			if (!ns || storeAsked !== q) return;
+			try {
+				const res = await ns.SearchSuggestions(W.App.m_cm.GetServiceTransport(), {
+					search_term: raw, max_results: 6, use_spellcheck: true,
+					context: { language: steamLang, country_code: country },
+					data_request: { include_assets: true, include_basic_info: true, include_best_purchase_option: true },
+				});
+				if (storeAsked !== q) return;
+				storeItems = (res.Body().toObject().store_items || []).filter(i => i.visible !== false && i.name).map(i => {
+					const a = i.assets || {};
+					const p = i.best_purchase_option || {};
+					return {
+						appid: i.appid || i.id,
+						name: i.name,
+						dlc: i.type === 4,
+						img: a.small_capsule && a.asset_url_format ? 'https://shared.steamstatic.com/store_item_assets/' + a.asset_url_format.replace('${FILENAME}', a.small_capsule) : '',
+						price: i.is_free ? T.free : p.formatted_final_price || '',
+						disc: p.discount_pct || 0,
+					};
+				});
+				storeFor = q;
+				if (!pop.hidden && input.value.trim().toLowerCase() === q) renderPop();
+			} catch (e) { /* offline or service changed: library results only */ }
+		}, 220);
+	};
 	const renderPop = () => {
-		const q = input.value.trim().toLowerCase();
+		const raw = input.value.trim();
+		const q = raw.toLowerCase();
 		if (!q) { pop.hidden = true; return; }
-		results = games().filter(a => (a.display_name || '').toLowerCase().includes(q))
-			.sort((a, b) => (b.rt_last_time_played || 0) - (a.rt_last_time_played || 0)).slice(0, 6);
+		const lib = games().filter(a => (a.display_name || '').toLowerCase().includes(q))
+			.sort((a, b) => (b.rt_last_time_played || 0) - (a.rt_last_time_played || 0)).slice(0, 4);
+		const mine = new Set(games().map(a => a.appid));
+		const store = storeFor === q ? storeItems.filter(s => !mine.has(s.appid)).slice(0, 5) : [];
+		results = [...lib.map(a => ({ lib: a })), ...store.map(s => ({ store: s }))];
 		active = Math.min(active, Math.max(0, results.length - 1));
-		let icon = a => { try { return W.appStore.GetIconURLForApp(a) || ''; } catch (e) { return ''; } };
+		const icon = a => { try { return W.appStore.GetIconURLForApp(a) || ''; } catch (e) { return ''; } };
+		const on = i => (i === active ? ' gr-on' : '');
 		pop.innerHTML = `<div class="gr-search-head">${esc(T.library_head)}</div>`
-			+ (results.length ? results.map((a, i) => `<button type="button" class="gr-search-row${i === active ? ' gr-on' : ''}" data-i="${i}"><img src="${esc(icon(a))}" alt=""><b>${esc(a.display_name)}</b><small>${esc(a.installed ? hours(a.minutes_playtime_forever) : T.notInstalled)}</small></button>`).join('')
+			+ (lib.length ? lib.map((a, i) => `<button type="button" class="gr-search-row${on(i)}" data-i="${i}"><img src="${esc(icon(a))}" alt=""><b>${esc(a.display_name)}</b><small>${esc(a.installed ? hours(a.minutes_playtime_forever) : T.notInstalled)}</small></button>`).join('')
 				: `<div class="gr-search-none">${esc(T.none)}</div>`)
-			+ `<div class="gr-search-sep"></div><button type="button" class="gr-search-row gr-search-store" data-store="1">${svg(I.store)}<b>${esc(T.searchStore)} „${esc(input.value.trim())}“</b></button>`;
+			+ (store.length ? `<div class="gr-search-head">${esc(T.storeHead)}</div>` + store.map((s, n) => {
+				const i = lib.length + n;
+				const price = s.disc ? `<em>-${s.disc}%</em>${esc(s.price)}` : esc(s.price);
+				return `<button type="button" class="gr-search-row gr-search-shop${on(i)}" data-i="${i}"><img src="${esc(s.img)}" alt=""><b>${esc(s.name)}${s.dlc ? ' <i>DLC</i>' : ''}</b><small>${price}</small></button>`;
+			}).join('') : '')
+			+ `<div class="gr-search-sep"></div><button type="button" class="gr-search-row gr-search-store" data-store="1">${svg(I.store)}<b>${esc(T.searchStore)} „${esc(raw)}“</b></button>`;
 		pop.hidden = false;
+		askStore(raw);
 	};
 	const pick = i => {
-		const a = results[i];
-		if (a) go('/library/app/' + a.appid);
+		const r = results[i];
+		if (r && r.lib) go('/library/app/' + r.lib.appid);
+		else if (r && r.store) openWeb('https://store.steampowered.com/app/' + r.store.appid + '/');
 		input.value = '';
 		pop.hidden = true;
 		input.blur();

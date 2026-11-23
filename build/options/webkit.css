@@ -496,6 +496,35 @@ input[type="image"][src*="search"] {
 	box-shadow: var(--gr-shadow) !important;
 	color: var(--gr-text-2) !important;
 }
+/* game hover card (store lists): readable title, rounded media, tag pills */
+#global_hover .hover_title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em;
+}
+#global_hover .hover_release,
+#global_hover .tags_title {
+	color: var(--gr-text-3) !important;
+}
+#global_hover .hover_screenshots {
+	border-radius: var(--gr-radius-sm);
+	overflow: hidden;
+}
+#global_hover .hover_review_summary {
+	padding: 8px 10px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+}
+#global_hover .hover_tag_row .app_tag {
+	padding: 2px 8px !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+}
 .hover_arrow_left,
 .hover_arrow_right {
 	display: none !important;
@@ -833,25 +862,42 @@ footer {
 	background-image: none !important;
 	border-bottom: 1px solid var(--gr-border);
 }
-.discovery_queue_overlay_bg::before {
-	background: var(--gr-play) !important;
-	background-image: none !important;
-	border-radius: var(--gr-radius-lg);
-	box-shadow: var(--gr-shadow);
+/* "start your queue": a compact glass pill over the covers (it used to be a
+   wide light bar), accent on hover */
+.discovery_queue_overlay_bg {
+	display: inline-flex !important;
+	align-items: center;
 	width: auto !important;
-	right: 0 !important;
-	transform: scale(0.92);
-	transform-origin: left center;
-	transition: transform var(--gr-med) var(--gr-ease);
+	height: auto !important;
+	min-height: 0 !important;
+	padding: 12px 22px !important;
+}
+.discovery_queue_overlay_bg::before {
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	background: rgba(11, 11, 13, 0.72) !important;
+	background-image: none !important;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 999px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(14px);
+	transform: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
 }
 .discovery_queue_overlay:hover .discovery_queue_overlay_bg::before {
-	transform: scale(0.95);
+	background: var(--gr-accent) !important;
+	border-color: transparent;
 }
 .discovery_queue_overlay_message {
 	position: relative;
-	color: var(--gr-play-text) !important;
+	color: #ececf0 !important;
+	font-size: 14px !important;
 	font-weight: 600 !important;
 	text-shadow: none !important;
+}
+.discovery_queue_overlay:hover .discovery_queue_overlay_message {
+	color: var(--gr-bg) !important;
 }
 .discovery_queue_customize_ctn,
 .explore_rightcol_box {
@@ -971,6 +1017,343 @@ form[role="search"] button::before {
 }
 :has(> form[role="search"]) > div > div > div a:hover {
 	background: var(--gr-hover) !important;
+}
+
+/* horizontal sliders under the carousels: Steam's dark track with blue
+   triangles -> a thin track, quiet arrows */
+.slider_ctn.store_autoslider .slider_left,
+.slider_ctn.store_autoslider .slider_right {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	opacity: 0.6;
+	filter: grayscale(1) brightness(1.6);
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.slider_ctn.store_autoslider .slider_left:hover,
+.slider_ctn.store_autoslider .slider_right:hover {
+	opacity: 1;
+}
+.slider_ctn.store_autoslider .slider {
+	background: var(--gr-surface-2) !important;
+	border-radius: 999px !important;
+}
+.slider_ctn.store_autoslider .handle {
+	background: var(--gr-surface-3, #2a2a31) !important;
+	border-radius: 999px !important;
+}
+
+/* Store search and the list pages built on it (Topseller, new releases,
+   specials ...): store.steampowered.com/search/ */
+
+/* --- Header and search bar ------------------------------------------------------ */
+.pageheader.full {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase !important;
+}
+.searchbar {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+.searchbar #term {
+	box-sizing: border-box;
+	width: 340px !important;
+	height: 36px !important;
+	padding: 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+.searchbar #term:focus {
+	border-color: var(--gr-accent) !important;
+}
+.searchbar .searchbar_left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.searchbar .searchbar_left button,
+.searchbar .btnv6_blue_hoverfade {
+	height: 36px !important;
+	padding: 0 14px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.searchbar .sortbox {
+	order: 2;
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	float: none !important;
+	margin-left: auto !important;
+}
+.searchbar .clear_ctn {
+	display: none;
+}
+.searchbar .sortbox .label {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.searchbar .sortbox .dselect_container {
+	border: 0 !important;
+	background: transparent !important;
+}
+.searchbar .sortbox button.trigger {
+	height: 36px !important;
+	padding: 0 30px 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background-color: var(--gr-surface-2) !important;
+	background-position: right 10px center !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+/* "Alle Produkte" / the search term: the page title */
+.termcontainer .pagesubheader {
+	margin-top: 4px;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 22px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.02em;
+}
+.search_results_filtered_warning,
+.search_results_filtered_warning * {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.search_results_filtered_warning {
+	padding: 6px 2px 10px !important;
+	background: transparent !important;
+}
+
+/* --- Result rows ------------------------------------------------------------------ */
+#search_resultsRows .search_result_row {
+	box-sizing: border-box;
+	margin-bottom: 6px !important;
+	border: 1px solid transparent;
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+#search_resultsRows .search_result_row:hover {
+	border-color: var(--gr-border);
+}
+#search_resultsRows .search_capsule img {
+	display: block;
+}
+#search_resultsRows .search_name .title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 500 !important;
+}
+#search_resultsRows .search_result_row.ds_owned .search_name .title,
+#search_resultsRows .search_result_row.ds_ignored .search_name .title {
+	color: var(--gr-text-3) !important;
+}
+#search_resultsRows .search_released {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+#search_resultsRows .platform_img {
+	opacity: 0.55;
+}
+/* the price column was narrower than the price ("00€", "nlos") */
+#search_resultsRows .search_price_discount_combined,
+#search_resultsRows .search_discount_and_price,
+#search_resultsRows .search_discount_block {
+	flex: none !important;
+	width: auto !important;
+	min-width: 0 !important;
+	overflow: visible !important;
+}
+#search_resultsRows .search_price_discount_combined {
+	margin-left: auto !important;
+	padding-right: 14px !important;
+}
+#search_resultsRows .search_discount_block {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	background: transparent !important;
+}
+#search_resultsRows .search_discount_block .discount_prices {
+	position: static !important;
+	display: flex !important;
+	align-items: baseline;
+	gap: 6px;
+	background: transparent !important;
+}
+#search_resultsRows .discount_final_price {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+	white-space: nowrap;
+}
+#search_resultsRows .discount_original_price {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+
+/* --- Filter column ---------------------------------------------------------------- */
+#additional_search_options .block {
+	margin-bottom: 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	background: var(--gr-surface-2) !important;
+	overflow: hidden;
+}
+#additional_search_options .block_header {
+	padding: 12px 14px 4px !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+#additional_search_options .block_header * {
+	color: inherit !important;
+}
+#additional_search_options .block_content,
+#additional_search_options .block_content_inner {
+	padding: 4px 6px 8px !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+#additional_search_options .block_rule {
+	height: 1px !important;
+	margin: 6px 8px !important;
+	border: 0 !important;
+	background: var(--gr-border) !important;
+}
+#additional_search_options .range_input {
+	accent-color: var(--gr-accent);
+}
+#additional_search_options .range_display {
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+}
+#additional_search_options .tab_filter_control_row {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	background-image: none !important;
+}
+#additional_search_options .tab_filter_control_row:hover {
+	background: var(--gr-hover) !important;
+}
+#additional_search_options .tab_filter_control {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control,
+#additional_search_options .tab_filter_control_row:hover .tab_filter_control {
+	color: var(--gr-text) !important;
+}
+#additional_search_options .tab_filter_control_count {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+/* checkboxes: Steam's blue sprite -> Graphite box with an accent check */
+#additional_search_options .tab_filter_control_checkbox {
+	position: relative;
+	box-sizing: border-box;
+	width: 16px !important;
+	height: 16px !important;
+	border: 1px solid #34343c !important;
+	border-radius: 4px !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	background-image: none !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control_checkbox {
+	border-color: var(--gr-accent) !important;
+	background: var(--gr-accent) !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control_checkbox::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--gr-bg);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 11px 11px no-repeat;
+}
+/* the "exclude" control next to tags */
+#additional_search_options .tab_filter_control_not {
+	opacity: 0.5;
+	border-radius: 4px;
+	filter: grayscale(1);
+}
+#additional_search_options .tab_filter_control_row:hover .tab_filter_control_not {
+	opacity: 0.9;
+}
+#additional_search_options input[type="text"] {
+	box-sizing: border-box;
+	width: calc(100% - 8px) !important;
+	height: 32px !important;
+	margin: 4px !important;
+	padding: 0 10px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-style: normal !important;
+	box-shadow: none !important;
+}
+#additional_search_options input[type="text"]::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+#additional_search_options a,
+#additional_search_options .see_all_expander {
+	color: var(--gr-text-2) !important;
+}
+#additional_search_options a:hover {
+	color: var(--gr-text) !important;
+}
+
+/* sort dropdown: no line under the closed list, the open list is a menu card */
+.searchbar .dropcontainer {
+	border: 0 !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible {
+	padding: 4px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible a {
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible a:hover,
+.searchbar .dropcontainer ul.dropdownvisible a.highlighted_selection {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
 }
 
 /* steamcommunity.com */
