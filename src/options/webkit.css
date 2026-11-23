@@ -4,9 +4,12 @@
 @import "../partials/tokens.css";
 @import "../partials/icons.css";
 @import "../partials/base.css";
+@import "../partials/logo.css";
 @import "../partials/web-tokens.css";
 @import "../partials/web-base.css";
 @import "../partials/web-store.css";
+@import "../partials/web-search.css";
+@import "../partials/web-points.css";
 @import "../partials/web-community.css";
 @import "../partials/web-inventory.css";
 @import "../partials/web-activity.css";
@@ -19,4 +22,5 @@
 @import "../partials/web-newshub.css";
 @import "../partials/web-events.css";
 @import "../partials/web-store-home.css";
+@import "../partials/web-hub.css";
 @import "../partials/web-app.css";

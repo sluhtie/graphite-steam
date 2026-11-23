@@ -34,8 +34,88 @@
 	color: var(--gr-text) !important;
 	font-weight: 600 !important;
 }
-.$(LegendBox@GraphAndStats).$(Network@GraphAndStats) {
-	background: var(--gr-accent) !important;
+/* graph colors: network = accent, disk = green, upload = muted */
+.$(DownloadsPage) {
+	--gr-dl-net: var(--gr-accent);
+	--gr-dl-disk: #8fc45a;
+}
+.$(DownloadGraph@GraphAndStats) .$(GraphBarWrapper),
+.$(DownloadGraph@GraphAndStats) .$(GraphBarDownload) {
+	color: color-mix(in srgb, var(--gr-dl-net) 55%, transparent) !important;
+}
+.$(DownloadGraph@GraphAndStats) .$(GraphBarWrapper):hover .$(GraphBar@GraphAndStats) {
+	color: var(--gr-dl-net) !important;
+}
+.$(DownloadGraph@GraphAndStats) .$(GraphBarUpload) {
+	color: color-mix(in srgb, var(--gr-text-3) 70%, transparent) !important;
+}
+.$(DownloadGraph@GraphAndStats) .$(GraphLine) {
+	stroke: var(--gr-dl-disk) !important;
+	stroke-width: 1.5px !important;
+}
+.$(DownloadGraph@GraphAndStats) .$(GraphBarWrapper):hover .$(DiskPoint) {
+	color: var(--gr-text) !important;
+}
+/* Steam tints the hero blue (multiply); fade it into the page instead */
+/* the active download sits on a card (surface-2): fade the hero into it,
+   so there is no seam where the image ends and the graph continues */
+.$(HeroAndLogo@GraphAndStats):not(.$(Empty@GraphAndStats)) {
+	background: var(--gr-surface-2) !important;
+}
+.$(HeroAndLogo@GraphAndStats) .$(HeroGradient) {
+	background: linear-gradient(to right, transparent 35%, var(--gr-surface-2) 100%) !important;
+	mix-blend-mode: normal !important;
+}
+
+/* content types over the graph ("game content", "workshop content") */
+.$(ContentTypes@DownloadsPage) {
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em !important;
+	line-height: 18px !important;
+}
+.$(ContentTypes@DownloadsPage) .$(ContentType@DownloadsPage) {
+	gap: 6px !important;
+	color: var(--gr-text-3) !important;
+}
+.$(ContentTypes@DownloadsPage) .$(ContentType@DownloadsPage).$(Highlight@DownloadsPage) {
+	color: var(--gr-text) !important;
+}
+.$(ContentTypes@DownloadsPage) .$(Icon@DownloadsPage) {
+	width: 14px !important;
+	height: 14px !important;
+}
+
+/* legend: small swatches instead of Steam's bar icons */
+.$(LegendRow) {
+	align-items: center !important;
+}
+.$(LegendRow) .$(LegendBox@GraphAndStats) {
+	width: 8px !important;
+	height: 8px !important;
+	margin-right: 7px !important;
+	border-radius: 2px;
+	background: var(--gr-dl-net) !important;
+}
+.$(LegendRow) .$(LegendBox@GraphAndStats) svg {
+	display: none !important;
+}
+/* figures line up with the legend text (swatch 8px + 7px gap) */
+.$(SingleStat) .$(Stat@GraphAndStats) {
+	padding-left: 15px !important;
+}
+/* the second stat is the peak speed: same color, hollow */
+.$(SingleStat):nth-child(2) .$(LegendBox@GraphAndStats) {
+	background: transparent !important;
+	box-shadow: inset 0 0 0 1.5px var(--gr-dl-net);
+}
+.$(LegendRow) .$(LegendBox@GraphAndStats).$(Disk@GraphAndStats) {
+	width: 10px !important;
+	height: 2px !important;
+	border-radius: 1px;
+	background: var(--gr-dl-disk) !important;
+	box-shadow: none;
 }
 
 /* Section headers ("Up next", "Scheduled", "Completed") */
@@ -94,8 +174,74 @@
 	background: var(--gr-hover) !important;
 }
 
-/* Progress bars */
-.$(ProgressBar@DownloadsPage),
-.$(DownloadsPage) [class*="ProgressBar"] > div {
-	background: var(--gr-accent) !important;
+/* Progress bars: a thin track with the fill in the graph's colors. The label
+   row above a bar is not part of it. */
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage) {
+	height: 6px !important;
+	border-radius: 999px !important;
+	overflow: hidden;
+	background: color-mix(in srgb, var(--gr-text) 9%, transparent) !important;
+	--color-progress-bar-background: transparent;
+	--color-progress-bar-foreground: var(--gr-dl-net);
+}
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage) > div {
+	height: 100%;
+	border-radius: inherit;
+	background: var(--gr-dl-net) !important;
+}
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage).$(Disk@DownloadsPage) {
+	--color-progress-bar-foreground: var(--gr-dl-disk);
+}
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage).$(Disk@DownloadsPage) > div {
+	background: var(--gr-dl-disk) !important;
+}
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage).$(NotActive@DownloadsPage) {
+	--color-progress-bar-foreground: var(--gr-text-3);
+}
+.$(SectionItemStatus) .$(ProgressBar@DownloadsPage).$(NotActive@DownloadsPage) > div {
+	background: var(--gr-text-3) !important;
+}
+.$(SectionItem@DownloadsPage):hover .$(ProgressBar@DownloadsPage) {
+	background: color-mix(in srgb, var(--gr-text) 13%, transparent) !important;
+}
+
+/* active download (top): label + amount on one line, the bar under it */
+.$(SectionItem@DownloadsPage).$(Active@DownloadsPage) .$(ProgressBars) {
+	gap: 12px !important;
+}
+.$(ActiveItemProgressBar) {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+.$(ActiveItemProgressBar) .$(Status@DownloadsPage) {
+	background: transparent !important;
+	min-height: 18px;
+}
+.$(ActiveItemProgressBar) .$(Status@DownloadsPage) .$(Label@DownloadsPage) {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.$(ActiveItemProgressBar) .$(ProgressDetails@DownloadsPage),
+.$(ActiveItemProgressBar) .$(ProgressDetails@DownloadsPage) * {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-variant-numeric: tabular-nums;
+}
+.$(ActiveItemProgressBar) .$(Icon@DownloadsPage) {
+	width: 14px !important;
+	height: 14px !important;
+	color: var(--gr-text-3) !important;
+}
+.$(ProgressPercentageAndBar) .$(LabelRow) {
+	background: transparent !important;
+}
+.$(DownloadSectionActiveItem) .$(Bottom@DownloadsPage) .$(DownloadTimeRemaining) {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 400 !important;
+}
+.$(DownloadSectionActiveItem) .$(HoverRing) {
+	display: none !important;
 }

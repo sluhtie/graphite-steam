@@ -1,0 +1,121 @@
+/* Notifications: the bell dropdown in the title bar and the desktop toasts.
+   Both use the same entry templates. */
+
+/* --- Bell dropdown --------------------------------------------------------------- */
+.NotificationHeader {
+	align-items: center;
+	margin-bottom: 4px;
+	padding: 6px 4px 10px 8px !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.AllNotificationsTitle {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+}
+.AllNotificationsButton {
+	height: 28px;
+	padding: 0 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.AllNotificationsButton:hover {
+	background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3)) !important;
+}
+.EmptyNotificationsCtn {
+	padding: 18px 16px 16px !important;
+	font-family: var(--gr-font) !important;
+}
+.EmptyNotificationsTitle {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.EmptyNotificationsBody {
+	padding-top: 6px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 1.5;
+}
+
+/* --- Entries (bell list, "all notifications", toasts) ----------------------------------- */
+.$(StandardTemplateDesktop@StandardTemplateContainer),
+.$(PinnedTemplateDesktop@StandardTemplateContainer),
+.$(AllNotificationsTemplate@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) {
+	border-radius: var(--gr-radius-sm);
+	font-family: var(--gr-font) !important;
+}
+.$(StandardTemplateDesktop@StandardTemplateContainer):hover,
+.$(PinnedTemplateDesktop@StandardTemplateContainer):hover,
+.$(AllNotificationsTemplate@StandardTemplateContainer):hover {
+	background: var(--gr-hover) !important;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(StandardLogoDimensions@StandardTemplateContainer),
+.$(StandardTemplateContainer@StandardTemplate) .$(StandardLogoDimensions@StandardTemplateContainer) img,
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(StandardLogoDimensions@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(StandardLogoDimensions@StandardTemplateContainer) img {
+	border-radius: 8px;
+	overflow: hidden;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(Title@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(Title@StandardTemplateContainer) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.02em;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(Icon@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(Icon@StandardTemplateContainer) {
+	color: var(--gr-text-3) !important;
+	fill: var(--gr-text-3) !important;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(StandardNotificationDescription@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(StandardNotificationDescription@StandardTemplateContainer) {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(StandardNotificationSubText@StandardTemplateContainer),
+.$(DesktopToastTemplate@StandardTemplateContainer) .$(StandardNotificationSubText@StandardTemplateContainer) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12px !important;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(Timestamp@StandardTemplateContainer) {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(Count@StandardTemplateContainer) {
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600;
+}
+.$(StandardTemplateContainer@StandardTemplate) .$(FriendInGameAppColor@StandardTemplateContainer) {
+	color: var(--gr-tx-ingame, #a3d16a) !important;
+}
+
+/* --- Desktop toast window ----------------------------------------------------------------- */
+.$(DesktopToastPopup) {
+	box-sizing: border-box;
+	border: 1px solid var(--gr-border);
+	background: var(--gr-surface-2) !important;
+}
+/* no blue hover glow, no Steam logo watermark */
+.$(DesktopToastPopup)::before,
+.$(DesktopToastPopup) .$(DesktopToastBackground) {
+	display: none !important;
+}
+.$(DesktopToastPopup):hover {
+	background: var(--gr-surface-3) !important;
+}

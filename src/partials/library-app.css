@@ -163,7 +163,7 @@
 	box-shadow: none !important;
 }
 .$(SectionHeader@ShowBoxed) .$(Label@ShowBoxed),
-.$(AppActivityDay) {
+.$(AppActivityDay) .$(AppActivityDate) {
 	color: var(--gr-text-3) !important;
 	font-size: 11.5px !important;
 	font-weight: 600 !important;
@@ -201,6 +201,47 @@
 .$(PartnerEvent@AppActivityDay) {
 	border: 1px solid var(--gr-border) !important;
 }
+
+/* feed: calmer days and cards */
+.$(AppActivityDay) {
+	margin-bottom: 20px !important;
+	padding-top: 0 !important;
+	letter-spacing: normal !important;
+}
+.$(AppActivityDay) .$(AppActivityDate) {
+	margin-bottom: 8px !important;
+	font-size: 11px !important;
+	text-transform: uppercase;
+}
+.$(PartnerEventTextOnly_Container@AppActivityDay) {
+	align-items: center;
+	padding: 12px 14px !important;
+}
+.$(PartnerEventTextOnly_Title@AppActivityDay) {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+.$(PartnerEventType@AppActivityDay) {
+	margin-bottom: 2px;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.$(PartnerEventMediumImage_Title@AppActivityDay) {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+}
+.$(PartnerEventMediumImage_Summary@AppActivityDay) {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	letter-spacing: normal !important;
+}
 .$(PostTextEntryArea) {
 	background: var(--gr-surface-2) !important;
 	border: 1px solid var(--gr-border) !important;
@@ -221,6 +262,16 @@
 	border: 1px solid var(--gr-border) !important;
 	border-radius: var(--gr-radius) !important;
 	box-shadow: none !important;
+}
+.$(FramerateReportingBanner) .$(Title@FramerateReportingBanner) {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.$(FramerateReportingBanner) .$(Question@FramerateReportingBanner) {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.5 !important;
 }
 
 /* Community content placeholders */
@@ -259,4 +310,129 @@
 	font-size: 11px !important;
 	font-weight: 600 !important;
 	letter-spacing: 0.08em !important;
+}
+
+/* "Would you recommend this game?" prompt (and the review form behind it):
+   Steam's blue-grey band with light-blue buttons -> a card like the other
+   notices on the page, Graphite buttons */
+.$(ReviewContainer) {
+	padding: 0 !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+	font-weight: 400 !important;
+	overflow: hidden;
+}
+.$(ReviewContainer) .$(RatingContainer@ReviewThumbButton) {
+	align-items: center;
+	padding: 15px 16px 15px 23px !important;
+	background: transparent !important;
+}
+.$(RatingContainer@ReviewThumbButton) {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius);
+}
+.$(RatingContainer@ReviewThumbButton) .$(LeftContainer@ReviewThumbButton) {
+	border-color: var(--gr-border) !important;
+}
+.$(RatingContainer@ReviewThumbButton) .$(Playtime@ReviewThumbButton) {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+.$(RatingContainer@ReviewThumbButton) .$(RecommendGame@ReviewThumbButton) {
+	margin-top: 2px;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.$(RatingContainer@ReviewThumbButton) .$(RightContainer@ReviewThumbButton) {
+	display: flex;
+	gap: 8px;
+}
+.$(ReviewThumbButton) {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 8px;
+	height: 34px;
+	margin: 0 !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.$(ReviewThumbButton):not(.$(Selected@ReviewThumbButton)):hover {
+	background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3)) !important;
+	color: var(--gr-text) !important;
+}
+.$(ReviewThumbButton) span {
+	padding: 0 !important;
+	vertical-align: baseline !important;
+}
+.$(ReviewThumbButton) .$(ThumbIcon),
+.$(ReviewThumbButton) .$(ThumbIcon).$(Selected@ReviewThumbButton) {
+	position: static !important;
+	flex: none;
+	/* the glyph has a lot of padding inside its viewBox */
+	width: 24px !important;
+	height: 24px !important;
+	margin: -4px -4px -4px -6px;
+	fill: currentColor !important;
+}
+.$(ReviewThumbButton).$(Selected@ReviewThumbButton) {
+	border-color: transparent !important;
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+}
+/* "Maybe later": quiet text button */
+.$(ReviewThumbButton).$(NoIcon) {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.$(ReviewThumbButton).$(NoIcon):hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.$(ReviewContainer) .$(CloseButton@ReviewContainer) {
+	opacity: 0.4;
+}
+.$(ReviewContainer) .$(CloseButton@ReviewContainer) svg line {
+	stroke: var(--gr-text-2) !important;
+}
+
+/* review form */
+.$(WriteReviewContainer) .$(Header@ReviewThumbButton) {
+	color: var(--gr-text) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+}
+.$(ReviewTextArea) {
+	padding: 10px 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm);
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.$(ReviewTextArea):focus {
+	border-color: var(--gr-accent) !important;
+}
+.$(OptionButton) {
+	border-radius: var(--gr-radius-sm);
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600;
+}
+.$(OptionButton):hover {
+	background: var(--gr-accent) !important;
+	filter: brightness(1.08);
+	color: var(--gr-bg) !important;
 }

@@ -183,7 +183,8 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	box-shadow: none !important;
 }
 .DialogCheckbox_Container.Active .DialogCheckbox,
-.DialogCheckbox_Container.Checked .DialogCheckbox {
+.DialogCheckbox_Container.Checked .DialogCheckbox,
+.DialogCheckbox.Active {
 	background: var(--gr-accent) !important;
 	border-color: var(--gr-accent) !important;
 }
@@ -207,6 +208,81 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	border: 1px solid var(--gr-border) !important;
 	border-radius: var(--gr-radius-sm) !important;
 	box-shadow: var(--gr-shadow) !important;
+}
+
+/* The Graphite logo (hexagon ring + core) as masks, and the loading spinner
+   built from it. Steam's spinning Steam logo - in the client and on the React
+   store pages alike - is a div.SteamLogoThrobber holding either an image or
+   two SVGs; its content is hidden and the logo drawn on top: the ring turns
+   in 60 degree steps (the hexagon looks the same every 60 degrees, so the loop
+   is seamless), the core breathes. Used by the 2.0 splash screen too. */
+:root {
+	--gr-logo-ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54' fill='none'%3E%3Cpath d='M27 3.5 47.4 15.25v23.5L27 50.5 6.6 38.75v-23.5L27 3.5Z' stroke='black' stroke-width='4.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+	--gr-logo-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M27 16.5 36 21.75v10.5L27 37.5l-9-5.25v-10.5L27 16.5Z' fill='black'/%3E%3C/svg%3E");
+}
+
+@keyframes gr-logo-turn {
+	0%,
+	14% {
+		transform: rotate(0deg);
+	}
+	42%,
+	64% {
+		transform: rotate(60deg);
+	}
+	92%,
+	100% {
+		transform: rotate(120deg);
+	}
+}
+@keyframes gr-logo-breathe {
+	0%,
+	100% {
+		transform: scale(0.72);
+		opacity: 0.55;
+	}
+	50% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+.SteamLogoThrobber {
+	position: relative !important;
+}
+.SteamLogoThrobber > * {
+	visibility: hidden !important;
+}
+.SteamLogoThrobber::before,
+.SteamLogoThrobber::after {
+	content: "";
+	position: absolute;
+	inset: 16%;
+	background: var(--gr-accent);
+	-webkit-mask: var(--gr-logo-ring) center / contain no-repeat;
+	mask: var(--gr-logo-ring) center / contain no-repeat;
+	animation: gr-logo-turn 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.SteamLogoThrobber::after {
+	-webkit-mask-image: var(--gr-logo-core);
+	mask-image: var(--gr-logo-core);
+	animation: gr-logo-breathe 1.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	.SteamLogoThrobber::before,
+	.SteamLogoThrobber::after {
+		animation-duration: 6s;
+	}
+}
+
+/* the label under the client's spinner ("Loading ..."): quiet text, not blue capitals */
+._21nVi2jNuF_prxLY1mAaKK {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
 }
 
 /* Valve's newer React web pages (store nav, new market item pages, footers,
@@ -495,6 +571,35 @@ input[type="image"][src*="search"] {
 	box-shadow: var(--gr-shadow) !important;
 	color: var(--gr-text-2) !important;
 }
+/* game hover card (store lists): readable title, rounded media, tag pills */
+#global_hover .hover_title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em;
+}
+#global_hover .hover_release,
+#global_hover .tags_title {
+	color: var(--gr-text-3) !important;
+}
+#global_hover .hover_screenshots {
+	border-radius: var(--gr-radius-sm);
+	overflow: hidden;
+}
+#global_hover .hover_review_summary {
+	padding: 8px 10px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+}
+#global_hover .hover_tag_row .app_tag {
+	padding: 2px 8px !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text-2) !important;
+	box-shadow: none !important;
+}
 .hover_arrow_left,
 .hover_arrow_right {
 	display: none !important;
@@ -531,25 +636,65 @@ footer {
 }
 
 /* --- Web dropdown menus ----------------------------------------------------- */
+/* same card, rows and spacing as the client's menus (partials/menus.css) */
 .popup_body.popup_menu,
 .popup_block .popup_body {
 	background: var(--gr-surface-2) !important;
+	background-image: none !important;
 	border: 1px solid var(--gr-border) !important;
 	border-radius: var(--gr-radius) !important;
 	box-shadow: var(--gr-shadow) !important;
+}
+.popup_body.popup_menu {
+	padding: 4px !important;
+	min-width: 200px;
+	box-sizing: border-box;
 }
 .popup_block [class^="shadow_"]:not(.shadow_content) {
 	display: none !important;
 }
 .popup_menu_item,
 .popup_menu .popup_menu_item {
+	display: block;
+	min-height: 32px;
+	box-sizing: border-box;
+	margin: 0 !important;
+	padding: 7px 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
 	color: var(--gr-text-2) !important;
-	border-radius: var(--gr-radius-sm);
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	line-height: 18px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	text-decoration: none !important;
+	white-space: nowrap;
 }
 .popup_menu_item:hover,
 .popup_menu .popup_menu_item:hover {
 	background: var(--gr-active) !important;
 	color: var(--gr-text) !important;
+}
+.popup_menu_item img {
+	vertical-align: middle;
+	margin-right: 8px;
+}
+.popup_menu hr,
+.popup_menu .popup_menu_separator {
+	height: 1px;
+	margin: 4px 6px !important;
+	border: 0 !important;
+	background: var(--gr-border) !important;
+}
+.popup_menu_subheader {
+	padding: 8px 10px 4px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
 }
 #footer .valve_links a,
 #footer a {
@@ -788,29 +933,85 @@ footer {
 /* App page: see web-app.css */
 
 /* --- Explore / discovery queue page --------------------------------------- */
+/* no line under the page title: on several pages it ran straight behind the
+   first row of capsules */
 .page_header_ctn {
 	background-image: none !important;
-	border-bottom: 1px solid var(--gr-border);
+	border-bottom: 0 !important;
+}
+
+/* New & noteworthy: the two large capsules at the top */
+.newonsteam_headercap {
+	overflow: hidden;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: none !important;
+	transition: border-color var(--gr-fast) var(--gr-ease), transform var(--gr-med) var(--gr-ease);
+}
+.newonsteam_headercap:hover {
+	border-color: color-mix(in srgb, var(--gr-text) 18%, transparent) !important;
+	transform: translateY(-2px);
+}
+.newonsteam_headercap .info {
+	display: flex !important;
+	flex-direction: column;
+	gap: 4px;
+	padding: 12px 16px 14px !important;
+	background: transparent !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.newonsteam_headercap .info .discount_block {
+	align-self: flex-start;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.newonsteam_headercap .info .discount_prices {
+	color: var(--gr-text-2) !important;
+}
+/* "start your queue": a compact glass pill over the covers (it used to be a
+   wide light bar), accent on hover */
+.discovery_queue_overlay_bg {
+	display: inline-flex !important;
+	align-items: center;
+	width: auto !important;
+	height: auto !important;
+	min-height: 0 !important;
+	padding: 12px 22px !important;
 }
 .discovery_queue_overlay_bg::before {
-	background: var(--gr-play) !important;
-	background-image: none !important;
-	border-radius: var(--gr-radius-lg);
-	box-shadow: var(--gr-shadow);
+	inset: 0 !important;
 	width: auto !important;
-	right: 0 !important;
-	transform: scale(0.92);
-	transform-origin: left center;
-	transition: transform var(--gr-med) var(--gr-ease);
+	height: auto !important;
+	background: rgba(11, 11, 13, 0.72) !important;
+	background-image: none !important;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 999px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(14px);
+	transform: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
 }
 .discovery_queue_overlay:hover .discovery_queue_overlay_bg::before {
-	transform: scale(0.95);
+	background: var(--gr-accent) !important;
+	border-color: transparent;
 }
 .discovery_queue_overlay_message {
 	position: relative;
-	color: var(--gr-play-text) !important;
+	width: auto !important;
+	height: auto !important;
+	padding: 0 !important;
+	line-height: 1.3 !important;
+	color: #ececf0 !important;
+	font-size: 14px !important;
 	font-weight: 600 !important;
 	text-shadow: none !important;
+}
+.discovery_queue_overlay:hover .discovery_queue_overlay_message {
+	color: var(--gr-bg) !important;
 }
 .discovery_queue_customize_ctn,
 .explore_rightcol_box {
@@ -930,6 +1131,527 @@ form[role="search"] button::before {
 }
 :has(> form[role="search"]) > div > div > div a:hover {
 	background: var(--gr-hover) !important;
+}
+
+/* horizontal sliders under the carousels: Steam's dark track with blue
+   triangles -> a thin track, quiet arrows */
+.slider_ctn.store_autoslider .slider_left,
+.slider_ctn.store_autoslider .slider_right {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	opacity: 0.6;
+	filter: grayscale(1) brightness(1.6);
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.slider_ctn.store_autoslider .slider_left:hover,
+.slider_ctn.store_autoslider .slider_right:hover {
+	opacity: 1;
+}
+.slider_ctn.store_autoslider .slider {
+	background: var(--gr-surface-2) !important;
+	border-radius: 999px !important;
+}
+.slider_ctn.store_autoslider .handle {
+	background: var(--gr-surface-3, #2a2a31) !important;
+	border-radius: 999px !important;
+}
+
+/* --- Category / sale pages (React "SaleSection" blocks) ----------------------------- */
+/* headings: sentence case instead of shouting capitals */
+.SaleSectionHeader {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+	text-transform: none !important;
+}
+/* tabs ("Trending, Action-Adventure, ..."): quiet labels, the active one bright */
+.SaleSectionTabContainer,
+.SaleSectionTabContainer * {
+	font-family: var(--gr-font) !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.SaleSectionTabContainer [class*="Panel"] > div {
+	font-size: 14px !important;
+	font-weight: 500 !important;
+}
+/* the trailer carousel: one Graphite card instead of the blue-grey panel */
+.VideoRow {
+	overflow: hidden;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.VideoRow [class*="Panel"] {
+	background-image: none !important;
+}
+
+/* Store search and the list pages built on it (Topseller, new releases,
+   specials ...): store.steampowered.com/search/ */
+
+/* --- Header and search bar ------------------------------------------------------ */
+.pageheader.full {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase !important;
+}
+.searchbar {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+.searchbar #term {
+	box-sizing: border-box;
+	width: 340px !important;
+	height: 36px !important;
+	padding: 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+.searchbar #term:focus {
+	border-color: var(--gr-accent) !important;
+}
+.searchbar .searchbar_left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.searchbar .searchbar_left button,
+.searchbar .btnv6_blue_hoverfade {
+	height: 36px !important;
+	padding: 0 14px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.searchbar .sortbox {
+	order: 2;
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	float: none !important;
+	margin-left: auto !important;
+}
+.searchbar .clear_ctn {
+	display: none;
+}
+.searchbar .sortbox .label {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.searchbar .sortbox .dselect_container {
+	border: 0 !important;
+	background: transparent !important;
+}
+.searchbar .sortbox button.trigger {
+	height: 36px !important;
+	padding: 0 30px 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background-color: var(--gr-surface-2) !important;
+	background-position: right 10px center !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+/* "Alle Produkte" / the search term: the page title */
+.termcontainer .pagesubheader {
+	margin-top: 4px;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 22px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.02em;
+}
+.search_results_filtered_warning,
+.search_results_filtered_warning * {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.search_results_filtered_warning {
+	padding: 6px 2px 10px !important;
+	background: transparent !important;
+}
+
+/* --- Result rows ------------------------------------------------------------------ */
+#search_resultsRows .search_result_row {
+	box-sizing: border-box;
+	margin-bottom: 6px !important;
+	border: 1px solid transparent;
+	border-radius: var(--gr-radius) !important;
+	overflow: hidden;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+#search_resultsRows .search_result_row:hover {
+	border-color: var(--gr-border);
+}
+#search_resultsRows .search_capsule img {
+	display: block;
+}
+#search_resultsRows .search_name .title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 15px !important;
+	font-weight: 500 !important;
+}
+#search_resultsRows .search_result_row.ds_owned .search_name .title,
+#search_resultsRows .search_result_row.ds_ignored .search_name .title {
+	color: var(--gr-text-3) !important;
+}
+#search_resultsRows .search_released {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+#search_resultsRows .platform_img {
+	opacity: 0.55;
+}
+/* the price column was narrower than the price ("00€", "nlos") */
+#search_resultsRows .search_price_discount_combined,
+#search_resultsRows .search_discount_and_price,
+#search_resultsRows .search_discount_block {
+	flex: none !important;
+	width: auto !important;
+	min-width: 0 !important;
+	overflow: visible !important;
+}
+#search_resultsRows .search_price_discount_combined {
+	margin-left: auto !important;
+	padding-right: 14px !important;
+}
+#search_resultsRows .search_discount_block {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	background: transparent !important;
+}
+#search_resultsRows .search_discount_block .discount_prices {
+	position: static !important;
+	display: flex !important;
+	align-items: baseline;
+	gap: 6px;
+	background: transparent !important;
+}
+#search_resultsRows .discount_final_price {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+	white-space: nowrap;
+}
+#search_resultsRows .discount_original_price {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+
+/* --- Filter column ---------------------------------------------------------------- */
+#additional_search_options .block {
+	margin-bottom: 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	background: var(--gr-surface-2) !important;
+	overflow: hidden;
+}
+#additional_search_options .block_header {
+	padding: 12px 14px 4px !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+#additional_search_options .block_header * {
+	color: inherit !important;
+}
+#additional_search_options .block_content,
+#additional_search_options .block_content_inner {
+	padding: 4px 6px 8px !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+#additional_search_options .block_rule {
+	height: 1px !important;
+	margin: 6px 8px !important;
+	border: 0 !important;
+	background: var(--gr-border) !important;
+}
+#additional_search_options .range_input {
+	accent-color: var(--gr-accent);
+}
+#additional_search_options .range_display {
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+}
+#additional_search_options .tab_filter_control_row {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	background-image: none !important;
+}
+#additional_search_options .tab_filter_control_row:hover {
+	background: var(--gr-hover) !important;
+}
+#additional_search_options .tab_filter_control {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control,
+#additional_search_options .tab_filter_control_row:hover .tab_filter_control {
+	color: var(--gr-text) !important;
+}
+#additional_search_options .tab_filter_control_count {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+/* checkboxes: Steam's blue sprite -> Graphite box with an accent check */
+#additional_search_options .tab_filter_control_checkbox {
+	position: relative;
+	box-sizing: border-box;
+	width: 16px !important;
+	height: 16px !important;
+	border: 1px solid #34343c !important;
+	border-radius: 4px !important;
+	background: var(--gr-surface-3, #1c1c22) !important;
+	background-image: none !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control_checkbox {
+	border-color: var(--gr-accent) !important;
+	background: var(--gr-accent) !important;
+}
+#additional_search_options .tab_filter_control_row.checked .tab_filter_control_checkbox::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--gr-bg);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 11px 11px no-repeat;
+}
+/* the "exclude" control next to tags */
+#additional_search_options .tab_filter_control_not {
+	opacity: 0.5;
+	border-radius: 4px;
+	filter: grayscale(1);
+}
+#additional_search_options .tab_filter_control_row:hover .tab_filter_control_not {
+	opacity: 0.9;
+}
+#additional_search_options input[type="text"] {
+	box-sizing: border-box;
+	width: calc(100% - 8px) !important;
+	height: 32px !important;
+	margin: 4px !important;
+	padding: 0 10px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-style: normal !important;
+	box-shadow: none !important;
+}
+#additional_search_options input[type="text"]::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+#additional_search_options a,
+#additional_search_options .see_all_expander {
+	color: var(--gr-text-2) !important;
+}
+#additional_search_options a:hover {
+	color: var(--gr-text) !important;
+}
+
+/* sort dropdown: no line under the closed list, the open list is a menu card */
+.searchbar .dropcontainer {
+	border: 0 !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible {
+	padding: 4px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible a {
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.searchbar .dropcontainer ul.dropdownvisible a:hover,
+.searchbar .dropcontainer ul.dropdownvisible a.highlighted_selection {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+
+/* Points history (store.steampowered.com/pointssummary) and the account pages
+   built from the same blocks (account_header_line + account_settings_container). */
+
+/* page title */
+.page_content .breadcrumbs,
+.page_content .breadcrumbs a {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.page_content .breadcrumbs + h2.pageheader,
+.page_content h2.pageheader {
+	margin: 4px 0 20px !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 22px !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.02em !important;
+	text-transform: none !important;
+}
+
+/* the points history reads better narrower */
+.page_content:has(.rewards_token_summary),
+.page_header_ctn:has(+ .page_content_ctn .rewards_token_summary) .page_content {
+	max-width: 860px !important;
+	margin: 0 auto !important;
+}
+.page_header_ctn:has(+ .page_content_ctn .rewards_token_summary) {
+	padding-top: 24px !important;
+	background: transparent !important;
+	border: 0 !important;
+}
+
+/* a block = a title and a card */
+.account_header_line {
+	height: auto !important;
+	margin: 0 0 10px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: 0 !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
+}
+.account_header_line > div {
+	padding: 0 !important;
+}
+.account_settings_container {
+	margin-bottom: 24px !important;
+	padding: 18px 20px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+
+/* the summary: label | value | details, one line per row */
+.rewards_token_summary {
+	margin-top: 12px !important;
+}
+.rewards_token_summary .cell {
+	display: flex !important;
+	box-sizing: border-box;
+	min-height: 48px;
+	align-items: center !important;
+	padding: 0 4px !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13.5px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+/* the value column: numbers right-aligned, tabular */
+.rewards_token_summary--3cols .cell:nth-child(3n + 2) {
+	justify-content: flex-end !important;
+	padding-right: 28px !important;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	font-variant-numeric: tabular-nums;
+}
+.rewards_token_summary .view_details {
+	justify-content: flex-end !important;
+}
+.rewards_token_summary .view_details span {
+	padding: 5px 10px;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+	text-transform: none !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.rewards_token_summary .view_details span:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text) !important;
+}
+/* totals */
+.rewards_token_summary .total_points {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.rewards_token_summary .cell:last-child,
+.rewards_token_summary .total_current + .cell,
+.rewards_token_summary .cell:empty {
+	min-height: 18px;
+	border-bottom: 0 !important;
+}
+.rewards_token_summary .total_spent {
+	color: #f0918a !important;
+}
+.rewards_token_summary .total_current {
+	border-bottom: 0 !important;
+	color: var(--gr-accent) !important;
+	font-weight: 700 !important;
+}
+.rewards_token_summary--3cols .total_current:nth-child(3n + 2) {
+	font-size: 20px !important;
+	color: var(--gr-accent) !important;
+}
+
+/* the history list ("show details") */
+#audit_history table {
+	width: 100%;
+	border-collapse: collapse !important;
+	background: transparent !important;
+}
+#audit_history th,
+#audit_history td {
+	padding: 10px 8px !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	text-align: left;
+}
+#audit_history th {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
 }
 
 /* steamcommunity.com */
@@ -3212,6 +3934,46 @@ h1.market_header,
 	fill: currentColor !important;
 }
 
+/* dialogs inside a row ("manage categories"): a solid card instead of a see-through layer */
+.gr-wishlist dialog[open] {
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-wishlist dialog[open]::backdrop {
+	background: rgba(0, 0, 0, 0.55);
+}
+.gr-wishlist dialog[open] > div {
+	opacity: 1 !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.gr-wishlist dialog[open] input[type="text"],
+.gr-wishlist dialog[open] input:not([type]) {
+	box-sizing: border-box;
+	height: 34px !important;
+	padding: 0 10px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.gr-wishlist dialog[open] input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.gr-wishlist dialog[open] button {
+	border-color: var(--gr-border) !important;
+	border-radius: 999px !important;
+}
+
 /* News hub (store.steampowered.com/news). Valve's React classes are hashed,
    so web-recolor.js tags the parts (gr-nh-*) and html.gr-newshub. */
 
@@ -3226,8 +3988,37 @@ h1.market_header,
 /* --- Sidebar ----------------------------------------------------------------------- */
 .gr-newshub .gr-nh-side {
 	background: var(--gr-bg) !important;
-	border-right: 1px solid var(--gr-border) !important;
+	border-right: 0 !important;
 	box-shadow: none !important;
+}
+/* the same room on both sides (Steam has 20px left, nothing right) */
+.gr-newshub .gr-nh-side > div {
+	padding: 28px 16px !important;
+}
+/* Steam's collapse button: does nothing useful next to the shell's own side
+   navigation, so it goes */
+.gr-newshub .gr-nh-side div:has(> div > .SVGIcon_DoubleArrow) {
+	display: none !important;
+}
+/* "Steam-<br>News-Hub": one line now that the button is gone */
+.gr-newshub .gr-nh-title br {
+	display: none;
+}
+/* the options button: Steam's own right padding on top of ours */
+.gr-newshub .gr-nh-opts {
+	padding-right: 0 !important;
+}
+.gr-newshub .gr-nh-search {
+	margin: 18px 0 6px !important;
+	padding: 0 !important;
+}
+.gr-newshub .gr-nh-search > div {
+	padding: 0 10px !important;
+}
+.gr-newshub .gr-nh-search input {
+	box-sizing: border-box !important;
+	width: 100% !important;
+	margin: 6px 0 0 !important;
 }
 .gr-newshub .gr-nh-side * {
 	text-transform: none !important;
@@ -3372,6 +4163,51 @@ h1.market_header,
 }
 .gr-newshub .gr-nh-side div:has(> svg) svg {
 	fill: currentColor !important;
+}
+
+/* sidebar spacing: Steam gives each link a fixed-height inner block with its
+   own padding and marks the open one with a 4px blue border on the right */
+.gr-newshub .gr-nh-link {
+	min-height: 0 !important;
+	padding: 0 !important;
+}
+.gr-newshub .gr-nh-link > div {
+	margin: 0 !important;
+	padding: 7px 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.gr-newshub .gr-nh-link > div > div {
+	height: auto !important;
+	min-height: 0 !important;
+}
+/* the open entry (its block carries a second class) */
+.gr-newshub .gr-nh-link > div[class*=" "] {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+}
+.gr-newshub .gr-nh-side .gr-nh-label {
+	padding-left: 10px !important;
+}
+.gr-newshub .gr-nh-title {
+	font-size: 20px !important;
+}
+.gr-newshub .gr-nh-side input {
+	box-sizing: border-box !important;
+	min-height: 0 !important;
+	padding: 0 10px !important;
+}
+.gr-newshub .gr-nh-side .DialogInput_Wrapper {
+	height: auto !important;
+	min-height: 0 !important;
+}
+.gr-newshub .gr-nh-title {
+	white-space: nowrap !important;
+}
+
+/* footer: Steam's grey divider in the border color */
+.gr-newshub .gr-nh-side div:has(> img) {
+	border-top-color: var(--gr-border) !important;
 }
 
 /* Event detail overlay (news, patch notes) on store and community pages.
@@ -3943,6 +4779,440 @@ h1.market_header,
 	background: var(--gr-surface-2) !important;
 	border-radius: 999px !important;
 	color: var(--gr-text-2) !important;
+}
+
+/* Store hubs and sale pages (/category/action, /genre/..., sales): Valve's React
+   "SaleSection" blocks. Valve keeps readable class names on the important parts
+   (CapsuleBottomBar, StoreSalePriceWidgetContainer, ...); the rest is tagged by
+   web-recolor.js (hookHub: gr-hub-*). The hero at the top is shell.js. */
+
+/* --- Section headings ------------------------------------------------------------- */
+.SaleSectionSubtitle {
+	margin-top: 2px !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	opacity: 0.75;
+}
+.SaleSectionLabelLinkButton {
+	display: inline-flex !important;
+	align-items: center;
+	height: 30px !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.SaleSectionLabelLinkButton:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Tab row (sticky): a floating bar with pill tabs ----------------------------- */
+.gr-hub-tabbar {
+	top: calc(var(--store-menu-floating-height, 0px) + 10px) !important;
+	box-sizing: border-box !important;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: 1200px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	padding: 10px 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: color-mix(in srgb, var(--gr-surface) 86%, transparent) !important;
+	background-image: none !important;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+}
+.gr-hub-tabbar .SaleSectionTabContainer,
+.gr-hub-tabbar .SaleSectionTabContainer > div {
+	height: auto !important;
+	min-height: 0 !important;
+}
+.gr-hub-tabbar .SaleSectionTabContainer > div {
+	gap: 4px;
+}
+.gr-hub-tab {
+	display: flex !important;
+	align-items: center;
+	height: 36px !important;
+	padding: 0 14px !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-hub-tab::before,
+.gr-hub-tab::after,
+.gr-hub-tab *::after {
+	display: none !important;
+}
+.gr-hub-tab * {
+	color: inherit !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	text-decoration: none !important;
+}
+.gr-hub-tab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-tab.gr-hub-on {
+	background: color-mix(in srgb, var(--gr-accent) 16%, transparent) !important;
+	color: var(--gr-accent) !important;
+}
+
+/* --- Capsules: image + a quiet bottom bar, one rounded card -------------------- */
+.SaleSectionCtn a:has(> .CapsuleBottomBar) {
+	display: block;
+	border-radius: 12px;
+	overflow: hidden;
+	outline: 1px solid var(--gr-border);
+	outline-offset: -1px;
+	background: var(--gr-surface-2);
+	transition: outline-color var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn a:has(> .CapsuleBottomBar):hover {
+	outline-color: color-mix(in srgb, var(--gr-text) 24%, transparent);
+}
+.CapsuleBottomBar {
+	box-sizing: border-box;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.CapsuleBottomBar svg {
+	color: var(--gr-text-3) !important;
+	fill: var(--gr-text-3) !important;
+}
+
+/* --- Price: discount pill, struck original, the price ------------------------------ */
+.StoreSalePriceWidgetContainer {
+	align-items: center !important;
+	gap: 8px;
+	height: auto !important;
+	padding-right: 8px !important;
+	background: transparent !important;
+	font-family: var(--gr-font) !important;
+}
+.StoreSaleDiscountBox {
+	height: auto !important;
+	padding: 2px 7px !important;
+	border-radius: 6px !important;
+	background: #4c6b22 !important;
+	color: #beee11 !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.35 !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: baseline !important;
+	gap: 6px;
+	height: auto !important;
+	padding: 0 !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child > div:first-child {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.StoreSalePriceWidgetContainer.Discounted > div:last-child > div:last-child,
+.StoreSalePriceWidgetContainer:not(.Discounted) div {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+}
+
+/* --- Carousels: side arrows and the scroll track below a row ------------------- */
+.SaleSectionCtn .SliderBody > .carousel__back-button,
+.SaleSectionCtn .SliderBody > .carousel__next-button {
+	width: 36px !important;
+	height: 36px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 50% !important;
+	background: color-mix(in srgb, var(--gr-surface-2) 92%, transparent) !important;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+	color: var(--gr-text) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn .SliderBody > .carousel__back-button:hover,
+.SaleSectionCtn .SliderBody > .carousel__next-button:hover {
+	background: var(--gr-surface-3) !important;
+}
+/* Valve hangs two more arrow buttons on the track; the side arrows are enough */
+.carousel > .SliderBody + div button {
+	display: none !important;
+}
+.carousel > .SliderBody + div > div > div:nth-child(1) {
+	background: var(--gr-border) !important;
+}
+.carousel > .SliderBody + div > div > div:nth-child(2) {
+	border-radius: 3px !important;
+	background: color-mix(in srgb, var(--gr-text) 38%, transparent) !important;
+}
+
+/* --- Discovery queue banner --------------------------------------------------------- */
+.gr-hub-dq > .Panel > div {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+}
+.gr-hub-dq .WidgetHeaderCtn {
+	background: linear-gradient(90deg, var(--gr-surface-2) 40%, transparent 85%) !important;
+}
+.gr-hub-dq .WidgetHeaderCtn > div:first-child {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 20px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+}
+.gr-hub-dq .WidgetHeaderCtn > div:nth-child(2) {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+
+/* --- Panels with a header (DLC for your games, ...) ----------------------------- */
+.gr-hub-panel {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+}
+/* "DLC for" under each capsule */
+.gr-hub-panel .carousel__inner-slide .ImpressionTrackedElement:not(:has(.CapsuleBottomBar)) * {
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+.gr-hub-panel .carousel__inner-slide .ImpressionTrackedElement:not(:has(.CapsuleBottomBar)) {
+	border-radius: 0 0 10px 10px;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+
+/* --- "Browse all": tabs, filter column, the big rows ----------------------------- */
+.gr-hub-browser {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+}
+.gr-hub-btab {
+	display: inline-flex !important;
+	align-items: center;
+	height: 32px !important;
+	padding: 0 12px !important;
+	border: 0 !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	cursor: pointer;
+}
+.gr-hub-btab::before,
+.gr-hub-btab::after {
+	display: none !important;
+}
+.gr-hub-btab:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-btab.gr-hub-on {
+	background: color-mix(in srgb, var(--gr-accent) 16%, transparent) !important;
+	color: var(--gr-accent) !important;
+}
+.gr-hub-browser .DialogInput {
+	height: 32px !important;
+	padding: 0 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+}
+.gr-hub-filter {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+}
+/* active filters ("German", "Hide ignored") as removable pills */
+.gr-hub-filter > div:nth-child(2) > a {
+	display: inline-flex !important;
+	align-items: center;
+	margin: 0 4px 4px 0 !important;
+	padding: 3px 10px 3px 8px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	text-decoration: none !important;
+}
+.gr-hub-filter > div:nth-child(2) > a * {
+	color: inherit !important;
+	font-size: 12px !important;
+}
+.gr-hub-filter > div:nth-child(2) > a svg {
+	margin-right: 6px;
+	fill: currentColor !important;
+}
+.gr-hub-filter > div:nth-child(2) > a:hover {
+	color: var(--gr-text) !important;
+}
+.gr-hub-filter,
+.gr-hub-filter * {
+	font-family: var(--gr-font) !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.gr-hub-item {
+	margin-bottom: 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+}
+/* the row's bottom bar (platforms, price) and the labels in capitals */
+.gr-hub-item div:has(> div > div > .StoreSalePriceWidgetContainer) {
+	border-top: 1px solid var(--gr-border) !important;
+	background: color-mix(in srgb, var(--gr-surface) 70%, transparent) !important;
+	background-image: none !important;
+}
+.gr-hub-item div:has(> div > div > .StoreSalePriceWidgetContainer) svg {
+	fill: var(--gr-text-3) !important;
+}
+.gr-hub-item * {
+	text-transform: none !important;
+}
+.gr-hub-item .StoreSaleWidgetShortDesc {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	line-height: 1.5 !important;
+}
+.gr-hub-item *,
+.gr-hub-hover * {
+	letter-spacing: 0 !important;
+}
+.WidgetTagTitle {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	text-transform: none !important;
+}
+.WidgetTag {
+	height: 18px !important;
+	padding: 0 7px !important;
+	border-radius: 999px !important;
+	background: rgba(255, 255, 255, 0.07) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	line-height: 18px !important;
+}
+.WidgetTag:hover {
+	background: rgba(255, 255, 255, 0.13) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Hover card over a capsule ------------------------------------------------------- */
+/* Valve builds it fresh on every hover, so it is found by structure right away
+   (the card: [media with the wishlist star] [capsule, price, name, tags ...]);
+   web-recolor.js only adds the wishlist state (gr-on) and keeps recolor off it. */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	overflow: hidden;
+	background: var(--gr-surface-2) !important;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6) !important;
+	font-family: var(--gr-font) !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div,
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div * {
+	background-color: transparent !important;
+	background-image: none !important;
+	letter-spacing: 0 !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div {
+	background-color: var(--gr-surface-2) !important;
+}
+/* the name */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div > div > div > a:first-child > div {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 18px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.01em !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) .StoreSaleDiscountBox {
+	background: #4c6b22 !important;
+}
+/* the star: a quiet icon button like the hero's heart */
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 34px !important;
+	height: 34px !important;
+	margin: 10px !important;
+	border: 1px solid rgba(255, 255, 255, 0.16) !important;
+	border-radius: 10px !important;
+	background: rgba(11, 11, 13, 0.6) !important;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div):hover {
+	background: rgba(11, 11, 13, 0.8) !important;
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) svg {
+	width: 18px !important;
+	height: 18px !important;
+	padding: 0 !important;
+}
+.SaleSectionCtn div:has(> .WishlistButtonText):not(.WishlistButton):not(.LibraryAssetExpandedDisplay div) svg * {
+	fill: none !important;
+	stroke: #ececf0 !important;
+	stroke-width: 2px !important;
+	stroke-linejoin: round;
+}
+.gr-hub-star.gr-on svg * {
+	fill: var(--gr-accent) !important;
+	stroke: var(--gr-accent) !important;
+}
+/* tags in the hover card keep their pill (the rule above clears the inner backgrounds) */
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div .WidgetTag {
+	background-color: rgba(255, 255, 255, 0.07) !important;
+}
+.SaleSectionCtn div:has(> a > div > .WishlistButtonText):not(.LibraryAssetExpandedDisplay div) > div .WidgetTag:hover {
+	background-color: rgba(255, 255, 255, 0.13) !important;
 }
 
 /* Store game page (store.steampowered.com/app/...). Calm and flat: no game

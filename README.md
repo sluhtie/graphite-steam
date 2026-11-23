@@ -4,7 +4,9 @@
 
 **A clean, minimal and modern theme for the Steam desktop client, built for [Millennium](https://steambrew.app).**
 
-Neutral graphite surfaces, one accent color you choose, quiet typography and a single-row header. Graphite restyles the whole client, from the library and menus to the store, community and friends chat, without gradients, glow or visual noise.
+Neutral graphite surfaces, one accent color you choose and quiet typography. Graphite restyles the whole client, from the library and menus to the store, community and friends chat, without gradients, glow or visual noise.
+
+**New in 2.0 (beta):** a rebuilt app layout with an icon rail, one search for your library and the store, a side navigation for the store and community, a friends dock and a settings page of its own.
 
 [![Millennium theme](https://img.shields.io/badge/Millennium-theme-8fa8ff?style=for-the-badge&labelColor=18181c&logo=steam&logoColor=ececf0)](https://steambrew.app/theme/AhWCRyHBVXoohiaVWWBW)
 [![Version](https://img.shields.io/github/package-json/v/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=8fa8ff&label=version)](https://github.com/sluhtie/graphite-steam/commits/main)
@@ -14,9 +16,19 @@ Neutral graphite surfaces, one accent color you choose, quiet typography and a s
 
 ---
 
-## Highlights
+## What's new in 2.0
 
-![Graphite highlights](docs/features.jpg)
+![Graphite 2.0 highlights](docs/features.jpg)
+
+Graphite 2.0 is an optional layout for the main window. Turn it on with **Navigation → Graphite 2.0 (beta)** (see [Make it yours](#make-it-yours)); the classic layouts stay available.
+
+- **Icon rail** on the left: Home, Library, Store, Community, Downloads (with a progress ring), Graphite settings and Steam settings. The Graphite logo replaces the Steam logo and holds View / Friends / Games / Help.
+- **One search** in the title bar for your library and the store, with live store suggestions, prices and discounts as you type (`Ctrl K`).
+- **Side navigation** for the store (Discover, Wishlist, Points Shop, Cart, browse, categories, news, charts) and the community (activity, profile, friends, groups, discussions, workshop, market, inventory, badges ...). The page sits next to it in a rounded frame with a floating scrollbar and a thin loading bar.
+- **Friends dock** on the right: friends by status, a status menu (Online, Away, Invisible, Offline, Do not disturb), unread glow and your chats.
+- **Store, redesigned**: hero cards on the store front and on every category page (art, logo, description, price, add to cart, wishlist), a Points Shop with its own banner and category chips, calm capsules, prices and hover cards.
+- **Graphite settings page**: accent presets and every color applied live, font, corners and layout options, one click to reload the UI.
+- **The details**: a startup screen and loading spinners with the Graphite logo, notifications and toasts in the same style.
 
 ## Screenshots
 
@@ -27,22 +39,25 @@ Neutral graphite surfaces, one accent color you choose, quiet typography and a s
 | **Game details** | **Store** |
 | --- | --- |
 | ![Game details](docs/game.jpg) | ![Store](docs/store.jpg) |
+| **Category page** | **Points Shop** |
+| ![Category page](docs/category.jpg) | ![Points Shop](docs/points.jpg) |
 | **Store game page** | **Wishlist** |
 | ![Store game page](docs/app.jpg) | ![Wishlist](docs/wishlist.jpg) |
-| **Community Market** | **Settings** |
-| ![Community Market](docs/market.jpg) | ![Settings](docs/settings.jpg) |
+| **Community Market** | **Graphite settings** |
+| ![Community Market](docs/market.jpg) | ![Graphite settings](docs/graphite.jpg) |
 
 ## What it themes
 
 | | Area | What changes |
 | --- | --- | --- |
-| 🧭 | **Navigation** | One row: Steam logo, back / forward, Store / Library / Community, downloads, friends, notifications and account. View / Friends / Games / Help fold away behind the logo. The store keeps its own nav (plus a Points Shop link), community pages get a slim sub-navigation incl. your profile, inventory and badges. |
-| 🪟 | **Window frame** | Own icon set for the title bar and window controls, round avatar with a status dot. The bottom bar is gone: Downloads (with progress) and Friends & Chat live in the title bar. |
-| 🎮 | **Library** | Game list, home shelves and capsules, hover cards, game details (hero, play bar, sections, activity), news and patch notes overlay, downloads, console. |
-| 🛒 | **Store** | Calm store front with one rounded hero, redesigned game pages (one card per purchase option, plain feature and link lists), wishlist, search, discovery queue, news hub, calendar and charts. |
+| 🧭 | **Navigation** | **Graphite 2.0:** icon rail, title bar search, side navigation for store and community, friends dock. **Clean:** one row with back / forward, Store / Library / Community, downloads, friends, notifications and account; View / Friends / Games / Help fold away behind the logo. **Classic:** Steam's own menus. |
+| 🪟 | **Window frame** | Own icon set for the title bar and window controls, round avatar with a status dot, no bottom bar. In 2.0 the store and community sit in a rounded frame with a loading bar. |
+| 🎮 | **Library** | Game list, home shelves and capsules, hover cards, game details (hero, play bar, sections, activity), news and patch notes overlay, downloads with the bandwidth graph, install / uninstall dialogs, console. |
+| 🛒 | **Store** | Store front and category pages with one hero card each, game pages (one card per purchase option), wishlist and its dialogs, search with filters, new & trending, points shop and points history, discovery queue, news hub, calendar and charts. |
 | 👥 | **Community** | Home, hubs, discussions, workshop, activity, profiles, friends and groups, screenshots / artwork / guides, badges, inventory and the Community Market incl. the new item pages. |
-| 💬 | **Friends & chat** | Friends list with status dots and tidy group chats, a roomy chat window, emoji picker. |
-| 🧩 | **Menus & dialogs** | Root menus, nav dropdowns, context menus, the settings window, toggles, inputs, buttons and modals. |
+| 💬 | **Friends & chat** | Friends list with status dots, group chats with channels, a roomy chat window, emoji picker. |
+| 🧩 | **Menus & dialogs** | One style for every menu (root menus, dropdowns, context menus), the settings window, toggles, inputs, buttons, modals, notifications and toasts. |
+| ⏳ | **Loading** | Steam's spinning logo becomes the Graphite logo everywhere; 2.0 adds a startup screen while the main window loads. |
 
 Custom profile backgrounds stay visible, discount badges keep Steam's green, and item rarity and online / in-game colors are untouched.
 
@@ -50,17 +65,20 @@ Custom profile backgrounds stay visible, discount badges keep Steam's green, and
 
 ![Accent colors](docs/accents.jpg)
 
-Everything is set in **Millennium → Themes → Graphite**:
+Everything is set in **Millennium → Themes → Graphite**, and with Graphite 2.0 also on the **Graphite page** in the client (the palette icon in the rail), where colors apply right away:
 
 | Option | Choices |
 | --- | --- |
-| **Colors** | Accent, play button, background, surfaces, borders and three text levels, all editable |
+| **Colors** | Accent (with presets), play button, background, surfaces, borders and three text levels, all editable |
 | **Font** | Inter (default), System (Segoe UI), Motiva Sans |
 | **Corners** | Rounded (default), Sharp |
+| **Navigation** | Clean (default), Graphite 2.0 (beta), Classic (Steam's own menus and hover dropdowns) |
 | **Header** | Single row (default), Classic two-row layout |
-| **Navigation** | Clean (default), Classic (Steam's own menus and hover dropdowns) |
 | **Store & community pages** | Restyle the in-client web pages (on by default) |
+| **Startup screen** | The Graphite logo while the main window loads (2.0, on by default) |
 | **Extras** | Hide URL bar (on by default), Hide What's New |
+
+Options other than colors take effect after reloading the UI (the Graphite page offers a button) or restarting Steam.
 
 ## Install
 
@@ -74,6 +92,7 @@ Everything is set in **Millennium → Themes → Graphite**:
 
    You can also download the ZIP and extract it there.
 3. Restart Steam, open **Steam → Millennium → Themes** and select **Graphite**.
+4. For the 2.0 layout, set **Navigation** to **Graphite 2.0 (beta)** and restart Steam.
 
 ## After a Steam update
 
@@ -100,17 +119,20 @@ Graphite's source CSS in `src/` uses readable tokens instead of hashes, and a sm
 
 `tools/build.mjs` reads Steam's `steamui/*.js` bundles, extracts every module's `name -> hash` map and writes the resolved CSS and scripts to `build/`. That output is committed, so the theme works without a build step.
 
-The store and community are Valve's web pages. Older parts use stable class names; newer React parts use Valve's web design system, whose color scales Graphite remaps on `:root`. Two small local scripts handle the rest. Neither makes network requests.
+The store and community are Valve's web pages. Older parts use stable class names; newer React parts use Valve's web design system, whose color scales Graphite remaps on `:root`. Small local scripts handle the rest:
 
-- **`src/scripts/web-recolor.js`** (Store & community option): swaps the hardcoded blue-greys of Valve's newest React pages for Graphite surfaces. It also tags the parts of the wishlist, game pages, news hub and event overlay with stable `gr-*` classes, so the theme can restyle them despite Valve's changing class names.
-- **`src/scripts/nav.js`** (Clean navigation): stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation.
+- **`src/scripts/shell.js`** (Navigation: Graphite 2.0): builds the 2.0 layout on top of Steam's own UI. Rail, search and side navigation use Steam's router and `steam://` URLs, so every page is still Steam's real page. The store and community are Steam's native browser view, which follows a placeholder element, so resizing that element moves the page into the frame. Also includes the Graphite settings page (`shell-theme.js`), the store hero cards and the Points Shop (`points.js`).
+- **`src/scripts/web-recolor.js`** (Store & community option): swaps the hardcoded blue-greys of Valve's newest React pages for Graphite surfaces, and tags the parts of the wishlist, game pages, news hub, category pages and event overlay with stable `gr-*` classes, so the theme can restyle them despite Valve's changing class names.
+- **`src/scripts/nav.js`** (Navigation: Clean): stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation.
+
+Graphite has no server of its own and sends no data anywhere. Besides the Inter font from Google Fonts (pick **Font: System** to avoid it), the only requests are Steam's own: the store's `appdetails` API from inside the store page (for the hero cards) and Steam's search suggestions through the client's connection (for the title bar search). Settings are read and written through Millennium.
 
 ## Development
 
 | Command | Purpose |
 | --- | --- |
 | `npm run build` | Resolve tokens and write `build/` |
-| `npm run live` | Inject the built theme into a running Steam started with `-dev` (DevTools on port 8080), without restarting Steam |
+| `npm run live` | Inject the built theme into a running Steam started with `-dev` (DevTools on port 8080), without restarting Steam. `--set "Option=Value"` previews an option, `--colors` also injects `colors.css` |
 | `node tools/lookup.mjs <Key or hash>` | Show which Steam module defines a class, plus unique anchors |
 | `node tools/render-docs.mjs ...` | Render the README images from `docs/src` (see [docs/src/README.md](docs/src/README.md)) |
 
@@ -122,12 +144,14 @@ src/             Source CSS with $(Token) class references
   menus.css      Popup menus
   dialogs.css    Settings and other dialog windows
   friends.css    Friends list and chat
+  toasts.css     Desktop notifications
   partials/      Shared pieces pulled in with @import
-  options/       Stylesheets toggled by theme options (webkit.css = store/community)
-  scripts/       nav.js (clean navigation), web-recolor.js (React web pages)
+  options/       Stylesheets toggled by theme options (shell.css = 2.0 layout, webkit.css = store/community)
+  scripts/       shell.js (2.0 layout, incl. shell-theme.js, points.js), nav.js (clean navigation),
+                 web-recolor.js (React web pages, incl. marketing.js)
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview, lookup and docs render scripts
-docs/            README images; docs/src holds their HTML sources
+docs/            README images; docs/src holds their HTML sources and raw captures
 ```
 
 ## License

@@ -18,7 +18,10 @@ const skin = JSON.parse(fs.readFileSync(path.join(root, 'skin.json'), 'utf8'));
 
 const rules = [];
 const scripts = [];
-if (skin.RootColors) rules.push({ re: ['.*'], file: skin.RootColors });
+// Millennium's own RootColors style already holds the user's colors; injecting
+// colors.css would put the defaults over them. Only with --colors (to preview
+// changes to colors.css itself).
+if (skin.RootColors && args.includes('--colors')) rules.push({ re: ['.*'], file: skin.RootColors });
 for (const p of skin.Patches || []) {
   if (p.TargetCss) rules.push({ re: [p.MatchRegexString], file: p.TargetCss });
 }

@@ -410,3 +410,43 @@
 	color: currentColor !important;
 	fill: currentColor !important;
 }
+
+/* dialogs inside a row ("manage categories"): a solid card instead of a see-through layer */
+.gr-wishlist dialog[open] {
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-wishlist dialog[open]::backdrop {
+	background: rgba(0, 0, 0, 0.55);
+}
+.gr-wishlist dialog[open] > div {
+	opacity: 1 !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 14px !important;
+	background: var(--gr-surface-2) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.gr-wishlist dialog[open] input[type="text"],
+.gr-wishlist dialog[open] input:not([type]) {
+	box-sizing: border-box;
+	height: 34px !important;
+	padding: 0 10px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.gr-wishlist dialog[open] input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.gr-wishlist dialog[open] button {
+	border-color: var(--gr-border) !important;
+	border-radius: 999px !important;
+}
