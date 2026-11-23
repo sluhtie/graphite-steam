@@ -1,0 +1,543 @@
+/* Graphite 2.0 shell (beta, "Navigation: Graphite 2.0").
+   A new app layout for the main window: a slim icon rail on the left
+   (built by src/scripts/shell.js) replaces the tabs, one 52px title bar
+   carries back / forward, the current place, one search for library and
+   store, notifications, account and the window controls. The library list
+   and the store / community navigation sit on the window background, the
+   page itself in one inset card. Everything of the clean navigation is
+   kept (hover blocking, Steam menu, quick buttons). */
+@import "./nav-clean.css";
+
+:root {
+	--gr-shell-rail: 64px;
+	--gr-shell-side: 272px;
+	--gr-shell-top: 52px;
+	--gr-shell: 1;
+}
+
+/* --- Frame: room for the rail ------------------------------------------------ */
+.$(OuterFrame) {
+	box-sizing: border-box !important;
+	padding-left: var(--gr-shell-rail) !important;
+	background: var(--gr-bg) !important;
+}
+
+/* --- Title bar: one 52px row ------------------------------------------------- */
+.$(TopBar@FocusNavigationRoot) {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: center !important;
+	gap: 12px;
+	height: var(--gr-shell-top) !important;
+	min-height: var(--gr-shell-top) !important;
+	padding: 0 !important;
+	background: var(--gr-bg) !important;
+	-webkit-app-region: drag;
+}
+.$(TopBar@FocusNavigationRoot) > .$(TitleBar@FocusNavigationRoot) {
+	display: contents !important;
+}
+/* back / forward + where you are: as wide as the side column */
+.$(TopBar@FocusNavigationRoot) > .$(SuperNavBar) {
+	order: 1;
+	flex: none !important;
+	width: var(--gr-shell-side) !important;
+	height: var(--gr-shell-top) !important;
+	margin: 0 !important;
+	padding: 0 0 0 4px !important;
+	border: 0 !important;
+	display: flex !important;
+	align-items: center !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNav) {
+	height: 32px !important;
+	padding: 0 !important;
+	gap: 2px;
+	align-items: center !important;
+	min-width: 0;
+	flex: 1;
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNav) > svg {
+	width: 30px !important;
+	height: 30px !important;
+	padding: 7px !important;
+	box-sizing: border-box;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.$(TopBar@FocusNavigationRoot) .$(SuperNav) > svg:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+/* the tabs live in the rail now (kept in the DOM, shell.js still reads them) */
+.$(TopBar@FocusNavigationRoot) .$(SuperNav) > .$(SuperNavMenu) {
+	display: none !important;
+}
+.gr-crumb {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	min-width: 0;
+	margin-left: 8px;
+	white-space: nowrap;
+	overflow: hidden;
+	-webkit-app-region: drag;
+	pointer-events: none;
+}
+.gr-crumb b {
+	color: var(--gr-text);
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+.gr-crumb i {
+	font-style: normal;
+	color: var(--gr-text-3);
+}
+.gr-crumb span {
+	color: var(--gr-text-2);
+	font-size: 13px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* the middle: search */
+.$(TopBar@FocusNavigationRoot) .$(DragArea) {
+	order: 2;
+	flex: 1 1 auto !important;
+	min-width: 0;
+	height: var(--gr-shell-top) !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+.gr-search {
+	position: relative;
+	width: 100%;
+	max-width: 520px;
+	-webkit-app-region: no-drag;
+}
+.gr-search label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 36px;
+	padding: 0 8px 0 12px;
+	box-sizing: border-box;
+	border-radius: var(--gr-radius);
+	background: var(--gr-surface);
+	border: 1px solid var(--gr-border);
+	color: var(--gr-text-3);
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-search:focus-within label {
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent);
+}
+.gr-search label > svg,
+.gr-search-row > svg {
+	flex: none;
+	width: 16px;
+	height: 16px;
+}
+.gr-search input {
+	flex: 1;
+	min-width: 0;
+	height: 100%;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--gr-text);
+	font: inherit;
+	font-size: 13px;
+}
+.gr-search input::placeholder {
+	color: var(--gr-text-3);
+	font-style: normal;
+}
+.gr-search kbd {
+	flex: none;
+	font: inherit;
+	font-size: 11px;
+	color: var(--gr-text-3);
+	border: 1px solid var(--gr-border);
+	border-radius: 6px;
+	padding: 1px 6px;
+}
+.gr-search-pop {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 42px;
+	z-index: 1000;
+	padding: 6px;
+	border-radius: var(--gr-radius);
+	background: var(--gr-surface-2);
+	border: 1px solid var(--gr-border);
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.gr-search-pop[hidden] {
+	display: none;
+}
+.gr-search-head {
+	padding: 6px 8px 4px;
+	color: var(--gr-text-3);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+.gr-search-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	height: 36px;
+	padding: 0 8px;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: var(--gr-radius-sm);
+	background: transparent;
+	color: var(--gr-text);
+	font: inherit;
+	font-size: 13px;
+	text-align: left;
+	cursor: pointer;
+}
+.gr-search-row:hover,
+.gr-search-row.gr-on {
+	background: var(--gr-hover);
+}
+.gr-search-row img {
+	width: 20px;
+	height: 20px;
+	border-radius: 5px;
+	flex: none;
+}
+.gr-search-row b {
+	flex: 1;
+	min-width: 0;
+	font-weight: 400;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.gr-search-row small {
+	color: var(--gr-text-3);
+	font-size: 12px;
+	white-space: nowrap;
+}
+.gr-search-sep {
+	height: 1px;
+	margin: 6px 4px;
+	background: var(--gr-border);
+}
+.gr-search-none {
+	padding: 6px 8px 8px;
+	color: var(--gr-text-3);
+}
+
+/* right: friends, notifications, account. Downloads moved to the rail,
+   announcements and Big Picture stay in the Steam menu. */
+.$(TopBar@FocusNavigationRoot) .$(TitleBarControls@AnnouncementsButton) {
+	order: 3;
+	flex: none !important;
+	height: var(--gr-shell-top) !important;
+	align-items: center !important;
+}
+.$(TitleBarControls@AnnouncementsButton) .gr-q-dl,
+.$(TitleBarControls@AnnouncementsButton) .tool-tip-source:has(.$(AnnouncementsButton)),
+.$(TitleBarControls@AnnouncementsButton) .tool-tip-source:has(.$(GamepadUIToggle)) {
+	display: none !important;
+}
+.$(TopBar@FocusNavigationRoot) .$(WindowControls@FocusNavigationRoot) {
+	order: 4;
+	height: var(--gr-shell-top) !important;
+	align-self: center !important;
+}
+.$(WindowControls@FocusNavigationRoot) .title-area,
+.$(WindowControls@FocusNavigationRoot) .title-bar-actions,
+.$(WindowControls@FocusNavigationRoot) .windowControlButton {
+	height: var(--gr-shell-top) !important;
+}
+
+/* Steam logo + its menus: top of the rail */
+.$(TopBar@FocusNavigationRoot) .$(RootMenuBar@RootMenuButton) {
+	position: fixed !important;
+	left: 12px;
+	top: 6px;
+	z-index: 60;
+	height: 40px !important;
+	width: auto !important;
+	padding: 0 !important;
+	border-radius: var(--gr-radius);
+	transition: background var(--gr-fast) var(--gr-ease), box-shadow var(--gr-fast) var(--gr-ease);
+}
+.$(TopBar@FocusNavigationRoot) .$(RootMenuBar@RootMenuButton):has(.$(MenuOpen@MenuWrapper)) {
+	padding-right: 8px !important;
+	background: var(--gr-surface-2);
+	box-shadow: 0 0 0 1px var(--gr-border), 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+.$(TopBar@FocusNavigationRoot) .$(RootMenuBar@RootMenuButton) > .$(RootMenuButton):first-child {
+	width: 40px !important;
+	height: 40px !important;
+	padding: 0 !important;
+	justify-content: center !important;
+}
+
+/* --- Rail (src/scripts/shell.js) --------------------------------------------- */
+.gr-rail {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: var(--gr-shell-rail);
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 58px 0 12px;
+	box-sizing: border-box;
+	-webkit-app-region: drag;
+	font-family: var(--gr-font);
+}
+.gr-rail-btn {
+	position: relative;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 12px;
+	background: transparent;
+	color: var(--gr-text-3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	-webkit-app-region: no-drag;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-rail-btn:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.gr-rail-btn.gr-on {
+	background: var(--gr-surface-2);
+	color: var(--gr-text);
+}
+.gr-rail-btn::before {
+	content: "";
+	position: absolute;
+	left: -10px;
+	top: 50%;
+	width: 3px;
+	height: 18px;
+	margin-top: -9px;
+	border-radius: 0 3px 3px 0;
+	background: var(--gr-accent);
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.gr-rail-btn.gr-on::before {
+	opacity: 1;
+}
+.gr-rail-btn svg {
+	width: 20px;
+	height: 20px;
+}
+.gr-rail-gap {
+	flex: 1;
+}
+/* downloads: progress ring around the icon */
+.gr-rail-ring {
+	position: absolute;
+	inset: 8px;
+	width: 28px !important;
+	height: 28px !important;
+	transform: rotate(-90deg);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.gr-rail-btn.gr-busy .gr-rail-ring {
+	opacity: 1;
+}
+.gr-rail-ring circle {
+	fill: none;
+	stroke-width: 2;
+}
+.gr-rail-ring .gr-track {
+	stroke: var(--gr-border);
+}
+.gr-rail-ring .gr-fill {
+	stroke: var(--gr-accent);
+	stroke-linecap: round;
+	stroke-dasharray: 0 78.54;
+	transition: stroke-dasharray 0.4s var(--gr-ease);
+}
+.gr-rail-btn.gr-busy .gr-rail-dl {
+	width: 15px;
+	height: 15px;
+}
+.gr-rail-tip {
+	position: fixed;
+	z-index: 1000;
+	padding: 5px 9px;
+	border-radius: var(--gr-radius-sm);
+	background: var(--gr-surface-3);
+	border: 1px solid var(--gr-border);
+	color: var(--gr-text);
+	font-size: 12px;
+	font-weight: 500;
+	white-space: nowrap;
+	pointer-events: none;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Steam's inset highlight lines (they ran along the rail edge) */
+.$(TopBar@FocusNavigationRoot),
+.$(GameListHomeAndSearch) {
+	box-shadow: none !important;
+}
+
+/* --- Content: side column on the background, the page in one inset card ------ */
+.$(ContentFrame) {
+	background: var(--gr-bg) !important;
+}
+.$(URLBarReplacement) {
+	display: none !important;
+}
+/* library */
+.$(LeftListSizableContainer@LibraryWindowDivider) {
+	width: var(--gr-shell-side) !important;
+	min-width: var(--gr-shell-side) !important;
+	max-width: var(--gr-shell-side) !important;
+}
+/* header row: "Library  226" + collections button; Home is in the rail */
+.$(GameListHomeAndSearch) {
+	display: flex !important;
+	align-items: center !important;
+	height: 40px !important;
+	padding: 0 4px 4px 8px !important;
+}
+.$(GameListHomeAndSearch) .$(HomeBox) {
+	display: none !important;
+}
+.gr-libhead {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	font-family: var(--gr-font);
+}
+.gr-libhead b {
+	color: var(--gr-text);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+.gr-libhead span {
+	color: var(--gr-text-3);
+	font-size: 12px;
+}
+.$(LibraryWindowDivider@LeftListSizableContainer) {
+	width: 8px !important;
+	min-width: 8px !important;
+}
+.$(MainPanel@LibraryWindowDivider) {
+	margin: 0 8px 8px 0 !important;
+	border-radius: 16px !important;
+}
+/* store & community: our side navigation (shell.js) + the web page as the card */
+.gr-shell-web .$(BrowserWrapper@FocusNavigationRoot) {
+	box-sizing: border-box !important;
+	flex: none !important;
+	width: calc(100% - var(--gr-shell-side) - 8px) !important;
+	height: calc(100% - 8px) !important;
+	margin: 0 8px 8px var(--gr-shell-side) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 16px !important;
+	overflow: hidden !important;
+	background: var(--gr-surface) !important;
+}
+.gr-shell-web .$(URLBar@FocusNavigationRoot) {
+	display: none !important;
+}
+.gr-side {
+	position: fixed;
+	left: var(--gr-shell-rail);
+	top: var(--gr-shell-top);
+	bottom: 8px;
+	width: var(--gr-shell-side);
+	z-index: 40;
+	display: flex;
+	flex-direction: column;
+	padding: 0 4px 0 0;
+	box-sizing: border-box;
+	font-family: var(--gr-font);
+	overflow: auto;
+	scrollbar-width: thin;
+}
+.gr-side[hidden] {
+	display: none;
+}
+.gr-side h2 {
+	margin: 0;
+	padding: 4px 8px 10px;
+	color: var(--gr-text);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+.gr-side-head {
+	padding: 16px 8px 6px;
+	color: var(--gr-text-3);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+.gr-side-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	height: 34px;
+	padding: 0 8px;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: var(--gr-radius-sm);
+	background: transparent;
+	color: var(--gr-text-2);
+	font: inherit;
+	font-size: 13px;
+	text-align: left;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-side-row:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.gr-side-row.gr-on {
+	background: var(--gr-surface-2);
+	color: var(--gr-text);
+}
+.gr-side-row svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	color: var(--gr-text-3);
+}
+.gr-side-row.gr-on svg {
+	color: var(--gr-accent);
+}
+.gr-side-row span {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

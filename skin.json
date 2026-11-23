@@ -105,7 +105,7 @@
 			}
 		},
 		"Navigation": {
-			"description": "Clean: one navigation row. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
+			"description": "Clean: one navigation row. Graphite 2.0 (beta): a new app layout with an icon rail on the left, one search in the title bar and a side navigation for the store and community. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
 			"tab": "Layout",
 			"default": "Clean",
 			"values": {
@@ -124,6 +124,23 @@
 							"https:\\/\\/steamcommunity\\.com\\/.*"
 						],
 						"src": "build/scripts/nav.js"
+					}
+				},
+				"Graphite 2.0 (beta)": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$",
+							"^Steam Root Menu$"
+						],
+						"src": "build/options/shell.css"
+					},
+					"TargetJs": {
+						"affects": [
+							"^Steam$",
+							"https:\\/\\/store\\.steampowered\\.com\\/.*",
+							"https:\\/\\/steamcommunity\\.com\\/.*"
+						],
+						"src": "build/scripts/shell.js"
 					}
 				},
 				"Classic": {}
