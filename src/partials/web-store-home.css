@@ -139,8 +139,10 @@
 	height: 36px !important;
 	margin-top: -18px !important;
 	display: flex !important;
-	align-items: center;
-	justify-content: center;
+	/* Valve sets justify-content: end / start per side in wide mode */
+	align-items: center !important;
+	justify-content: center !important;
+	text-align: center !important;
 	background: var(--gr-surface-2) !important;
 	background-image: none !important;
 	border: 1px solid var(--gr-border) !important;
@@ -182,6 +184,8 @@
 	width: 16px;
 	height: 16px;
 	background: currentColor;
+	flex: none;
+	margin: 0 !important;
 	-webkit-mask: var(--gr-icon-chevron) center / 16px 16px no-repeat;
 	transform: rotate(90deg);
 }
@@ -288,8 +292,8 @@
 	min-width: 0 !important;
 	padding: 0 !important;
 	display: flex !important;
-	align-items: center;
-	justify-content: center;
+	align-items: center !important;
+	justify-content: center !important;
 	background: var(--gr-surface-2) !important;
 	border: 1px solid var(--gr-border) !important;
 	border-radius: 50% !important;
