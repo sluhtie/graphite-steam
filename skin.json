@@ -1,7 +1,7 @@
 {
 	"name": "Graphite",
 	"author": "sluhtie",
-	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one editable accent color and quiet typography across the library, menus, settings, friends and the Store & Community pages. New in 2.0 (beta): an app layout with an icon rail, one search for library and store, a side navigation and a friends dock.",
+	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one editable accent color and quiet typography across the library, menus, settings, friends and the Store & Community pages. New in 2.0: an app layout with an icon rail, one search for library and store, a side navigation and a friends dock.",
 	"version": "2.0.0",
 	"tags": [
 		"Minimal",
@@ -109,7 +109,7 @@
 			}
 		},
 		"Navigation": {
-			"description": "Clean: one navigation row. Graphite 2.0 (beta): a new app layout with an icon rail on the left, one search in the title bar and a side navigation for the store and community. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
+			"description": "Clean: one navigation row. Graphite 2.0: a new app layout with an icon rail on the left, one search in the title bar and a side navigation for the store and community. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
 			"tab": "Layout",
 			"default": "Clean",
 			"values": {
@@ -130,7 +130,7 @@
 						"src": "build/scripts/nav.js"
 					}
 				},
-				"Graphite 2.0 (beta)": {
+				"Graphite 2.0": {
 					"TargetCss": {
 						"affects": [
 							"^Steam$",

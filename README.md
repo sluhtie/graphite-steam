@@ -6,7 +6,7 @@
 
 Neutral graphite surfaces, one accent color you choose and quiet typography. Graphite restyles the whole client, from the library and menus to the store, community and friends chat, without gradients, glow or visual noise.
 
-**New in 2.0 (beta):** a rebuilt app layout with an icon rail, one search for your library and the store, a side navigation for the store and community, a friends dock and a settings page of its own.
+**New in 2.0:** a rebuilt app layout with an icon rail, one search for your library and the store, a side navigation for the store and community, a friends dock and a settings page of its own.
 
 [![Millennium theme](https://img.shields.io/badge/Millennium-theme-8fa8ff?style=for-the-badge&labelColor=18181c&logo=steam&logoColor=ececf0)](https://steambrew.app/theme/AhWCRyHBVXoohiaVWWBW)
 [![Version](https://img.shields.io/github/package-json/v/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=8fa8ff&label=version)](https://github.com/sluhtie/graphite-steam/commits/main)
@@ -20,7 +20,7 @@ Neutral graphite surfaces, one accent color you choose and quiet typography. Gra
 
 ![Graphite 2.0 highlights](docs/features.jpg)
 
-Graphite 2.0 is an optional layout for the main window. Turn it on with **Navigation → Graphite 2.0 (beta)** (see [Make it yours](#make-it-yours)); the classic layouts stay available.
+Graphite 2.0 is an optional layout for the main window. Turn it on with **Navigation → Graphite 2.0** (see [Make it yours](#make-it-yours)); the classic layouts stay available.
 
 - **Icon rail** on the left: Home, Library, Store, Community, Downloads (with a progress ring), Graphite settings and Steam settings. The Graphite logo replaces the Steam logo and holds View / Friends / Games / Help.
 - **One search** in the title bar for your library and the store, with live store suggestions, prices and discounts as you type (`Ctrl K`).
@@ -72,7 +72,7 @@ Everything is set in **Millennium → Themes → Graphite**, and with Graphite 2
 | **Colors** | Accent (with presets), play button, background, surfaces, borders and three text levels, all editable |
 | **Font** | Inter (default), System (Segoe UI), Motiva Sans |
 | **Corners** | Rounded (default), Sharp |
-| **Navigation** | Clean (default), Graphite 2.0 (beta), Classic (Steam's own menus and hover dropdowns) |
+| **Navigation** | Clean (default), Graphite 2.0, Classic (Steam's own menus and hover dropdowns) |
 | **Header** | Single row (default), Classic two-row layout |
 | **Store & community pages** | Restyle the in-client web pages (on by default) |
 | **Startup screen** | The Graphite logo while the main window loads (2.0, on by default) |
@@ -92,7 +92,7 @@ Options other than colors take effect after reloading the UI (the Graphite page 
 
    You can also download the ZIP and extract it there.
 3. Restart Steam, open **Steam → Millennium → Themes** and select **Graphite**.
-4. For the 2.0 layout, set **Navigation** to **Graphite 2.0 (beta)** and restart Steam.
+4. For the 2.0 layout, set **Navigation** to **Graphite 2.0** and restart Steam.
 
 ## After a Steam update
 

@@ -520,7 +520,7 @@
 /* @include nav.js */
 
 /*
- * Graphite 2.0 shell (beta, skin.json "Navigation: Graphite 2.0").
+ * Graphite 2.0 shell (skin.json "Navigation: Graphite 2.0").
  *
  * Builds the new app layout of the main window on top of Steam's own UI:
  *
