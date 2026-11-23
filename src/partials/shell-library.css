@@ -28,11 +28,104 @@
 	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35) !important;
 	overflow: hidden;
 }
+/* even 6px inset: the play button sits concentric in the card (14 - 6 = 8 radius) */
 .$(InPage) .$(InnerContainer@StatusAndStats) {
-	padding: 0 6px 0 10px !important;
+	padding: 6px !important;
 }
 .$(InPage) .$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer) {
 	min-width: 148px !important;
+}
+
+/* Family sharing (floating and sticky bar): Steam adds a second row "From the library of <friend>".
+   Pull it into the bar's own row, between the stats and the icon buttons, and
+   lay it out like a stat (avatar in place of the icon, label over the value). */
+.$(PlayBar@StatusAndStats) .$(InnerContainer@StatusAndStats):has(.$(SharedLibrary)) {
+	display: flex !important;
+	align-items: center;
+}
+.$(PlayBar@StatusAndStats) .$(InnerContainer@StatusAndStats):has(.$(SharedLibrary)) > .$(Row@StatusAndStats):first-child {
+	display: contents !important;
+}
+.$(PlayBar@StatusAndStats) .$(InnerContainer@StatusAndStats) > div:has(> .$(SharedLibrary)) {
+	order: 1;
+	flex: none;
+}
+.$(PlayBar@StatusAndStats) .$(InnerContainer@StatusAndStats):has(.$(SharedLibrary)) .$(RightControls@StatusAndStats) {
+	order: 2;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) {
+	display: grid !important;
+	grid-template-columns: auto auto;
+	grid-template-rows: 16px 18px;
+	gap: 0 10px !important;
+	align-items: center;
+	align-content: center;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 4px 0 16px !important;
+	border-left: 1px solid var(--gr-border);
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	line-height: 16px;
+	white-space: nowrap;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) > div,
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .AvatarAndPersona {
+	display: contents !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .AvatarAndPersona > div:first-child {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .avatarHolder {
+	width: 28px !important;
+	height: 28px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .avatarStatus {
+	display: none !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) img.avatar {
+	width: 28px !important;
+	height: 28px !important;
+	border-radius: 50% !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .LabelHolder {
+	grid-column: 2;
+	grid-row: 2;
+	display: flex !important;
+	align-items: baseline;
+	gap: 6px;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	letter-spacing: normal;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .playerName {
+	margin: 0 !important;
+	color: var(--gr-text) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 18px !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .richPresenceLabel {
+	margin: 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 18px !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .richPresenceLabel::before {
+	content: "·";
+	margin-right: 6px;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .LabelHolder.online .richPresenceLabel {
+	color: var(--gr-st-online) !important;
+}
+.$(PlayBar@StatusAndStats) .$(SharedLibrary) .LabelHolder.ingame .richPresenceLabel {
+	color: var(--gr-tx-ingame) !important;
 }
 
 /* --- Game page: store / DLC / hub links as one row ------------------------------- */
