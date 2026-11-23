@@ -47,6 +47,13 @@
 		// surfaces alone, only fix text colors
 		const hooked = !!(el.closest && el.closest('[data-gr-hook]'));
 		if (hooked) {
+			// bright Steam-blue buttons still become accent buttons
+			const hb = parse(cs.backgroundColor);
+			if (hb && hb.a > 0.05 && isBrightBlue(hb)) set.push(['background-color', 'var(--gr-accent)'], ['color', 'var(--gr-bg)']);
+			const himg = cs.backgroundImage;
+			if (himg && himg.includes('gradient') && !himg.includes('url(') && [...himg.matchAll(/rgba?\([^)]+\)/g)].map(m => parse(m[0])).some(c => c && isBrightBlue(c))) {
+				set.push(['background-image', 'none'], ['background-color', 'var(--gr-accent)'], ['color', 'var(--gr-bg)']);
+			}
 			textColor(el, cs, set);
 			for (const [p, v] of set) el.style.setProperty(p, v, 'important');
 			if (set.length) applied.set(el, set.map(([p]) => p));
@@ -188,6 +195,48 @@
 		}
 	}
 
+	// news hub (store.steampowered.com/news): sidebar, date sections, cards
+	const addCls = (el, c) => { if (el && !el.classList.contains(c)) el.classList.add(c); };
+	function hookNewsHub() {
+		if (!document.body || !document.body.classList.contains('events_hub')) return;
+		addCls(document.documentElement, 'gr-newshub');
+		const root = document.querySelector('.page_content_ctn > div > div > .Panel');
+		if (!root || root.children.length < 2) return;
+		const side = root.children[0], main = root.children[root.children.length - 1];
+		hook(side, 'gr-nh-side');
+		hook(main, 'gr-nh-main');
+		for (const el of side.querySelectorAll('div')) {
+			const cs = getComputedStyle(el);
+			const r = el.getBoundingClientRect();
+			if (el.classList.contains('gr-nh-title')) continue;
+			if (parseFloat(cs.fontSize) >= 28 && el.textContent.trim()) addCls(el, 'gr-nh-title');
+			else if (r.width >= 380 && r.height >= 380) addCls(el, 'gr-nh-mark');
+			else if (!el.querySelector('a') && el.nextElementSibling && el.nextElementSibling.querySelector('a')) addCls(el, 'gr-nh-label');
+		}
+		side.querySelectorAll('a').forEach(a => addCls(a, 'gr-nh-link'));
+		// date sections: a 24px uppercase heading followed by entries
+		for (const head of main.querySelectorAll('div')) {
+			if (head.classList.contains('gr-nh-sechead')) continue;
+			const cs = getComputedStyle(head);
+			if (cs.textTransform !== 'uppercase' || parseFloat(cs.fontSize) < 20 || !head.parentElement) continue;
+			if (head.parentElement.firstElementChild !== head) continue;
+			addCls(head, 'gr-nh-sechead');
+			hook(head.parentElement, 'gr-nh-section');
+		}
+		for (const sec of main.querySelectorAll('.gr-nh-section')) {
+			for (const item of sec.children) {
+				if (item.classList.contains('gr-nh-sechead')) continue;
+				addCls(item, 'gr-nh-item');
+				const card = item.querySelector('a');
+				if (card) addCls(card, 'gr-nh-card');
+				for (const d of item.querySelectorAll('div')) {
+					if (d.children.length > 1 || !d.textContent.trim()) continue;
+					if (parseFloat(getComputedStyle(d).fontSize) >= 20) addCls(d, 'gr-nh-headline');
+				}
+			}
+		}
+	}
+
 	// store navigation search button: Valve paints it bright blue on some pages
 	function hookStoreNav() {
 		if (location.hostname !== 'store.steampowered.com') return;
@@ -206,7 +255,7 @@
 
 	function flush(deadline) {
 		scheduled = false;
-		try { hookWishlist(); hookStoreNav(); } catch (e) { /* never break the page */ }
+		try { hookWishlist(); hookStoreNav(); hookNewsHub(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;

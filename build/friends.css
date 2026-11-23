@@ -524,21 +524,53 @@ textarea.chatentry_chatTextarea {
 .friendlist .avatarHolder.offline::after { display: none; }
 .friendlist .friend:hover .avatarHolder::after { box-shadow: 0 0 0 2px var(--gr-surface-2); }
 
-/* "drag friends here" hint */
-.friendlist .DropTarget > div:first-child {
-	color: var(--gr-text-3) !important;
-	font-size: 11.5px !important;
-	line-height: 1.35 !important;
-	padding-right: 70px;
+/* "drag friends here" hint: a small, quiet card with a text button */
+.friendlist .quickAccessFriends.emptyQuickAccess {
+	box-sizing: border-box;
+	display: flex !important;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	height: auto !important;
+	margin: 0 12px 8px !important;
+	padding: 8px 8px 8px 12px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
 }
-.friendlist .DropTarget > div:nth-child(2) {
-	background: transparent !important;
-	color: var(--gr-accent) !important;
-	font-size: 11px !important;
+.friendlist .quickAccessFriendsMessage {
+	position: static !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	color: var(--gr-text-3) !important;
+	flex: 1 1 auto;
+	font-size: 11.5px !important;
+	line-height: 1.4 !important;
+	text-align: left !important;
+}
+.friendlist .quickAccessFriendsMessageDismiss {
+	flex: none;
+	position: static !important;
+	margin: 0 !important;
+	padding: 3px 8px !important;
+	background: var(--gr-surface-2) !important;
+	border-radius: 5px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 11.5px !important;
 	font-weight: 600 !important;
 	text-transform: none !important;
 	letter-spacing: 0 !important;
 	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.friendlist .quickAccessFriendsMessageDismiss:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+/* the dashed outline only while something is being dragged over it */
+.friendlist .quickAccessFriends.emptyQuickAccess .dropTargetBox {
+	display: none !important;
 }
 .friendlist .dropTargetBox {
 	border: 1px dashed var(--gr-border) !important;
@@ -558,23 +590,54 @@ textarea.chatentry_chatTextarea {
 .addFriendButton svg {
 	display: none !important;
 }
-.TabSearchButton > div:last-child,
+/* search: just the icon until it is opened, then one quiet field */
+.friendTab .TabSearchButton {
+	align-items: center !important;
+	height: 28px !important;
+	background: transparent !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.friendTab .TabSearchButton:has(input) {
+	background: var(--gr-surface) !important;
+	border-color: var(--gr-border) !important;
+}
+.friendTab .TabSearchButton:has(input:focus) {
+	border-color: var(--gr-accent) !important;
+}
+.friendTab .TabSearchButton input {
+	height: 26px !important;
+	padding: 0 4px 0 10px !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.friendTab .TabSearchButton input::placeholder {
+	color: var(--gr-text-3) !important;
+}
+.friendTab .searchIconButton,
 .addFriendButton {
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	width: 28px !important;
-	height: 28px !important;
+	height: 26px !important;
+	background: transparent !important;
 	border-radius: var(--gr-radius-sm);
 	color: var(--gr-text-2);
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
-.TabSearchButton > div:last-child:hover,
+.friendTab .TabSearchButton:not(:has(input)) .searchIconButton:hover,
 .addFriendButton:hover {
-	background: var(--gr-hover);
+	background: var(--gr-hover) !important;
 	color: var(--gr-text);
 }
-.TabSearchButton > div:last-child::before,
+.friendTab .searchIconButton::before,
 .addFriendButton::before {
 	content: "";
 	width: 16px;
@@ -751,6 +814,21 @@ textarea.chatentry_chatTextarea {
 .friendlist .ChatRoomList > div:not(.NoChannels) a,
 .friendlist .ChatRoomList > div:not(.NoChannels) span {
 	color: var(--gr-accent) !important;
+}
+
+/* open search field: no inner box, upright placeholder */
+.friendTab .TabSearchButton .tabSearchTransitionGroup,
+.friendTab .TabSearchButton .tabSearchTransitionGroup * {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.friendTab .TabSearchButton input::placeholder {
+	font-style: normal !important;
+}
+.friendTab .TabSearchButton:has(input) {
+	margin-left: 8px !important;
 }
 
 /* Chat window (Graphite): pill tabs, an open message area without boxes,
@@ -1025,9 +1103,13 @@ textarea.chatentry_chatTextarea {
 }
 .chatWindow .chatEntryActionsGroup,
 .chatWindow .ChatMessageEntryVoice {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+	gap: 2px;
 	height: 44px !important;
 	margin: 0 !important;
-	padding: 0 2px !important;
+	padding: 0 3px !important;
 	background: var(--gr-surface) !important;
 	background-image: none !important;
 	border: 1px solid var(--gr-border) !important;
@@ -1054,11 +1136,12 @@ textarea.chatentry_chatTextarea {
 }
 .chatWindow .chatEntryActionsGroup > button,
 .chatWindow .ChatMessageEntryVoice .VoiceToggle {
+	box-sizing: border-box;
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
-	width: 42px !important;
-	height: 42px !important;
+	width: 36px !important;
+	height: 36px !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	border-radius: var(--gr-radius-sm) !important;
@@ -1089,4 +1172,137 @@ textarea.chatentry_chatTextarea {
 }
 .chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
 	background: var(--gr-hover) !important;
+}
+
+/* --- Message avatars: round, no status bar ------------------------------------ */
+.chatWindow .speakerStatus,
+.chatWindow .avatarHolder .avatarStatus,
+.chatWindow .avatarHolder .avatarFrame {
+	display: none !important;
+}
+.chatWindow .speakerHoverArea .avatarHolder,
+.chatWindow .speakerHoverArea .avatarHolder img {
+	border-radius: 50% !important;
+}
+.chatWindow .speakerHoverArea .speakerName {
+	margin-left: 8px !important;
+}
+
+/* --- Inline popups (emoticon picker, context menus) --------------------------- */
+.contextMenu {
+	background: none !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.contextMenu .contextMenuContents {
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.Picker .Tabs {
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.Picker .Tab {
+	border-bottom-width: 2px !important;
+	border-bottom-color: transparent !important;
+	opacity: 0.6;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.Picker .Tab:hover {
+	opacity: 0.9;
+}
+.Picker .Tab.Active {
+	border-bottom-color: var(--gr-accent) !important;
+	opacity: 1;
+}
+.Picker .SectionTitle {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.Picker .ItemList > * {
+	border-radius: var(--gr-radius-sm);
+}
+.Picker .ItemList > *:hover {
+	background: var(--gr-hover) !important;
+}
+.Picker .FilterInputContainer {
+	padding: 8px !important;
+	border-top: 1px solid var(--gr-border);
+}
+.Picker .FilterInputContainer input {
+	height: 32px !important;
+	padding: 0 10px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	font-size: 13px !important;
+}
+.Picker .FilterInputContainer input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .buttonsContainer {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: auto !important;
+	height: 100% !important;
+}
+
+/* Context menus and dropdown menus. On desktop these are their own popup
+   windows (body.ContextMenuPopupBody) but the same markup is also used inline. */
+
+body.ContextMenuPopupBody {
+	background: var(--gr-surface-2) !important;
+}
+
+.contextMenuContents,
+._3pofGqV0buiKAfMPEs3_82 {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	box-shadow: none !important;
+	padding: 4px !important;
+	min-width: 180px;
+}
+
+.contextMenuItem,
+._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG {
+	color: var(--gr-text-2) !important;
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	font-size: 13px !important;
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease) !important;
+}
+.contextMenuItem:not(.disabled, .d8GPmAyQdRQwoHiPbc8Js):hover,
+.contextMenuItem.active,
+.contextMenuItem.gpfocus,
+._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG:not(.d8GPmAyQdRQwoHiPbc8Js):hover {
+	background: var(--gr-active) !important;
+	color: var(--gr-text) !important;
+}
+.contextMenuItem.disabled,
+._2jXHP0742MyApMUVUM8IFn.d8GPmAyQdRQwoHiPbc8Js {
+	color: var(--gr-text-3) !important;
+	opacity: 0.6;
+}
+
+hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
+._21GPYlKBCLsHQpTsHw_RL_ {
+	border: none !important;
+	border-top: 1px solid var(--gr-border) !important;
+	background: none !important;
+	margin: 4px 6px !important;
+	height: 0 !important;
+}
+
+/* Account menu */
+._11phBiBefcVQdzrnrezkKa {
+	color: var(--gr-accent) !important;
 }

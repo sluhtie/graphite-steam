@@ -58,21 +58,53 @@
 .friendlist .avatarHolder.offline::after { display: none; }
 .friendlist .friend:hover .avatarHolder::after { box-shadow: 0 0 0 2px var(--gr-surface-2); }
 
-/* "drag friends here" hint */
-.friendlist .DropTarget > div:first-child {
-	color: var(--gr-text-3) !important;
-	font-size: 11.5px !important;
-	line-height: 1.35 !important;
-	padding-right: 70px;
+/* "drag friends here" hint: a small, quiet card with a text button */
+.friendlist .quickAccessFriends.emptyQuickAccess {
+	box-sizing: border-box;
+	display: flex !important;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	height: auto !important;
+	margin: 0 12px 8px !important;
+	padding: 8px 8px 8px 12px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
 }
-.friendlist .DropTarget > div:nth-child(2) {
-	background: transparent !important;
-	color: var(--gr-accent) !important;
-	font-size: 11px !important;
+.friendlist .quickAccessFriendsMessage {
+	position: static !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	color: var(--gr-text-3) !important;
+	flex: 1 1 auto;
+	font-size: 11.5px !important;
+	line-height: 1.4 !important;
+	text-align: left !important;
+}
+.friendlist .quickAccessFriendsMessageDismiss {
+	flex: none;
+	position: static !important;
+	margin: 0 !important;
+	padding: 3px 8px !important;
+	background: var(--gr-surface-2) !important;
+	border-radius: 5px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 11.5px !important;
 	font-weight: 600 !important;
 	text-transform: none !important;
 	letter-spacing: 0 !important;
 	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.friendlist .quickAccessFriendsMessageDismiss:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+/* the dashed outline only while something is being dragged over it */
+.friendlist .quickAccessFriends.emptyQuickAccess .dropTargetBox {
+	display: none !important;
 }
 .friendlist .dropTargetBox {
 	border: 1px dashed var(--gr-border) !important;
@@ -92,23 +124,54 @@
 .addFriendButton svg {
 	display: none !important;
 }
-.TabSearchButton > div:last-child,
+/* search: just the icon until it is opened, then one quiet field */
+.friendTab .TabSearchButton {
+	align-items: center !important;
+	height: 28px !important;
+	background: transparent !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.friendTab .TabSearchButton:has(input) {
+	background: var(--gr-surface) !important;
+	border-color: var(--gr-border) !important;
+}
+.friendTab .TabSearchButton:has(input:focus) {
+	border-color: var(--gr-accent) !important;
+}
+.friendTab .TabSearchButton input {
+	height: 26px !important;
+	padding: 0 4px 0 10px !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+.friendTab .TabSearchButton input::placeholder {
+	color: var(--gr-text-3) !important;
+}
+.friendTab .searchIconButton,
 .addFriendButton {
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	width: 28px !important;
-	height: 28px !important;
+	height: 26px !important;
+	background: transparent !important;
 	border-radius: var(--gr-radius-sm);
 	color: var(--gr-text-2);
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
-.TabSearchButton > div:last-child:hover,
+.friendTab .TabSearchButton:not(:has(input)) .searchIconButton:hover,
 .addFriendButton:hover {
-	background: var(--gr-hover);
+	background: var(--gr-hover) !important;
 	color: var(--gr-text);
 }
-.TabSearchButton > div:last-child::before,
+.friendTab .searchIconButton::before,
 .addFriendButton::before {
 	content: "";
 	width: 16px;
@@ -285,4 +348,19 @@
 .friendlist .ChatRoomList > div:not(.NoChannels) a,
 .friendlist .ChatRoomList > div:not(.NoChannels) span {
 	color: var(--gr-accent) !important;
+}
+
+/* open search field: no inner box, upright placeholder */
+.friendTab .TabSearchButton .tabSearchTransitionGroup,
+.friendTab .TabSearchButton .tabSearchTransitionGroup * {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.friendTab .TabSearchButton input::placeholder {
+	font-style: normal !important;
+}
+.friendTab .TabSearchButton:has(input) {
+	margin-left: 8px !important;
 }

@@ -270,9 +270,13 @@
 }
 .chatWindow .chatEntryActionsGroup,
 .chatWindow .ChatMessageEntryVoice {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+	gap: 2px;
 	height: 44px !important;
 	margin: 0 !important;
-	padding: 0 2px !important;
+	padding: 0 3px !important;
 	background: var(--gr-surface) !important;
 	background-image: none !important;
 	border: 1px solid var(--gr-border) !important;
@@ -299,11 +303,12 @@
 }
 .chatWindow .chatEntryActionsGroup > button,
 .chatWindow .ChatMessageEntryVoice .VoiceToggle {
+	box-sizing: border-box;
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
-	width: 42px !important;
-	height: 42px !important;
+	width: 36px !important;
+	height: 36px !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	border-radius: var(--gr-radius-sm) !important;
@@ -334,4 +339,82 @@
 }
 .chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
 	background: var(--gr-hover) !important;
+}
+
+/* --- Message avatars: round, no status bar ------------------------------------ */
+.chatWindow .speakerStatus,
+.chatWindow .avatarHolder .avatarStatus,
+.chatWindow .avatarHolder .avatarFrame {
+	display: none !important;
+}
+.chatWindow .speakerHoverArea .avatarHolder,
+.chatWindow .speakerHoverArea .avatarHolder img {
+	border-radius: 50% !important;
+}
+.chatWindow .speakerHoverArea .speakerName {
+	margin-left: 8px !important;
+}
+
+/* --- Inline popups (emoticon picker, context menus) --------------------------- */
+.contextMenu {
+	background: none !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.contextMenu .contextMenuContents {
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+}
+.Picker .Tabs {
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.Picker .Tab {
+	border-bottom-width: 2px !important;
+	border-bottom-color: transparent !important;
+	opacity: 0.6;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.Picker .Tab:hover {
+	opacity: 0.9;
+}
+.Picker .Tab.Active {
+	border-bottom-color: var(--gr-accent) !important;
+	opacity: 1;
+}
+.Picker .SectionTitle {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.Picker .ItemList > * {
+	border-radius: var(--gr-radius-sm);
+}
+.Picker .ItemList > *:hover {
+	background: var(--gr-hover) !important;
+}
+.Picker .FilterInputContainer {
+	padding: 8px !important;
+	border-top: 1px solid var(--gr-border);
+}
+.Picker .FilterInputContainer input {
+	height: 32px !important;
+	padding: 0 10px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+	font-size: 13px !important;
+}
+.Picker .FilterInputContainer input:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .buttonsContainer {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: auto !important;
+	height: 100% !important;
 }
