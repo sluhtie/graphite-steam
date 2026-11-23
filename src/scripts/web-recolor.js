@@ -262,6 +262,13 @@
 		}
 	}
 
+	// store front: personal calendar day columns get Graphite surfaces from CSS
+	function hookStoreHome() {
+		for (const day of document.querySelectorAll('.personal_calendar_ctn .carousel__inner-slide > div')) {
+			if (!day.classList.contains('gr-cal-day')) hook(day, 'gr-cal-day');
+		}
+	}
+
 	// store navigation search button: Valve paints it bright blue on some pages
 	function hookStoreNav() {
 		if (location.hostname !== 'store.steampowered.com') return;
@@ -280,7 +287,7 @@
 
 	function flush(deadline) {
 		scheduled = false;
-		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); } catch (e) { /* never break the page */ }
+		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); hookStoreHome(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;

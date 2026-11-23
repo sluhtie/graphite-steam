@@ -1,0 +1,374 @@
+/* Store front page: calmer and more open. One rounded hero, no decorative
+   background art, no panels behind carousels, small round carousel arrows,
+   plain "see more" links and more room between sections. */
+
+/* --- Sections ---------------------------------------------------------------- */
+.home_pagecontent_ctn {
+	margin-bottom: 18px !important;
+}
+.home_title_ctn,
+.title_grid {
+	display: flex !important;
+	align-items: center !important;
+	min-height: 36px;
+	margin-bottom: 12px !important;
+}
+.home_title_ctn h2,
+.title_grid h2,
+.home_section_title,
+.home_page_content_title {
+	margin: 0 !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 20px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+	text-transform: none !important;
+}
+/* "see more" buttons -> quiet text links */
+.see_more_link,
+.title_grid .see_more_link {
+	margin-left: auto !important;
+	text-align: right;
+}
+.see_more_link a,
+.title_grid a[class*="btn_"],
+.home_title_ctn a[class*="btn_"] {
+	display: inline-flex !important;
+	align-items: center;
+	height: 30px !important;
+	padding: 0 12px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+	transition: color var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.see_more_link a:hover,
+.title_grid a[class*="btn_"]:hover,
+.home_title_ctn a[class*="btn_"]:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.see_more_link a > span,
+.title_grid a[class*="btn_"] > span,
+.home_title_ctn a[class*="btn_"] > span {
+	padding: 0 !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: inherit !important;
+	line-height: 1 !important;
+}
+
+/* decorative art behind some sections, and the gift card promo */
+.personal_calendar_background,
+.top_new_releases_background,
+.home_gift_card_link,
+.home_page_gutter {
+	display: none !important;
+}
+.personal_calendar_ctn,
+.top_new_releases_ctn,
+.top_new_releases_carousel,
+.top_new_releases_carousel .carousel_container,
+.home_tab_bg_ctn {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+
+/* no panels behind carousels: the capsules carry their own surfaces */
+.carousel__slider,
+.home_discount_games_ctn,
+.home_discounts_block .home_discount_games_ctn,
+.sale_capsule_carousel.carousel_container,
+.top_new_releases_carousel .sale_capsule_carousel {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+
+/* --- Hero ---------------------------------------------------------------------- */
+/* only the current slide; Valve peeks at the neighbours outside the frame */
+#home_maincap_v7 .carousel_container.maincap {
+	border-radius: var(--gr-radius-lg, 16px);
+}
+#home_maincap_v7 .carousel_container.maincap .carousel_items {
+	overflow: hidden !important;
+	border-radius: var(--gr-radius-lg, 16px) !important;
+}
+#home_maincap_v7 .store_main_capsule {
+	border-radius: var(--gr-radius-lg, 16px) !important;
+	box-shadow: 0 0 0 1px var(--gr-border) !important;
+}
+#home_maincap_v7 .store_main_capsule .info {
+	background: var(--gr-surface) !important;
+	border-left: 1px solid var(--gr-border);
+}
+#home_maincap_v7 .store_main_capsule .app_name {
+	font-size: 22px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+	line-height: 1.2 !important;
+}
+#home_maincap_v7 .store_main_capsule .screenshots > div,
+#home_maincap_v7 .store_main_capsule .screenshots div[style*="url("] {
+	border-radius: var(--gr-radius-sm) !important;
+	overflow: hidden;
+}
+#home_maincap_v7 .store_main_capsule .reason,
+#home_maincap_v7 .store_main_capsule .reason * {
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Carousel arrows: small round buttons on the frame edge ------------------- */
+.carousel_container .arrow {
+	box-sizing: border-box !important;
+	padding: 0 !important;
+	top: 50% !important;
+	bottom: auto !important;
+	min-height: 0 !important;
+	max-height: 36px !important;
+	width: 36px !important;
+	height: 36px !important;
+	margin-top: -18px !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 50% !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2);
+	opacity: 1 !important;
+	z-index: 5;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.carousel_container .arrow.left {
+	left: -18px !important;
+}
+.carousel_container .arrow.right {
+	right: -18px !important;
+}
+.carousel_container .arrow:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text);
+}
+.carousel_container .arrow > * {
+	display: none !important;
+}
+.carousel_container .arrow::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 16px 16px no-repeat;
+	transform: rotate(90deg);
+}
+.carousel_container .arrow.right::before {
+	transform: rotate(-90deg);
+}
+
+/* page dots */
+.carousel_thumbs {
+	display: flex !important;
+	justify-content: center;
+	gap: 6px;
+	padding-top: 12px !important;
+}
+.carousel_thumbs > div,
+.carousel_container .carousel_thumbs div {
+	width: 6px !important;
+	height: 6px !important;
+	margin: 0 !important;
+	border-radius: 999px !important;
+	background: var(--gr-surface-3) !important;
+	transition: width var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.carousel_thumbs > div.focus,
+.carousel_container .carousel_thumbs div.focus {
+	width: 18px !important;
+	background: var(--gr-text-2) !important;
+}
+
+/* --- Capsules -------------------------------------------------------------------- */
+.home_pagecontent_ctn .store_capsule,
+.home_pagecontent_ctn .sale_capsule {
+	border-radius: var(--gr-radius) !important;
+	box-shadow: 0 0 0 1px var(--gr-border) !important;
+	transition: transform var(--gr-fast) var(--gr-ease), box-shadow var(--gr-fast) var(--gr-ease);
+}
+.home_pagecontent_ctn .store_capsule:hover,
+.home_pagecontent_ctn .sale_capsule:hover {
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--gr-text) 22%, var(--gr-border)), var(--gr-shadow) !important;
+}
+
+/* big sale banner under the hero */
+.home_page_takeunder,
+.home_page_content.takeunder {
+	border-radius: var(--gr-radius-lg, 16px) !important;
+	overflow: hidden;
+}
+
+/* --- Tab section (new & trending, top sellers, ...) ---------------------------- */
+.home_tabs_row {
+	display: flex !important;
+	gap: 4px;
+	margin-bottom: 10px !important;
+	border-bottom: 1px solid var(--gr-border);
+}
+.home_tabs_row .home_tab {
+	border-radius: 0 !important;
+	background: transparent !important;
+}
+.home_tabs_row .home_tab .tab_content {
+	padding: 10px 12px !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+}
+.home_tabs_row .home_tab.active .tab_content {
+	background: transparent !important;
+	color: var(--gr-text) !important;
+	box-shadow: inset 0 -2px 0 var(--gr-accent) !important;
+}
+.home_tabs_row .home_tab:hover .tab_content {
+	color: var(--gr-text) !important;
+}
+.tab_content_ctn .tab_item {
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	margin-bottom: 2px !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.tab_content_ctn .tab_item:hover,
+.tab_content_ctn .tab_item.focus {
+	background: var(--gr-surface-2) !important;
+}
+.tab_content_ctn .tab_item_cap img {
+	border-radius: 6px;
+}
+.tab_preview,
+.tab_preview_container {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius) !important;
+}
+
+/* --- React carousels (discounts & events, calendar, ...) ----------------------- */
+.carousel__back-button,
+.carousel__next-button {
+	align-self: center;
+	width: 36px !important;
+	height: 36px !important;
+	min-width: 0 !important;
+	padding: 0 !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 50% !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+	z-index: 5;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.carousel__back-button {
+	margin-right: -18px !important;
+}
+.carousel__next-button {
+	margin-left: -18px !important;
+}
+.carousel__back-button:hover,
+.carousel__next-button:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+.carousel__back-button:disabled,
+.carousel__next-button:disabled {
+	opacity: 0 !important;
+	pointer-events: none;
+}
+.carousel__back-button svg,
+.carousel__next-button svg {
+	display: none !important;
+}
+.carousel__back-button::before,
+.carousel__next-button::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 16px 16px no-repeat;
+	transform: rotate(90deg);
+}
+.carousel__next-button::before {
+	transform: rotate(-90deg);
+}
+.carousel__slider {
+	border-radius: var(--gr-radius) !important;
+}
+.carousel__dot {
+	padding: 0 3px !important;
+	background: transparent !important;
+}
+.carousel__dot::before,
+.carousel__dot > * {
+	border-radius: 999px !important;
+}
+/* "see more" buttons of the React modules (light grey blocks) */
+.home_pagecontent_ctn [class*="Ready"] > div:first-child a,
+.home_pagecontent_ctn .Panel > div:first-child > div:last-child > a:only-child {
+	display: inline-flex !important;
+	align-items: center;
+	height: 30px !important;
+	padding: 0 12px !important;
+	background: transparent !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+}
+.home_pagecontent_ctn [class*="Ready"] > div:first-child a:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+/* discount & event capsules: rounded artwork */
+.home_pagecontent_ctn .carousel__inner-slide a img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* --- Personal calendar ------------------------------------------------------------ */
+.gr-cal-day {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+}
+.gr-cal-day > div:first-child,
+.gr-cal-day > div:first-child * {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-weight: 600 !important;
+}
+.gr-cal-day img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.gr-cal-day > a:last-child {
+	background: var(--gr-surface-2) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+}
