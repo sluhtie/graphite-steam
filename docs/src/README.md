@@ -8,15 +8,17 @@ the repo root.
 | --- | --- | --- |
 | `docs/banner.webp` | `banner.html` | frames, then encode (below) |
 | `docs/thumbnail.jpg` (steambrew header) | `thumbnail.html` | `node tools/render-docs.mjs still docs/src/thumbnail.html docs/thumbnail.jpg 1920 1080` |
-| `docs/library.jpg`, `game.jpg`, `store.jpg`, `app.jpg`, `wishlist.jpg`, `market.jpg` | `frame.html#<shot>` | `node tools/render-docs.mjs still "docs/src/frame.html#library" docs/library.jpg 1800 1180` |
-| `docs/settings.jpg` | `frame.html#settings` | same, at `1800 940` |
+| `docs/library.jpg`, `game.jpg`, `store.jpg`, `category.jpg`, `points.jpg`, `app.jpg`, `wishlist.jpg`, `market.jpg`, `graphite.jpg` | `frame.html#<shot>` | `node tools/render-docs.mjs still "docs/src/frame.html#library" docs/library.jpg 1800 1060` |
 | `docs/features.jpg` | `features.html` | `node tools/render-docs.mjs still docs/src/features.html docs/features.jpg 1800 760` |
 | `docs/accents.jpg` | `accents.html` | `node tools/render-docs.mjs still docs/src/accents.html docs/accents.jpg 1800 1150` |
 | `docs/splash.jpg` (Millennium splash) | top of `shots/game.jpg` | crop to 3.56 : 1, 1811×509 |
 
-`shots/` holds the raw client screenshots (1800 px wide, Steam window at
-1600×1000 CSS px). The accent rows are real captures of the wishlist with the
-accent changed live.
+`shots/` holds the raw client screenshots (Graphite 2.0, Steam window at
+1813×1009 CSS px, default accent). Store and community pages are Steam's native
+browser view, which a capture of the main window does not include: they are
+captured on their own and placed into the main window capture at the view's
+bounds. Friends' avatars are blurred. The accent rows are real captures of the
+wishlist with the accent changed live.
 
 ## Banner
 
