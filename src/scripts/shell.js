@@ -557,14 +557,45 @@
 	// The store / community page is Steam's native browser view, drawn on top of
 	// this window: anything of ours over it (the Graphite page, the search
 	// popup) would end up underneath. Hide the view while one of them is open.
+	// SetVisible(false) only stops drawing it: its native window stays where it
+	// is and keeps taking the mouse, so the view is also parked at 1x1 while an
+	// overlay is open and put back on its placeholder afterwards (Steam itself
+	// ignores 0 sizes and only sends bounds that changed, so it would not).
 	const overlays = new Set();
+	let parked = false;
+	const view = () => { try { return W.MainWindowBrowserManager.m_browser || null; } catch (e) { return null; } };
+	const park = () => {
+		const v = view();
+		if (!v) return;
+		try { v.SetBounds(0, 0, 1, 1); parked = true; } catch (e) { /* ignore */ }
+	};
+	// back onto the placeholder; when there is none right now (closed by going to
+	// the library), update() tries again once the store page is back
+	const unpark = () => {
+		if (!parked) return;
+		const v = view();
+		const ph = document.querySelector('.$(BrowserWrapper@FocusNavigationRoot) > .Browser') || document.querySelector('.Browser');
+		const r = ph && ph.getBoundingClientRect();
+		if (!v || !r || !(r.width > 0 && r.height > 0)) return;
+		try { v.SetBounds(r.left, r.top, r.width, r.height); parked = false; } catch (e) { /* ignore */ }
+	};
 	const overlay = (key, on) => {
 		if (on) overlays.add(key); else overlays.delete(key);
+		const v = view();
+		if (!v) return;
 		try {
-			const view = W.MainWindowBrowserManager.m_browser;
-			if (view && route().startsWith('/browser')) view.SetVisible(overlays.size === 0);
+			if (overlays.size) {
+				if (route().startsWith('/browser')) { park(); v.SetVisible(false); }
+			} else {
+				unpark();
+				if (route().startsWith('/browser')) v.SetVisible(true);
+			}
 		} catch (e) { /* no browser view */ }
 	};
+	// a window resize makes Steam send the full bounds again: park once more
+	const onParkResize = () => { if (parked && overlays.size) setTimeout(park, 80); };
+	window.addEventListener('resize', onParkResize);
+	cleanup.push(() => { window.removeEventListener('resize', onParkResize); overlays.clear(); unpark(); });
 
 	/* --- Language --------------------------------------------------------------- */
 	const steamLang = (() => {
@@ -1346,6 +1377,7 @@
 		// store / community: side navigation next to the page
 		const web = sec === 'store' || sec === 'community';
 		document.documentElement.classList.toggle('gr-shell-web', web);
+		if (parked && !overlays.size) unpark();
 		// store / community pages draw the frame's rounded corners themselves
 		// (shell.js on the page), so the view can fill the frame; other pages
 		// (checkout, help ...) keep a small inset so their square corners stay inside
