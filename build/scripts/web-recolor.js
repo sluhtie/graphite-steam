@@ -230,9 +230,15 @@
 			if (el.classList.contains('gr-nh-title')) continue;
 			if (parseFloat(cs.fontSize) >= 28 && el.textContent.trim()) addCls(el, 'gr-nh-title');
 			else if (r.width >= 380 && r.height >= 380) addCls(el, 'gr-nh-mark');
-			else if (!el.querySelector('a') && el.nextElementSibling && el.nextElementSibling.querySelector('a')) addCls(el, 'gr-nh-label');
+			// section labels: text right before a list of links (not the collapse
+			// button or the search block, which also sit before link lists)
+			else if (!el.querySelector('a, svg, input') && el.nextElementSibling && el.nextElementSibling.querySelector('a')) addCls(el, 'gr-nh-label');
 		}
 		side.querySelectorAll('a').forEach(a => addCls(a, 'gr-nh-link'));
+		const opts = side.querySelector('.SVGIcon_Settings');
+		if (opts && opts.parentElement) addCls(opts.parentElement.parentElement, 'gr-nh-opts');
+		const search = side.querySelector('input');
+		if (search) addCls(search.closest('.gr-nh-side > div > div > div') || search.parentElement, 'gr-nh-search');
 		// date sections: a 24px uppercase heading followed by entries
 		for (const head of main.querySelectorAll('div')) {
 			if (head.classList.contains('gr-nh-sechead')) continue;

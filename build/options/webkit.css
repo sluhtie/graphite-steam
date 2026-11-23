@@ -3913,8 +3913,37 @@ h1.market_header,
 /* --- Sidebar ----------------------------------------------------------------------- */
 .gr-newshub .gr-nh-side {
 	background: var(--gr-bg) !important;
-	border-right: 1px solid var(--gr-border) !important;
+	border-right: 0 !important;
 	box-shadow: none !important;
+}
+/* the same room on both sides (Steam has 20px left, nothing right) */
+.gr-newshub .gr-nh-side > div {
+	padding: 28px 16px !important;
+}
+/* Steam's collapse button: does nothing useful next to the shell's own side
+   navigation, so it goes */
+.gr-newshub .gr-nh-side div:has(> div > .SVGIcon_DoubleArrow) {
+	display: none !important;
+}
+/* "Steam-<br>News-Hub": one line now that the button is gone */
+.gr-newshub .gr-nh-title br {
+	display: none;
+}
+/* the options button: Steam's own right padding on top of ours */
+.gr-newshub .gr-nh-opts {
+	padding-right: 0 !important;
+}
+.gr-newshub .gr-nh-search {
+	margin: 18px 0 6px !important;
+	padding: 0 !important;
+}
+.gr-newshub .gr-nh-search > div {
+	padding: 0 10px !important;
+}
+.gr-newshub .gr-nh-search input {
+	box-sizing: border-box !important;
+	width: 100% !important;
+	margin: 6px 0 0 !important;
 }
 .gr-newshub .gr-nh-side * {
 	text-transform: none !important;
@@ -4099,6 +4128,11 @@ h1.market_header,
 }
 .gr-newshub .gr-nh-title {
 	white-space: nowrap !important;
+}
+
+/* footer: Steam's grey divider in the border color */
+.gr-newshub .gr-nh-side div:has(> img) {
+	border-top-color: var(--gr-border) !important;
 }
 
 /* Event detail overlay (news, patch notes) on store and community pages.

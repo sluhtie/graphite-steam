@@ -967,9 +967,11 @@
 	background: var(--gr-bg) !important;
 }
 /* The page itself is Steam's native browser view and always square; it follows
-   this placeholder. Inset it a little so its corners stay inside the rounded
-   frame (16px radius needs ~5px) instead of poking over the border. */
-.gr-shell-web ._1bGewp3tfzqAF6fVTFFUOz > .Browser {
+   this placeholder. Store and community pages paint the rounded corners into
+   the page (shell.js), so there the view fills the frame. Any other page gets
+   a small inset so its corners stay inside the rounded frame (16px radius
+   needs ~5px) instead of poking over the border. */
+.gr-shell-web:not(.gr-web-own) ._1bGewp3tfzqAF6fVTFFUOz > .Browser {
 	box-sizing: border-box !important;
 	width: calc(100% - 10px) !important;
 	height: calc(100% - 10px) !important;

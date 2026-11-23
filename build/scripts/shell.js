@@ -8,13 +8,33 @@
 	const h = location.hostname;
 	if (h !== 'store.steampowered.com' && h !== 'steamcommunity.com') return;
 	window.__graphiteShellPage = true;
+	// In the main window the page sits in Graphite's rounded frame (16px radius,
+	// 1px border), but Steam's browser view is square. So the page paints the
+	// frame's corners itself: window background outside the curve, the border
+	// line along it. The window scrollbar is always drawn above the page, so the
+	// part of the two right-hand arcs that falls into its 10px column is drawn
+	// as the scrollbar's background. Not in the game overlay or in frames.
+	const framed = window.top === window && !/GameOverlay/i.test(navigator.userAgent);
+	const ring = (y) => `radial-gradient(circle at -5px ${y}, transparent 14.6px, var(--gr-border, #232328) 15px, var(--gr-border, #232328) 16px, transparent 16.4px)`;
+	const frame = `
+		html::after {
+			content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+			z-index: 2147483647; pointer-events: none; border-radius: 15px;
+			box-shadow: 0 0 0 1px var(--gr-border, #232328), 0 0 0 40px var(--gr-bg, #0b0b0d);
+		}
+		/* Chromium styles the window's scrollbar from <body> (else <html>) */
+		html::-webkit-scrollbar, body::-webkit-scrollbar { background: ${ring('15px')} top / 100% 15px no-repeat, ${ring('0px')} bottom / 100% 15px no-repeat, var(--gr-bg, #0b0b0d) !important; }
+		/* keep the thumb off the corner arcs */
+		html::-webkit-scrollbar-track, body::-webkit-scrollbar-track,
+		html::-webkit-scrollbar-track-piece, body::-webkit-scrollbar-track-piece { margin-top: 16px !important; margin-bottom: 16px !important; }
+	`;
 	const css = `
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
 		.responsive_page_content > div:has(form[role="search"]),
 		#store_header, .store_header_btn_gray, #global_header { display: none !important; }
 		/* the room Steam keeps for that bar */
 		.responsive_page_template_content { padding-top: 0 !important; }
-	`;
+	` + (framed ? frame : '');
 	const add = () => {
 		if (document.getElementById('gr-shell-page')) return;
 		const st = document.createElement('style');
@@ -2122,6 +2142,12 @@
 		// store / community: side navigation next to the page
 		const web = sec === 'store' || sec === 'community';
 		document.documentElement.classList.toggle('gr-shell-web', web);
+		// store / community pages draw the frame's rounded corners themselves
+		// (shell.js on the page), so the view can fill the frame; other pages
+		// (checkout, help ...) keep a small inset so their square corners stay inside
+		let url = '';
+		try { url = W.MainWindowBrowserManager.m_URL || ''; } catch (e) { /* not ready */ }
+		document.documentElement.classList.toggle('gr-web-own', web && (url.startsWith('https://store.steampowered.com/') || url.startsWith('https://steamcommunity.com/')));
 		side.hidden = !web;
 		if (web) renderSide(sec);
 		renderDock();
