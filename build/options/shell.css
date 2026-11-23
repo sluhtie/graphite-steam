@@ -213,11 +213,104 @@
 	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35) !important;
 	overflow: hidden;
 }
+/* even 6px inset: the play button sits concentric in the card (14 - 6 = 8 radius) */
 ._1U7LKpx70kEsz3jJwAFOi- ._3Y87YQY56ZCOqhgcZFaDc5 {
-	padding: 0 6px 0 10px !important;
+	padding: 6px !important;
 }
 ._1U7LKpx70kEsz3jJwAFOi- ._1FnJ6dPuknQFQ2RTpKTI16 ._3ydigb6zZAjJ0JCDgHwSYA {
 	min-width: 148px !important;
+}
+
+/* Family sharing (floating and sticky bar): Steam adds a second row "From the library of <friend>".
+   Pull it into the bar's own row, between the stats and the icon buttons, and
+   lay it out like a stat (avatar in place of the icon, label over the value). */
+._3fLo166MlaNqP8r8tTyRz ._3Y87YQY56ZCOqhgcZFaDc5:has(.z8GYwNt_nbBZrf7OVjs-s) {
+	display: flex !important;
+	align-items: center;
+}
+._3fLo166MlaNqP8r8tTyRz ._3Y87YQY56ZCOqhgcZFaDc5:has(.z8GYwNt_nbBZrf7OVjs-s) > ._9EHg918wH6CQCQlD5PWOO:first-child {
+	display: contents !important;
+}
+._3fLo166MlaNqP8r8tTyRz ._3Y87YQY56ZCOqhgcZFaDc5 > div:has(> .z8GYwNt_nbBZrf7OVjs-s) {
+	order: 1;
+	flex: none;
+}
+._3fLo166MlaNqP8r8tTyRz ._3Y87YQY56ZCOqhgcZFaDc5:has(.z8GYwNt_nbBZrf7OVjs-s) ._1EAxK56o5a9Nieu5HYkJ4k {
+	order: 2;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s {
+	display: grid !important;
+	grid-template-columns: auto auto;
+	grid-template-rows: 16px 18px;
+	gap: 0 10px !important;
+	align-items: center;
+	align-content: center;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 4px 0 16px !important;
+	border-left: 1px solid var(--gr-border);
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	line-height: 16px;
+	white-space: nowrap;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s > div,
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .AvatarAndPersona {
+	display: contents !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .AvatarAndPersona > div:first-child {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .avatarHolder {
+	width: 28px !important;
+	height: 28px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .avatarStatus {
+	display: none !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s img.avatar {
+	width: 28px !important;
+	height: 28px !important;
+	border-radius: 50% !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .LabelHolder {
+	grid-column: 2;
+	grid-row: 2;
+	display: flex !important;
+	align-items: baseline;
+	gap: 6px;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	letter-spacing: normal;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .playerName {
+	margin: 0 !important;
+	color: var(--gr-text) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 18px !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .richPresenceLabel {
+	margin: 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 18px !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .richPresenceLabel::before {
+	content: "·";
+	margin-right: 6px;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .LabelHolder.online .richPresenceLabel {
+	color: var(--gr-st-online) !important;
+}
+._3fLo166MlaNqP8r8tTyRz .z8GYwNt_nbBZrf7OVjs-s .LabelHolder.ingame .richPresenceLabel {
+	color: var(--gr-tx-ingame) !important;
 }
 
 /* --- Game page: store / DLC / hub links as one row ------------------------------- */

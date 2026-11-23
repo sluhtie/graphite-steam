@@ -208,7 +208,8 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	box-shadow: none !important;
 }
 .DialogCheckbox_Container.Active .DialogCheckbox,
-.DialogCheckbox_Container.Checked .DialogCheckbox {
+.DialogCheckbox_Container.Checked .DialogCheckbox,
+.DialogCheckbox.Active {
 	background: var(--gr-accent) !important;
 	border-color: var(--gr-accent) !important;
 }
@@ -1208,85 +1209,259 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	letter-spacing: 0.08em !important;
 }
 
-/* Context menus and dropdown menus. On desktop these are their own popup
-   windows (body.ContextMenuPopupBody) but the same markup is also used inline. */
+/* "Would you recommend this game?" prompt (and the review form behind it):
+   Steam's blue-grey band with light-blue buttons -> a card like the other
+   notices on the page, Graphite buttons */
+._3LE-6w1ItIAB4CKJFCa3Od {
+	padding: 0 !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	color: var(--gr-text-2) !important;
+	font-weight: 400 !important;
+	overflow: hidden;
+}
+._3LE-6w1ItIAB4CKJFCa3Od ._2SAb6geDpe6toA1GaP0GjH {
+	align-items: center;
+	padding: 15px 16px 15px 23px !important;
+	background: transparent !important;
+}
+._2SAb6geDpe6toA1GaP0GjH {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius);
+}
+._2SAb6geDpe6toA1GaP0GjH ._2aeAnRfwltWfd9Hb9M_1uE {
+	border-color: var(--gr-border) !important;
+}
+._2SAb6geDpe6toA1GaP0GjH .qX4kNo6O0M-mYntdErKSJ {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+._2SAb6geDpe6toA1GaP0GjH .My1beniJXh9pXud8rxYLK {
+	margin-top: 2px;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+._2SAb6geDpe6toA1GaP0GjH ._1E6Ivnp3A4apXqQYtlQHEc {
+	display: flex;
+	gap: 8px;
+}
+._1kCN0pAntrcGCSmcc-vYdk {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 8px;
+	height: 34px;
+	margin: 0 !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+._1kCN0pAntrcGCSmcc-vYdk:not(.Z3L6KGVxi4ZjGUzbYUjBC):hover {
+	background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3)) !important;
+	color: var(--gr-text) !important;
+}
+._1kCN0pAntrcGCSmcc-vYdk span {
+	padding: 0 !important;
+	vertical-align: baseline !important;
+}
+._1kCN0pAntrcGCSmcc-vYdk ._2Jkk-4RGWzhce22lSnA9Em,
+._1kCN0pAntrcGCSmcc-vYdk ._2Jkk-4RGWzhce22lSnA9Em.Z3L6KGVxi4ZjGUzbYUjBC {
+	position: static !important;
+	flex: none;
+	/* the glyph has a lot of padding inside its viewBox */
+	width: 24px !important;
+	height: 24px !important;
+	margin: -4px -4px -4px -6px;
+	fill: currentColor !important;
+}
+._1kCN0pAntrcGCSmcc-vYdk.Z3L6KGVxi4ZjGUzbYUjBC {
+	border-color: transparent !important;
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+}
+/* "Maybe later": quiet text button */
+._1kCN0pAntrcGCSmcc-vYdk._2bF4k-NqETM87LmHPN-Jp3 {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+._1kCN0pAntrcGCSmcc-vYdk._2bF4k-NqETM87LmHPN-Jp3:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+._3LE-6w1ItIAB4CKJFCa3Od ._3-729629OE-SJFqB0v_Nkz {
+	opacity: 0.4;
+}
+._3LE-6w1ItIAB4CKJFCa3Od ._3-729629OE-SJFqB0v_Nkz svg line {
+	stroke: var(--gr-text-2) !important;
+}
 
+/* review form */
+._10bN3WMeG0xP9KCqsxx7ea ._27mfPohuGzwxwaotA5Pk9 {
+	color: var(--gr-text) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+}
+._392iEmqj65Eac9ealm4Pmi {
+	padding: 10px 12px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm);
+	background: var(--gr-bg) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+}
+._392iEmqj65Eac9ealm4Pmi:focus {
+	border-color: var(--gr-accent) !important;
+}
+._2gJ9F_Ox8xa-jD-JD0eNrB {
+	border-radius: var(--gr-radius-sm);
+	background: var(--gr-accent) !important;
+	color: var(--gr-bg) !important;
+	font-weight: 600;
+}
+._2gJ9F_Ox8xa-jD-JD0eNrB:hover {
+	background: var(--gr-accent) !important;
+	filter: brightness(1.08);
+	color: var(--gr-bg) !important;
+}
+
+/* Menus: one look for every menu in the client.
+
+   Steam builds all desktop menus on the same wrapper (module "contextMenu"):
+   right-click menus, "..." buttons, submenus, dropdown lists (the library
+   filter), the root / account / notification menus. Select dropdowns use
+   their own card (DialogDropDownMenu) and get the same look. This file styles
+   that wrapper as the menu card and every kind of row inside it the same way.
+   It is imported by every window (main, popup menus, friends & chat,
+   dialogs); web pages use the same values in web-base.css.
+
+   A menu is either inline in a window (rounded card with a shadow) or its own
+   popup window (body.ContextMenuPopupBody: square, filling the window). */
+
+/* --- Card -------------------------------------------------------------------------- */
+.PP7LM0Ow1K5qkR8WElLpt,
+._30wJO3MC4x-I1OWpy1TAeE,
+._3pofGqV0buiKAfMPEs3_82 {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	padding: 4px !important;
+	min-width: 200px;
+	box-sizing: border-box;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.PP7LM0Ow1K5qkR8WElLpt .contextMenuContents {
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	min-width: 0 !important;
+}
+
+/* popup windows are square: the card fills the window, no shadow */
 body.ContextMenuPopupBody {
 	background: var(--gr-surface-2) !important;
 }
-/* the popup window is square: no rounded frame inside it, no blue-grey
-   backdrop behind the contents */
-body.ContextMenuPopupBody .contextMenu {
-	background: transparent !important;
-	background-image: none !important;
-	box-shadow: none !important;
-}
-body.ContextMenuPopupBody .contextMenuContents {
+body.ContextMenuPopupBody .PP7LM0Ow1K5qkR8WElLpt {
 	border-radius: 0 !important;
 	box-shadow: none !important;
 }
 
-.contextMenuContents,
-._3pofGqV0buiKAfMPEs3_82 {
-	background: var(--gr-surface-2) !important;
-	border: 1px solid var(--gr-border) !important;
-	box-shadow: none !important;
-	padding: 4px !important;
-	min-width: 180px;
-}
-
+/* --- Rows ---------------------------------------------------------------------------- */
 .contextMenuItem,
-._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG {
-	border: none !important;
+._2oAiZidGyUxL-hfupFDQ2m,
+._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG,
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container {
+	display: flex !important;
+	align-items: center !important;
+	gap: 10px;
+	min-height: 32px;
+	box-sizing: border-box;
 	margin: 0 !important;
-	color: var(--gr-text-2) !important;
-	background: transparent !important;
+	padding: 6px 10px !important;
+	border: 0 !important;
 	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
 	font-size: 13px !important;
-	padding-top: 7px !important;
-	padding-bottom: 7px !important;
-	text-transform: none !important;
+	font-weight: 400 !important;
+	line-height: 18px !important;
 	letter-spacing: 0 !important;
+	text-transform: none !important;
+	white-space: nowrap;
+	cursor: pointer;
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease) !important;
 }
-.contextMenuItem:not(.disabled, .d8GPmAyQdRQwoHiPbc8Js):hover,
+.contextMenuItem:not(.disabled):hover,
 .contextMenuItem.active,
 .contextMenuItem.gpfocus,
-._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG:not(.d8GPmAyQdRQwoHiPbc8Js):hover {
+.contextMenuItem._18z-3vkWndCBO5WJgFldRK,
+._2oAiZidGyUxL-hfupFDQ2m:hover,
+._2oAiZidGyUxL-hfupFDQ2m.gpfocus,
+._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG:not(.d8GPmAyQdRQwoHiPbc8Js):hover,
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container:hover {
 	background: var(--gr-active) !important;
 	color: var(--gr-text) !important;
 }
 .contextMenuItem.disabled,
+.contextMenuItem.disabled:hover,
 ._2jXHP0742MyApMUVUM8IFn.d8GPmAyQdRQwoHiPbc8Js {
+	background: transparent !important;
 	color: var(--gr-text-3) !important;
 	opacity: 0.6;
+	cursor: default;
+}
+/* checked entries (view menu, sort options) */
+.contextMenuItem.menuChecked {
+	color: var(--gr-text) !important;
 }
 
-hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
-._21GPYlKBCLsHQpTsHw_RL_ {
-	border: none !important;
-	border-top: 1px solid var(--gr-border) !important;
-	background: none !important;
-	margin: 4px 6px !important;
-	height: 0 !important;
+/* the primary action ("Play") reads as one */
+.contextMenuItem.ContextMenuAction {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
 }
 
-/* Steam draws separators as a top border on the next item (curved by the
-   item radius); use one straight line instead */
-.ContextMenuSeparator,
-.contextMenuSeparator,
-hr.ContextMenuHRSeparator {
-	height: 1px !important;
-	margin: 4px 8px !important;
-	padding: 0 !important;
-	background: var(--gr-border) !important;
-	border: none !important;
+/* icons in rows: one size, one color */
+.contextMenuItem > svg,
+.contextMenuItem .SVGIcon_Button:not(.SVGIcon_DownArrowContextMenu),
+.contextMenuItem ._38-c8Lb-zCJc8GmvTzoyL1 {
+	flex: none;
+	width: 14px !important;
+	height: 14px !important;
+	margin: 0 !important;
+	fill: currentColor !important;
 }
-.ContextMenuSeparator + .contextMenuItem {
-	border: none !important;
+.contextMenuItem ._38-c8Lb-zCJc8GmvTzoyL1 svg {
+	width: 14px !important;
+	height: 14px !important;
+	margin: 0 !important;
+}
+.contextMenuItem .SVGIcon_PlusCircle {
+	fill: none !important;
+}
+.contextMenuItem .SVGIcon_PlusCircle line {
+	stroke: currentColor !important;
 }
 
-/* submenu arrow: Graphite chevron */
+/* submenus: label fills the row, Graphite chevron on the right */
+.contextMenuItem.SubMenu .Label {
+	flex: 1 1 auto !important;
+}
 .contextMenuItem.SubMenu .Arrow svg {
 	display: none !important;
 }
@@ -1294,6 +1469,7 @@ hr.ContextMenuHRSeparator {
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
+	margin: 0 -4px 0 12px !important;
 	color: var(--gr-text-3);
 }
 .contextMenuItem.SubMenu .Arrow::before {
@@ -1309,7 +1485,61 @@ hr.ContextMenuHRSeparator {
 	color: var(--gr-text);
 }
 
-/* Account menu */
+/* checkbox rows (library filter and similar dropdowns) */
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container .DialogToggle_Label,
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container .DialogToggle_Label * {
+	color: inherit !important;
+	font-size: 13px !important;
+	font-weight: 400 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container .DialogToggle_Label [class*="Count"] {
+	color: var(--gr-text-3) !important;
+}
+.PP7LM0Ow1K5qkR8WElLpt .DialogCheckbox_Container .DialogCheckbox {
+	flex: none;
+	width: 16px !important;
+	height: 16px !important;
+	margin: 0 !important;
+}
+
+/* section headings inside a menu */
+.contextMenuItem._2Bb4JC5n6anf32WgmTfeMP,
+.contextMenuItem._2Bb4JC5n6anf32WgmTfeMP:hover {
+	min-height: 0;
+	padding: 8px 10px 4px !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	cursor: default;
+}
+
+/* --- Separators: one straight line ------------------------------------------------------ */
+/* Steam draws some separators as a top border on the next row (curved by the
+   row radius); those are removed and replaced by the line element */
+.ContextMenuSeparator,
+.contextMenuSeparator,
+hr.ContextMenuHRSeparator,
+._1Sa12sphmVOOs0on58tDn7,
+hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
+._21GPYlKBCLsHQpTsHw_RL_,
+.PP7LM0Ow1K5qkR8WElLpt > .Rule {
+	height: 1px !important;
+	min-height: 0 !important;
+	margin: 4px 6px !important;
+	padding: 0 !important;
+	background: var(--gr-border) !important;
+	border: none !important;
+}
+.ContextMenuSeparator + .contextMenuItem {
+	border: none !important;
+}
+
+/* --- Account menu ------------------------------------------------------------------------ */
 ._11phBiBefcVQdzrnrezkKa {
 	color: var(--gr-accent) !important;
 }
@@ -1343,13 +1573,118 @@ body.ModalDialogBody,
 }
 .DialogHeader {
 	color: var(--gr-text) !important;
+	font-size: 20px !important;
+	line-height: 28px !important;
 	font-weight: 600 !important;
 	text-transform: none !important;
 	letter-spacing: -0.01em !important;
+	margin-bottom: 8px !important;
 }
 .DialogBodyText,
 .DialogBody {
 	color: var(--gr-text-2) !important;
+}
+.DialogBodyText {
+	font-size: 14px !important;
+	font-weight: 400 !important;
+	line-height: 21px !important;
+	margin-bottom: 20px !important;
+}
+/* Steam's cyan-to-blue line on top of modals */
+.ModalPosition_TopBar {
+	background: none !important;
+}
+
+/* Dialog layout: Steam sizes some dialogs before the theme font applies, so
+   the content can end up taller than the dialog. The body may then scroll,
+   but the buttons stay pinned to the bottom instead of scrolling away. */
+.DialogContent_InnerWidth > .DialogBody {
+	min-height: 0;
+}
+.DialogBody > .DialogFooter {
+	position: sticky;
+	bottom: 0;
+	z-index: 1;
+	background: var(--gr-surface);
+}
+
+/* --- Install dialog -------------------------------------------------------- */
+/* no fixed 400px height (left a gap above the buttons) */
+._3wtPUBfilFITcl1s4u6A7T {
+	min-height: 0 !important;
+}
+.Krg05lMwvNmhhVXhqdleu {
+	border-top: 1px solid var(--gr-border) !important;
+}
+._3MJEANCb5PkduXTSJ6o3bq {
+	align-items: center;
+	padding: 10px 0 !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+._3MJEANCb5PkduXTSJ6o3bq img {
+	border-radius: 4px;
+}
+._3MJEANCb5PkduXTSJ6o3bq ._1_JaK7j-59AgDKQOOOJVBA {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+}
+._3wtPUBfilFITcl1s4u6A7T ._3lAxXofku7q3P5FhXRfqH0 {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 400 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	font-variant-numeric: tabular-nums;
+}
+._27EB_QZeH3i0zloLWPdw84 .DialogCheckbox {
+	width: 18px !important;
+	height: 18px !important;
+}
+._27EB_QZeH3i0zloLWPdw84 .DialogCheckbox svg {
+	width: 14px !important;
+	height: 14px !important;
+}
+.vaNI84b_TV6hw20mhGl_d .NtxG7ioEuQKxrtXEy57H5 {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+/* drive picker: Graphite rows, the chosen drive outlined in the accent */
+.Oo5JPcEk_erKEYAzYp2nY {
+	margin-bottom: 6px;
+	padding: 11px 14px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-2) !important;
+	transition: background var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.Oo5JPcEk_erKEYAzYp2nY:hover,
+.Oo5JPcEk_erKEYAzYp2nY._2-svusNL8L22pzjYeV4GMS {
+	background: var(--gr-surface-3) !important;
+}
+.Oo5JPcEk_erKEYAzYp2nY.Active {
+	border-color: var(--gr-accent) !important;
+	background: color-mix(in srgb, var(--gr-accent) 12%, var(--gr-surface-2)) !important;
+	color: var(--gr-text) !important;
+}
+.Oo5JPcEk_erKEYAzYp2nY ._2vs_5hKYSMZTn7dKHTim5D {
+	color: inherit !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+}
+.Oo5JPcEk_erKEYAzYp2nY ._1p727K-lt5u7dR3PbUTcNZ,
+.Oo5JPcEk_erKEYAzYp2nY ._VEHWl9XgUCHDV7oGKSW4 {
+	color: var(--gr-text-3) !important;
+}
+.Oo5JPcEk_erKEYAzYp2nY.Active ._1p727K-lt5u7dR3PbUTcNZ,
+.Oo5JPcEk_erKEYAzYp2nY.Active ._VEHWl9XgUCHDV7oGKSW4 {
+	color: var(--gr-accent) !important;
+}
+.Oo5JPcEk_erKEYAzYp2nY svg {
+	fill: currentColor !important;
 }
 
 /* --- Paged settings dialog ------------------------------------------------- */
@@ -1486,8 +1821,88 @@ body.ModalDialogBody,
 	color: var(--gr-text) !important;
 	font-weight: 600 !important;
 }
-._3PLc4OJQTCKFtmy81QMYv5._33jqEbo2sBXJZ08w9BkdEM {
-	background: var(--gr-accent) !important;
+/* graph colors: network = accent, disk = green, upload = muted */
+._1bq4x9pa4-9RLY-dXWUZTp {
+	--gr-dl-net: var(--gr-accent);
+	--gr-dl-disk: #8fc45a;
+}
+._1BxZDLT8KveuJzn-1q4NTP .gpPxCvNVctmdxo8yfyEAJ,
+._1BxZDLT8KveuJzn-1q4NTP .OS07NfYlp6v-Eh5oQ7dwn {
+	color: color-mix(in srgb, var(--gr-dl-net) 55%, transparent) !important;
+}
+._1BxZDLT8KveuJzn-1q4NTP .gpPxCvNVctmdxo8yfyEAJ:hover ._3raSL6OYLHmLlbF96kGtnr {
+	color: var(--gr-dl-net) !important;
+}
+._1BxZDLT8KveuJzn-1q4NTP ._3mul1iIN_gcVS-tH2OUC1 {
+	color: color-mix(in srgb, var(--gr-text-3) 70%, transparent) !important;
+}
+._1BxZDLT8KveuJzn-1q4NTP ._3H2JWLH8rucdSC1XVZ7Xdk {
+	stroke: var(--gr-dl-disk) !important;
+	stroke-width: 1.5px !important;
+}
+._1BxZDLT8KveuJzn-1q4NTP .gpPxCvNVctmdxo8yfyEAJ:hover ._10Culn1h2NcqjUXJQdhPFm {
+	color: var(--gr-text) !important;
+}
+/* Steam tints the hero blue (multiply); fade it into the page instead */
+/* the active download sits on a card (surface-2): fade the hero into it,
+   so there is no seam where the image ends and the graph continues */
+._3mZ2rKd2RECK4q4ufmsDYX:not(.pHDI1ddoKXceD5KL7W-4z) {
+	background: var(--gr-surface-2) !important;
+}
+._3mZ2rKd2RECK4q4ufmsDYX .edQzwM57P-T5K3eDGkyvZ {
+	background: linear-gradient(to right, transparent 35%, var(--gr-surface-2) 100%) !important;
+	mix-blend-mode: normal !important;
+}
+
+/* content types over the graph ("game content", "workshop content") */
+._1IKbaHLvcciS-EMMYx1WVG {
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em !important;
+	line-height: 18px !important;
+}
+._1IKbaHLvcciS-EMMYx1WVG .Rgy-7t7i1Yv97qhWQae7K {
+	gap: 6px !important;
+	color: var(--gr-text-3) !important;
+}
+._1IKbaHLvcciS-EMMYx1WVG .Rgy-7t7i1Yv97qhWQae7K._29JXxENWoFygO9oYASrRHe {
+	color: var(--gr-text) !important;
+}
+._1IKbaHLvcciS-EMMYx1WVG .-OgRzXqfwOvAWFZS3Rk_N {
+	width: 14px !important;
+	height: 14px !important;
+}
+
+/* legend: small swatches instead of Steam's bar icons */
+.Ayu--dDVVaKmP2gNYPAQ0 {
+	align-items: center !important;
+}
+.Ayu--dDVVaKmP2gNYPAQ0 ._3PLc4OJQTCKFtmy81QMYv5 {
+	width: 8px !important;
+	height: 8px !important;
+	margin-right: 7px !important;
+	border-radius: 2px;
+	background: var(--gr-dl-net) !important;
+}
+.Ayu--dDVVaKmP2gNYPAQ0 ._3PLc4OJQTCKFtmy81QMYv5 svg {
+	display: none !important;
+}
+/* figures line up with the legend text (swatch 8px + 7px gap) */
+._26UBk-6weCeV-VClfXNWJZ ._5TdA4FjU9OYsTIaHzloD {
+	padding-left: 15px !important;
+}
+/* the second stat is the peak speed: same color, hollow */
+._26UBk-6weCeV-VClfXNWJZ:nth-child(2) ._3PLc4OJQTCKFtmy81QMYv5 {
+	background: transparent !important;
+	box-shadow: inset 0 0 0 1.5px var(--gr-dl-net);
+}
+.Ayu--dDVVaKmP2gNYPAQ0 ._3PLc4OJQTCKFtmy81QMYv5._1QHr4A7EN2DgQfJIdu3rTh {
+	width: 10px !important;
+	height: 2px !important;
+	border-radius: 1px;
+	background: var(--gr-dl-disk) !important;
+	box-shadow: none;
 }
 
 /* Section headers ("Up next", "Scheduled", "Completed") */
@@ -1546,10 +1961,76 @@ body.ModalDialogBody,
 	background: var(--gr-hover) !important;
 }
 
-/* Progress bars */
-._1vMU1vG5ZtLihr3mfXUymR,
-._1bq4x9pa4-9RLY-dXWUZTp [class*="ProgressBar"] > div {
-	background: var(--gr-accent) !important;
+/* Progress bars: a thin track with the fill in the graph's colors. The label
+   row above a bar is not part of it. */
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR {
+	height: 6px !important;
+	border-radius: 999px !important;
+	overflow: hidden;
+	background: color-mix(in srgb, var(--gr-text) 9%, transparent) !important;
+	--color-progress-bar-background: transparent;
+	--color-progress-bar-foreground: var(--gr-dl-net);
+}
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR > div {
+	height: 100%;
+	border-radius: inherit;
+	background: var(--gr-dl-net) !important;
+}
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR.HifZB5TP6WNuubp1dzyxS {
+	--color-progress-bar-foreground: var(--gr-dl-disk);
+}
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR.HifZB5TP6WNuubp1dzyxS > div {
+	background: var(--gr-dl-disk) !important;
+}
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR._2XedpgsgZ3gMAUuPRtnfld {
+	--color-progress-bar-foreground: var(--gr-text-3);
+}
+._1SyggnJY6qbRSmbZpkK3-H ._1vMU1vG5ZtLihr3mfXUymR._2XedpgsgZ3gMAUuPRtnfld > div {
+	background: var(--gr-text-3) !important;
+}
+._1VNuYHM6BPBOJspC6zPf5r:hover ._1vMU1vG5ZtLihr3mfXUymR {
+	background: color-mix(in srgb, var(--gr-text) 13%, transparent) !important;
+}
+
+/* active download (top): label + amount on one line, the bar under it */
+._1VNuYHM6BPBOJspC6zPf5r.IbePLaw-vSvhG1GTenYFg .MSCfUF8cD2uIicYPlotLj {
+	gap: 12px !important;
+}
+._22WcrscaQSqK56PQKgf5YG {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+._22WcrscaQSqK56PQKgf5YG .-PT6mGyvgBJXK-uaK2cRV {
+	background: transparent !important;
+	min-height: 18px;
+}
+._22WcrscaQSqK56PQKgf5YG .-PT6mGyvgBJXK-uaK2cRV ._3a973VY2X3US_cZqA9ZgNF {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+._22WcrscaQSqK56PQKgf5YG .sv3ZHPWbrD7yjwx5Mi3u5,
+._22WcrscaQSqK56PQKgf5YG .sv3ZHPWbrD7yjwx5Mi3u5 * {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-variant-numeric: tabular-nums;
+}
+._22WcrscaQSqK56PQKgf5YG .-OgRzXqfwOvAWFZS3Rk_N {
+	width: 14px !important;
+	height: 14px !important;
+	color: var(--gr-text-3) !important;
+}
+._1_uxK_0wz2NWDqpHB-os-Z ._2fiko7dAt9aOwN197fHzi6 {
+	background: transparent !important;
+}
+._2sCvZTD6ZTZz3p9_ekH_gI ._1r3ouwFT2-tsTAcnXYZ6NU ._3nx-k9xXUVgejG1BIAc84r {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 400 !important;
+}
+._2sCvZTD6ZTZz3p9_ekH_gI ._3B3J2qtE6ozU_VXMMN2L51 {
+	display: none !important;
 }
 
 /* Console tab (Steam started with -dev / -console). */
