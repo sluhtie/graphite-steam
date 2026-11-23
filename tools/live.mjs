@@ -57,7 +57,10 @@ for (const t of targets.filter(t => t.type === 'page')) {
   })).map(r => r.file))];
   // one <style> per file so remote @imports (fonts) stay at the top of a sheet
   const sheets = remove ? [] : files.map(f => fs.readFileSync(path.join(root, f), 'utf8'));
+  // If Millennium already injected this theme (installed + active), switch its
+  // copies off while the live ones are in place so stale rules don't linger.
   await cdp(t, `(() => { document.querySelectorAll('style[data-graphite-live]').forEach(s => s.remove());
+    document.querySelectorAll('link[href*="/themes/"][href*="/build/"]').forEach(l => { l.disabled = ${!remove}; });
     for (const css of ${JSON.stringify(sheets)}) { const s = document.createElement('style');
       s.dataset.graphiteLive = ''; s.textContent = css; document.head.appendChild(s); } })()`);
   if (!remove) {

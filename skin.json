@@ -2,7 +2,7 @@
 	"name": "Graphite",
 	"author": "sluhtie",
 	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one editable accent color, quiet typography and a single-row header - across the library, menus, settings, friends and the Store & Community pages.",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"tags": [
 		"Minimal",
 		"Dark",
@@ -104,6 +104,30 @@
 				"Classic": {}
 			}
 		},
+		"Navigation": {
+			"description": "Clean: one navigation row. View / Friends / Games / Help fold away behind the Steam logo, the profile tab and the tabs' hover dropdowns are removed, and community pages get their own sub-navigation (incl. your profile, inventory, badges ...). Classic keeps Steam's menus.",
+			"tab": "Layout",
+			"default": "Clean",
+			"values": {
+				"Clean": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/nav-clean.css"
+					},
+					"TargetJs": {
+						"affects": [
+							"^Steam$",
+							"https:\\/\\/store\\.steampowered\\.com\\/.*",
+							"https:\\/\\/steamcommunity\\.com\\/.*"
+						],
+						"src": "build/scripts/nav.js"
+					}
+				},
+				"Classic": {}
+			}
+		},
 		"Store & community pages": {
 			"description": "Also restyle the Store and Community web pages shown inside Steam. Includes a small local script that recolors Valve's newer React pages (wishlist, calendar, news hub, charts).",
 			"tab": "Layout",
@@ -127,7 +151,7 @@
 							"https:\\/\\/help\\.steampowered\\.com\\/.*",
 							"https:\\/\\/checkout\\.steampowered\\.com\\/.*"
 						],
-						"src": "src/scripts/web-recolor.js"
+						"src": "build/scripts/web-recolor.js"
 					}
 				}
 			}

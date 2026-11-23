@@ -1,0 +1,107 @@
+/* Clean navigation (main window).
+   One quiet row: Steam logo, back / forward, Store / Library / Community,
+   then notifications and the account menu on the right.
+
+   - The root menus (View / Friends / Games / Help) fold away behind the
+     Steam logo. Clicking the logo opens the Steam menu as usual and shows
+     the others next to it, so you can slide over to them like a menu bar.
+   - The profile tab is hidden: its pages live in the community sub-navigation
+     (build/scripts/nav.js) and in the account menu.
+   - The hover dropdowns of the tabs are disabled by build/scripts/nav.js;
+     each section's own page navigation (store nav, community sub-nav) takes
+     their place. */
+
+/* --- Root menus behind the logo ------------------------------------------- */
+/* The bar only reserves room for the logo. The other menus sit next to it
+   out of the flow and fade in on top of the tabs while one of the menus is
+   open, so nothing shifts around and the tabs stay directly reachable. */
+.$(RootMenuBar@RootMenuButton) {
+	position: relative;
+	z-index: 20;
+	flex: none !important;
+	width: 38px;
+	gap: 0 !important;
+	overflow: visible !important;
+}
+.$(RootMenuBar@RootMenuButton) > .$(RootMenuButton) {
+	flex: none !important;
+	margin: 0 !important;
+	white-space: nowrap;
+	transition: opacity 140ms var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.$(RootMenuBar@RootMenuButton) > .$(RootMenuButton):not(:first-child) {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	padding: 0 8px !important;
+	background: var(--gr-bg);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	/* short grace period while switching from one open menu to the next */
+	transition: opacity 140ms var(--gr-ease) 160ms, visibility 0s linear 300ms, color var(--gr-fast) var(--gr-ease);
+}
+.$(RootMenuBar@RootMenuButton) > .$(RootMenuButton):last-child {
+	padding-right: 14px !important;
+	box-shadow: 30px 0 22px -4px var(--gr-bg);
+}
+.$(RootMenuBar@RootMenuButton):has(.$(MenuOpen@MenuWrapper)) > .$(RootMenuButton):not(:first-child) {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transition: opacity 140ms var(--gr-ease), visibility 0s, color var(--gr-fast) var(--gr-ease);
+}
+
+/* logo only, no "Steam" label */
+.$(SteamButton@RootMenuButton) {
+	font-size: 0 !important;
+	gap: 0 !important;
+}
+.$(SteamButton@RootMenuButton) .$(Logo@SteamButton) {
+	width: 18px !important;
+	height: 18px !important;
+	margin: 0 !important;
+	color: var(--gr-text-2);
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.$(RootMenuBar@RootMenuButton) > .$(RootMenuButton):first-child {
+	box-sizing: border-box;
+	width: 38px;
+	justify-content: center;
+	padding: 0 !important;
+}
+.$(RootMenuBar@RootMenuButton) > .$(RootMenuButton):first-child:hover .$(Logo@SteamButton),
+.$(RootMenuBar@RootMenuButton) > .$(MenuOpen@MenuWrapper) .$(Logo@SteamButton) {
+	color: var(--gr-text);
+}
+
+/* --- Tabs --------------------------------------------------------------------- */
+/* the profile tab is the one whose button wraps the persona name in a span */
+.$(SuperNav) .$(SuperNavMenu):has(> .$(MenuButton@SuperNav) > span) {
+	display: none !important;
+}
+/* no dropdowns open any more, so no "open" highlight either */
+.$(SuperNav) .$(SuperNavMenu).$(MenuOpen@MenuWrapper):not(:hover) {
+	background: transparent !important;
+}
+
+/* --- Title bar buttons: tighter ------------------------------------------- */
+.$(TitleBarControls@AnnouncementsButton) {
+	gap: 2px;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton) {
+	box-sizing: border-box !important;
+	width: 32px !important;
+	min-width: 32px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
+.$(TitleBarControls@AnnouncementsButton) .tool-tip-source {
+	margin: 0 !important;
+}
+.$(NotificationButtonContainer) {
+	margin: 0 !important;
+}

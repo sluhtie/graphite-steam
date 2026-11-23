@@ -18,7 +18,8 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 
 ## What it themes
 
-- **Window frame**: menu bar and Store / Library / Community tabs merged into one row, flat window controls, slim bottom bar
+- **Navigation**: one clean row: Steam logo, back / forward, Store / Library / Community, notifications and account. View / Friends / Games / Help fold away behind the logo (click it and they appear next to the Steam menu). The profile tab and the tabs' hover dropdowns are gone; instead each section uses its own page navigation: the store keeps its nav (plus a Points Shop link), and every community page gets a slim sub-navigation with Home, Discussions, Workshop, Market, Broadcasts and your Activity, Profile, Friends, Groups, Content, Badges and Inventory.
+- **Window frame**: flat window controls, slim bottom bar
 - **Library**: game list, home page shelves and capsules, hover cards, game details page (hero fade, play bar, sections, activity feed), news / patch notes overlay, downloads page, console
 - **Menus**: root menus, nav dropdowns and context menus
 - **Dialogs**: settings window, toggles, inputs, buttons, modals
@@ -28,6 +29,8 @@ Neutral graphite surfaces, one accent color, quiet typography, a single-row head
 The store and community are Valve's web pages. Older parts use stable class names. Newer React parts are built on Valve's web design system, whose color scales (`--color-dull-*`, `--color-accent-*`, ...) Graphite remaps on `:root`, so they follow the theme without relying on hashed class names. A few spots are still matched structurally.
 
 Some of Valve's newest React pages (wishlist, calendar, news hub, charts) hardcode their colors behind hashed class names. For those, the option also loads `src/scripts/web-recolor.js`: a small local script that reads computed colors and swaps Valve's dark blue-greys for Graphite surfaces and its bright blues for the accent. It never touches images, game art or status colors and makes no network requests.
+
+The clean navigation uses `src/scripts/nav.js`, also fully local: in the main window it stops the tab dropdowns from opening on hover (clicking a tab works as before), and on community pages it adds the sub-navigation. It remembers your custom profile URL in the page's local storage so your own profile pages are highlighted.
 
 ## Install
 
@@ -50,6 +53,7 @@ In **Millennium → Themes → Graphite**:
 - **Font**: Inter (default, loaded from Google Fonts), System (Segoe UI) or Steam's Motiva Sans.
 - **Corners**: Rounded or Sharp.
 - **Header**: Single row (default) or Classic two-row layout.
+- **Navigation**: Clean (default) or Classic (Steam's own menus, profile tab and hover dropdowns).
 - **Store & community pages**: restyle the in-client web pages (on by default).
 - **Hide URL bar** (on by default) and **Hide What's New**.
 
@@ -65,7 +69,7 @@ Steam's UI uses hashed CSS-module class names (for example `_3pofGqV0buiKAfMPEs3
 - `$(Key)` is the class `Key` from Steam's CSS modules. It must be unique.
 - `$(Key@Anchor)` is `Key` from the module that also defines `Anchor`, which disambiguates common names like `Container`.
 
-`tools/build.mjs` reads Steam's `steamui/*.js` bundles, extracts every module's `name -> hash` map and writes the resolved CSS to `build/`. That output is committed, so the theme works without a build step.
+`tools/build.mjs` reads Steam's `steamui/*.js` bundles, extracts every module's `name -> hash` map and writes the resolved CSS (and scripts from `src/scripts/`) to `build/`. That output is committed, so the theme works without a build step.
 
 ### After a Steam update
 
@@ -98,7 +102,7 @@ src/             Source CSS with $(Token) class references
   friends.css    Friends list and chat
   partials/      Shared pieces pulled in with @import
   options/       Stylesheets toggled by theme options (webkit.css = store/community)
-  scripts/       web-recolor.js for Valve's React web pages
+  scripts/       nav.js (clean navigation), web-recolor.js (React web pages)
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview and lookup scripts
 ```
