@@ -100,10 +100,6 @@
 	align-items: center;
 	justify-content: center;
 }
-._3LKQ3S_yqrebeNLF6aeiog > svg {
-	/* the monitor glyph sits high in its box */
-	transform: translateY(2px);
-}
 ._3cykd-VfN_xBxf3Qxriccm .tool-tip-source {
 	margin: 0 !important;
 }

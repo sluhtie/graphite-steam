@@ -1,0 +1,288 @@
+/* Friends list layout (Graphite): calmer spacing, one row style for friends
+   and group chats, small caps section headers with a chevron, Graphite icons
+   for the tool buttons. Mostly Steam's readable class names; a few spots are
+   matched structurally. */
+
+/* --- Current user ------------------------------------------------------------ */
+.friendlist .AvatarAndUser {
+	box-sizing: border-box;
+	align-items: center !important;
+	height: 72px !important;
+	padding: 0 16px !important;
+	gap: 12px;
+}
+.friendlist .AvatarAndUser > div:first-child,
+.friendlist .AvatarAndUser > div:first-child > div,
+.friendlist .AvatarAndUser .avatarHolder,
+.friendlist .AvatarAndUser .avatarHolder img {
+	width: 40px !important;
+	height: 40px !important;
+	margin: 0 !important;
+}
+.friendlist .AvatarAndUser .labelHolder {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.friendlist .AvatarAndUser .playerName {
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em;
+}
+.friendlist .AvatarAndUser .gameName {
+	font-size: 12.5px !important;
+}
+
+/* status dot on every avatar (instead of Steam's coloured bar) */
+.friendlist .avatarHolder {
+	position: relative;
+	overflow: visible !important;
+}
+.friendlist .avatarHolder::after {
+	content: "";
+	position: absolute;
+	right: -1px;
+	bottom: -1px;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--gr-text-3);
+	box-shadow: 0 0 0 2px var(--gr-bg);
+}
+.friendlist .friend .avatarHolder::after {
+	width: 8px;
+	height: 8px;
+}
+.friendlist .avatarHolder.online::after { background: #57cbde; }
+.friendlist .avatarHolder.awayOrSnooze::after { background: #57cbde; opacity: 0.55; }
+.friendlist .avatarHolder.ingame::after { background: #90ba3c; }
+.friendlist .avatarHolder.offline::after { display: none; }
+.friendlist .friend:hover .avatarHolder::after { box-shadow: 0 0 0 2px var(--gr-surface-2); }
+
+/* "drag friends here" hint */
+.friendlist .DropTarget > div:first-child {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	line-height: 1.35 !important;
+	padding-right: 70px;
+}
+.friendlist .DropTarget > div:nth-child(2) {
+	background: transparent !important;
+	color: var(--gr-accent) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	cursor: pointer;
+}
+.friendlist .dropTargetBox {
+	border: 1px dashed var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+
+/* --- Friends toolbar (label, search, add friend) ----------------------------- */
+.friendTab.socialListTab {
+	height: 40px !important;
+	align-items: center !important;
+	border-top: 1px solid var(--gr-border) !important;
+}
+.friendTab .tabLabel {
+	text-transform: uppercase !important;
+}
+.TabSearchButton svg,
+.addFriendButton svg {
+	display: none !important;
+}
+.TabSearchButton > div:last-child,
+.addFriendButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 28px !important;
+	height: 28px !important;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.TabSearchButton > div:last-child:hover,
+.addFriendButton:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.TabSearchButton > div:last-child::before,
+.addFriendButton::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+}
+.addFriendButton::before {
+	-webkit-mask-image: var(--gr-icon-user-plus);
+}
+
+/* --- Section headers ("Online friends", "Offline") --------------------------- */
+.friendlist .groupName {
+	display: flex !important;
+	align-items: center;
+	gap: 6px;
+	height: 32px !important;
+	padding-left: 14px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.friendlist .groupName .ExpandPlusMinus {
+	display: none !important;
+}
+.friendlist .groupName::before {
+	content: "";
+	flex: none;
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 12px 12px no-repeat;
+	transition: transform var(--gr-fast) var(--gr-ease);
+}
+.friendlist .groupName.Collapsed::before {
+	transform: rotate(-90deg);
+}
+.friendlist .groupName:hover {
+	color: var(--gr-text-2) !important;
+}
+.friendlist .groupCount {
+	position: static !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+}
+.friendlist .SortByRecent {
+	color: var(--gr-text-3);
+	opacity: 0.8;
+}
+.friendlist .friendGroup {
+	border-top: none !important;
+	margin-top: 4px !important;
+}
+
+/* --- Rows (friends + group chats) ------------------------------------------- */
+.friendlist .friend {
+	box-sizing: border-box;
+	height: 46px !important;
+	margin: 1px 8px !important;
+	padding-left: 4px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	align-items: center !important;
+}
+.friendlist .friend .avatarHolder,
+.friendlist .friend .avatarHolder img {
+	width: 32px !important;
+	height: 32px !important;
+}
+.friendlist .friend .labelHolder {
+	margin-left: 2px !important;
+}
+.friendlist .friend .playerName {
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+}
+.friendlist .friend .gameName,
+.friendlist .friend .richPresenceLabel {
+	font-size: 12px !important;
+}
+.friendlist .friend .labelHolder.online .gameName { color: #7cc4ff !important; }
+.friendlist .friend .labelHolder.awayOrSnooze .gameName { color: color-mix(in srgb, #7cc4ff 60%, var(--gr-text-3)) !important; }
+.friendlist .friend .labelHolder.ingame .gameName { color: #a7e07a !important; }
+.friendlist .SnoozeContainer {
+	display: none !important;
+}
+.friendlist .friend:hover,
+.friendlist .ChatRoomList .NoChannels:hover {
+	background: var(--gr-surface-2) !important;
+}
+
+/* group chats header */
+.friendlist div:has(> div > .ChatRoomList) > div:first-child {
+	box-sizing: border-box;
+	height: 40px !important;
+	align-items: center !important;
+	padding-right: 6px;
+	border-top: 1px solid var(--gr-border) !important;
+	color: var(--gr-text-3) !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child > div:nth-child(2) > div {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child svg polyline {
+	stroke: var(--gr-text-3) !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 28px !important;
+	height: 28px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text);
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button svg {
+	display: none !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-plus) center / 16px 16px no-repeat;
+}
+
+/* group chat rows */
+.friendlist .ChatRoomList .NoChannels {
+	box-sizing: border-box;
+	margin: 1px 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.friendlist .ChatRoomList .NoChannels .Small,
+.friendlist .ChatRoomList .NoChannels .Small img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.friendlist .chatRoomName {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+}
+/* unread mention marker: accent instead of yellow */
+.friendlist .ChatRoomList .NoChannels > div > div:last-child {
+	color: var(--gr-accent) !important;
+}
+.friendlist .ChatRoomList .NoChannels > div > div:last-child > div {
+	background: var(--gr-accent) !important;
+	border-radius: 50%;
+}
+
+/* empty state ("all group chats you joined are listed here") */
+.friendlist .ChatRoomList > div:not(.NoChannels) {
+	padding: 8px 16px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12.5px !important;
+	line-height: 1.5 !important;
+	text-align: left !important;
+}
+.friendlist .ChatRoomList > div:not(.NoChannels) a,
+.friendlist .ChatRoomList > div:not(.NoChannels) span {
+	color: var(--gr-accent) !important;
+}

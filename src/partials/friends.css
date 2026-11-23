@@ -18,12 +18,6 @@ body,
 .FriendListInsetShadowBottom {
 	display: none !important;
 }
-.windowControlButton:hover {
-	background: var(--gr-hover) !important;
-}
-.windowControlButton.closeButton:hover {
-	background: #e5484d !important;
-}
 
 /* Header with current user */
 .friendListHeaderContainer,

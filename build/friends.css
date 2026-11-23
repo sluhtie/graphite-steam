@@ -23,6 +23,74 @@
 	--gr-med: 220ms;
 }
 
+/* Graphite icon set: one stroke style for every title bar control.
+   Used as CSS masks (background: currentColor), so they follow the
+   surrounding text color. */
+:where(:root) {
+	--gr-icon-min: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+	--gr-icon-max: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E");
+	--gr-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E");
+	--gr-icon-megaphone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9.5v5h3.5L15 19V5L7.5 9.5H4z'/%3E%3Cpath d='M18.5 8.5a5 5 0 0 1 0 7'/%3E%3C/svg%3E");
+	--gr-icon-bell: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 16v-5a5.5 5.5 0 0 1 11 0v5l1.5 2H5z'/%3E%3Cpath d='M10 20.5a2 2 0 0 0 4 0'/%3E%3C/svg%3E");
+	--gr-icon-gamepad: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 7.5h9a4.5 4.5 0 0 1 4.5 4.5v.5a4 4 0 0 1-7.2 2.4h-3.6A4 4 0 0 1 3 12.5V12a4.5 4.5 0 0 1 4.5-4.5z'/%3E%3Cpath d='M7.5 10.5v3M6 12h3'/%3E%3Cpath d='M15.5 11.5h.01M17.5 13h.01'/%3E%3C/svg%3E");
+	--gr-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+	--gr-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+	--gr-icon-user-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10' cy='8' r='3.5'/%3E%3Cpath d='M3.5 20a6.5 6.5 0 0 1 13 0'/%3E%3Cpath d='M19 8v6M16 11h6'/%3E%3C/svg%3E");
+	--gr-icon-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+	--gr-icon-send: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h13'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+}
+
+/* Window controls (minimize / maximize / close) in every Steam window:
+   Graphite's own icons instead of Steam's, centered in the button. */
+.title-area-highlight {
+	display: none !important;
+}
+.windowControlButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.windowControlButton:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text);
+}
+.windowControlButton.closeButton:hover {
+	background: #e5484d !important;
+	color: #fff;
+}
+.windowControlButton .title-area-icon-inner {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	opacity: 1 !important;
+}
+.windowControlButton .title-area-icon-inner > svg {
+	display: none !important;
+}
+.windowControlButton .title-area-icon-inner::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-close) center / 16px 16px no-repeat;
+}
+.windowControlButton.minimizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-min);
+}
+.windowControlButton.maximizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-max);
+	width: 14px;
+	height: 14px;
+	-webkit-mask-size: 14px 14px;
+}
+
 /* Shared base for every themed window: type, scrollbars and Steam's global
    dialog controls (these use stable, unhashed class names). */
 
@@ -185,12 +253,6 @@ body,
 .FriendListInsetShadowTop,
 .FriendListInsetShadowBottom {
 	display: none !important;
-}
-.windowControlButton:hover {
-	background: var(--gr-hover) !important;
-}
-.windowControlButton.closeButton:hover {
-	background: #e5484d !important;
 }
 
 /* Header with current user */
@@ -400,4 +462,631 @@ textarea.chatentry_chatTextarea {
 .speakerTimeStamp,
 .ChatMessageBlock .FriendChatTimestamp {
 	color: var(--gr-text-3) !important;
+}
+
+/* Friends list layout (Graphite): calmer spacing, one row style for friends
+   and group chats, small caps section headers with a chevron, Graphite icons
+   for the tool buttons. Mostly Steam's readable class names; a few spots are
+   matched structurally. */
+
+/* --- Current user ------------------------------------------------------------ */
+.friendlist .AvatarAndUser {
+	box-sizing: border-box;
+	align-items: center !important;
+	height: 72px !important;
+	padding: 0 16px !important;
+	gap: 12px;
+}
+.friendlist .AvatarAndUser > div:first-child,
+.friendlist .AvatarAndUser > div:first-child > div,
+.friendlist .AvatarAndUser .avatarHolder,
+.friendlist .AvatarAndUser .avatarHolder img {
+	width: 40px !important;
+	height: 40px !important;
+	margin: 0 !important;
+}
+.friendlist .AvatarAndUser .labelHolder {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.friendlist .AvatarAndUser .playerName {
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em;
+}
+.friendlist .AvatarAndUser .gameName {
+	font-size: 12.5px !important;
+}
+
+/* status dot on every avatar (instead of Steam's coloured bar) */
+.friendlist .avatarHolder {
+	position: relative;
+	overflow: visible !important;
+}
+.friendlist .avatarHolder::after {
+	content: "";
+	position: absolute;
+	right: -1px;
+	bottom: -1px;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--gr-text-3);
+	box-shadow: 0 0 0 2px var(--gr-bg);
+}
+.friendlist .friend .avatarHolder::after {
+	width: 8px;
+	height: 8px;
+}
+.friendlist .avatarHolder.online::after { background: #57cbde; }
+.friendlist .avatarHolder.awayOrSnooze::after { background: #57cbde; opacity: 0.55; }
+.friendlist .avatarHolder.ingame::after { background: #90ba3c; }
+.friendlist .avatarHolder.offline::after { display: none; }
+.friendlist .friend:hover .avatarHolder::after { box-shadow: 0 0 0 2px var(--gr-surface-2); }
+
+/* "drag friends here" hint */
+.friendlist .DropTarget > div:first-child {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	line-height: 1.35 !important;
+	padding-right: 70px;
+}
+.friendlist .DropTarget > div:nth-child(2) {
+	background: transparent !important;
+	color: var(--gr-accent) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	cursor: pointer;
+}
+.friendlist .dropTargetBox {
+	border: 1px dashed var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+}
+
+/* --- Friends toolbar (label, search, add friend) ----------------------------- */
+.friendTab.socialListTab {
+	height: 40px !important;
+	align-items: center !important;
+	border-top: 1px solid var(--gr-border) !important;
+}
+.friendTab .tabLabel {
+	text-transform: uppercase !important;
+}
+.TabSearchButton svg,
+.addFriendButton svg {
+	display: none !important;
+}
+.TabSearchButton > div:last-child,
+.addFriendButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 28px !important;
+	height: 28px !important;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.TabSearchButton > div:last-child:hover,
+.addFriendButton:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.TabSearchButton > div:last-child::before,
+.addFriendButton::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+}
+.addFriendButton::before {
+	-webkit-mask-image: var(--gr-icon-user-plus);
+}
+
+/* --- Section headers ("Online friends", "Offline") --------------------------- */
+.friendlist .groupName {
+	display: flex !important;
+	align-items: center;
+	gap: 6px;
+	height: 32px !important;
+	padding-left: 14px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.friendlist .groupName .ExpandPlusMinus {
+	display: none !important;
+}
+.friendlist .groupName::before {
+	content: "";
+	flex: none;
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 12px 12px no-repeat;
+	transition: transform var(--gr-fast) var(--gr-ease);
+}
+.friendlist .groupName.Collapsed::before {
+	transform: rotate(-90deg);
+}
+.friendlist .groupName:hover {
+	color: var(--gr-text-2) !important;
+}
+.friendlist .groupCount {
+	position: static !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+}
+.friendlist .SortByRecent {
+	color: var(--gr-text-3);
+	opacity: 0.8;
+}
+.friendlist .friendGroup {
+	border-top: none !important;
+	margin-top: 4px !important;
+}
+
+/* --- Rows (friends + group chats) ------------------------------------------- */
+.friendlist .friend {
+	box-sizing: border-box;
+	height: 46px !important;
+	margin: 1px 8px !important;
+	padding-left: 4px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	align-items: center !important;
+}
+.friendlist .friend .avatarHolder,
+.friendlist .friend .avatarHolder img {
+	width: 32px !important;
+	height: 32px !important;
+}
+.friendlist .friend .labelHolder {
+	margin-left: 2px !important;
+}
+.friendlist .friend .playerName {
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+}
+.friendlist .friend .gameName,
+.friendlist .friend .richPresenceLabel {
+	font-size: 12px !important;
+}
+.friendlist .friend .labelHolder.online .gameName { color: #7cc4ff !important; }
+.friendlist .friend .labelHolder.awayOrSnooze .gameName { color: color-mix(in srgb, #7cc4ff 60%, var(--gr-text-3)) !important; }
+.friendlist .friend .labelHolder.ingame .gameName { color: #a7e07a !important; }
+.friendlist .SnoozeContainer {
+	display: none !important;
+}
+.friendlist .friend:hover,
+.friendlist .ChatRoomList .NoChannels:hover {
+	background: var(--gr-surface-2) !important;
+}
+
+/* group chats header */
+.friendlist div:has(> div > .ChatRoomList) > div:first-child {
+	box-sizing: border-box;
+	height: 40px !important;
+	align-items: center !important;
+	padding-right: 6px;
+	border-top: 1px solid var(--gr-border) !important;
+	color: var(--gr-text-3) !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child > div:nth-child(2) > div {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child svg polyline {
+	stroke: var(--gr-text-3) !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 28px !important;
+	height: 28px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm);
+	color: var(--gr-text-2);
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text);
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button svg {
+	display: none !important;
+}
+.friendlist div:has(> div > .ChatRoomList) > div:first-child button::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-plus) center / 16px 16px no-repeat;
+}
+
+/* group chat rows */
+.friendlist .ChatRoomList .NoChannels {
+	box-sizing: border-box;
+	margin: 1px 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.friendlist .ChatRoomList .NoChannels .Small,
+.friendlist .ChatRoomList .NoChannels .Small img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.friendlist .chatRoomName {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+}
+/* unread mention marker: accent instead of yellow */
+.friendlist .ChatRoomList .NoChannels > div > div:last-child {
+	color: var(--gr-accent) !important;
+}
+.friendlist .ChatRoomList .NoChannels > div > div:last-child > div {
+	background: var(--gr-accent) !important;
+	border-radius: 50%;
+}
+
+/* empty state ("all group chats you joined are listed here") */
+.friendlist .ChatRoomList > div:not(.NoChannels) {
+	padding: 8px 16px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12.5px !important;
+	line-height: 1.5 !important;
+	text-align: left !important;
+}
+.friendlist .ChatRoomList > div:not(.NoChannels) a,
+.friendlist .ChatRoomList > div:not(.NoChannels) span {
+	color: var(--gr-accent) !important;
+}
+
+/* Chat window (Graphite): pill tabs, an open message area without boxes,
+   one clear entry row with an accent send button and quiet action buttons. */
+
+/* --- Tabs ---------------------------------------------------------------------- */
+.ChatTabs.titleBarContainer {
+	background: var(--gr-bg) !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.chatTabSetContainer {
+	padding-left: 8px !important;
+	background: transparent !important;
+}
+.chatTabSetContainer .ChatTab {
+	box-sizing: border-box;
+	height: 32px !important;
+	margin: 0 4px 0 0 !important;
+	padding: 0 6px 0 4px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.chatTabSetContainer .ChatTab:hover {
+	background: var(--gr-hover) !important;
+}
+.chatTabSetContainer .ChatTab.Active {
+	background: var(--gr-surface-2) !important;
+}
+.chatTabSetContainer .ChatTabRow {
+	height: 32px !important;
+	align-items: center !important;
+	gap: 6px;
+}
+.chatTabSetContainer .ChatTab .playerName {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.chatTabSetContainer .ChatTab.Active .playerName {
+	color: var(--gr-text) !important;
+}
+.chatTabSetContainer .ChatTab .avatarHolder,
+.chatTabSetContainer .ChatTab .avatarHolder img {
+	width: 22px !important;
+	height: 22px !important;
+	border-radius: 50% !important;
+}
+.chatTabSetContainer .ChatTab .SnoozeContainer {
+	display: none !important;
+}
+.chatTabSetContainer .ChatTab .CloseButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 20px !important;
+	height: 20px !important;
+	border-radius: 5px;
+	color: var(--gr-text-3);
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.chatTabSetContainer .ChatTab:hover .CloseButton,
+.chatTabSetContainer .ChatTab.Active .CloseButton {
+	opacity: 1;
+}
+.chatTabSetContainer .ChatTab .CloseButton:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.chatTabSetContainer .ChatTab .CloseButton svg {
+	display: none !important;
+}
+.chatTabSetContainer .ChatTab .CloseButton::before {
+	content: "";
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-close) center / 12px 12px no-repeat;
+}
+/* unread tab */
+.chatTabSetContainer .ChatTab.HasUnreadMessages .playerName,
+.chatTabSetContainer .ChatTab.UnreadMessages .playerName {
+	color: var(--gr-accent) !important;
+}
+
+/* --- Message area ------------------------------------------------------------- */
+.chatWindow .chatHeader {
+	display: none !important;
+}
+.chatWindow .chatHistory,
+.chatWindow .chatHistoryScroll,
+.chatWindow .ChatHistoryContainer {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.chatWindow .chatHistory {
+	margin: 0 !important;
+	padding: 12px 20px 8px !important;
+}
+.chatWindow .FriendListInsetShadowTop,
+.chatWindow .FriendListInsetShadowBottom {
+	display: none !important;
+}
+/* date divider */
+.chatWindow .msg.timeDivision {
+	margin: 10px 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em;
+}
+.chatWindow .msg.timeDivision .preHorizDivider,
+.chatWindow .msg.timeDivision .horizDivider {
+	background: var(--gr-border) !important;
+}
+/* messages */
+.chatWindow .ChatMessageBlock {
+	margin-top: 10px !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+.chatWindow .speakerName {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+}
+.chatWindow .speakerTimeStamp,
+.chatWindow .FriendChatTimestamp {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+}
+.chatWindow .msgText,
+.chatWindow .msg .msgText {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+.chatWindow .msgText a {
+	color: var(--gr-accent) !important;
+}
+.chatWindow .ChatMessageBlock .avatarHolder img {
+	border-radius: 50% !important;
+}
+
+/* invite button (top right of the history) */
+.chatWindow .inviteAnotherFriendButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 32px !important;
+	height: 32px !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2);
+	opacity: 0.85;
+	transition: opacity var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .inviteAnotherFriendButton:hover {
+	opacity: 1;
+	color: var(--gr-text);
+}
+.chatWindow .inviteAnotherFriendButton svg {
+	display: none !important;
+}
+.chatWindow .inviteAnotherFriendButton::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-user-plus) center / 16px 16px no-repeat;
+}
+
+/* typing indicator + scroll-to-bottom */
+.chatWindow .FriendChatTypingNotification {
+	background: linear-gradient(to top, var(--gr-bg) 40%, transparent) !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	padding-left: 20px !important;
+}
+.chatWindow .ScrollToBottomButton span {
+	padding: 4px 12px !important;
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border-radius: 999px !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text) !important;
+	font-size: 12px !important;
+}
+
+/* --- Entry row ------------------------------------------------------------------ */
+.chatWindow .chatEntry {
+	box-sizing: border-box;
+	align-items: center !important;
+	gap: 8px;
+	padding: 10px 12px 12px !important;
+	background: var(--gr-bg) !important;
+	border-top: 1px solid var(--gr-border) !important;
+}
+.chatWindow .chatEntryControls {
+	align-items: center !important;
+	gap: 8px;
+	margin: 0 !important;
+	background: transparent !important;
+}
+.chatWindow .chatTextarea {
+	box-sizing: border-box;
+	scrollbar-width: none;
+	min-height: 44px !important;
+	padding: 12px 14px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	line-height: 1.4 !important;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatTextarea:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	width: 44px !important;
+	height: 44px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	color: var(--gr-bg) !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryControls > .chatSubmitButton:hover {
+	background: var(--gr-accent-strong) !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton.disabled {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-3) !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton svg {
+	display: none !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-send) center / 18px 18px no-repeat;
+}
+
+/* emoji / attachment / voice */
+.chatWindow .chatEntryActionsContainer {
+	align-items: center !important;
+	gap: 8px;
+	margin: 0 !important;
+	height: 44px !important;
+}
+.chatWindow .chatEntryActionsGroup,
+.chatWindow .ChatMessageEntryVoice {
+	height: 44px !important;
+	margin: 0 !important;
+	padding: 0 2px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+.chatWindow .chatEntryActionsGroup > *,
+.chatWindow .ChatMessageEntryVoice > * {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+.chatWindow .chatEntryActionsGroup svg,
+.chatWindow .ChatMessageEntryVoice svg {
+	color: var(--gr-text-2) !important;
+	fill: currentColor !important;
+	opacity: 0.9;
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryActionsGroup > *:hover svg,
+.chatWindow .ChatMessageEntryVoice:hover svg {
+	color: var(--gr-text) !important;
+}
+.chatWindow .chatEntryActionsGroup > button,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 42px !important;
+	height: 42px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryActionsGroup > button:hover,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
+	background: var(--gr-hover) !important;
+}
+.chatWindow .chatEntryActionsGroup svg {
+	width: 20px !important;
+	height: 20px !important;
+}
+/* "new emoticons" marker */
+.chatWindow .NewEmoticonIndicator {
+	background: none !important;
+}
+.chatWindow .NewEmoticonCircle {
+	background: var(--gr-accent) !important;
+	box-shadow: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .VoiceToggle,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle.Inactive {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
+	background: var(--gr-hover) !important;
 }

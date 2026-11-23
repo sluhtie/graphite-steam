@@ -38,17 +38,10 @@
 .$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton):hover {
 	background: var(--gr-hover) !important;
 }
-.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton) svg {
-	color: var(--gr-text-2);
-}
-.$(AnnouncementsButton).$(Active@AnnouncementsButton),
-.$(NotificationsButton).$(HasNew) {
-	background: var(--gr-accent-soft) !important;
-}
-.$(AnnouncementsButton).$(Active@AnnouncementsButton) svg,
-.$(NotificationsButton).$(HasNew) svg {
+/* unread announcements: accent icon (notifications get a dot, see below) */
+.$(TitleBarControls@AnnouncementsButton) .$(AnnouncementsButton).$(Active@AnnouncementsButton) {
+	background: transparent !important;
 	color: var(--gr-accent) !important;
-	fill: var(--gr-accent) !important;
 }
 
 .$(AccountMenu@AnnouncementsButton) {
@@ -64,6 +57,63 @@
 	background: var(--gr-hover) !important;
 	color: var(--gr-text) !important;
 }
+/* Graphite icons (icons.css) instead of Steam's mixed glyphs */
+.$(TitleBarControls@AnnouncementsButton) .$(AnnouncementsButton) > *,
+.$(TitleBarControls@AnnouncementsButton) .$(NotificationsButton) > *,
+.$(TitleBarControls@AnnouncementsButton) .$(GamepadUIToggle) > * {
+	display: none !important;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(AnnouncementsButton)::before,
+.$(TitleBarControls@AnnouncementsButton) .$(NotificationsButton)::before,
+.$(TitleBarControls@AnnouncementsButton) .$(GamepadUIToggle)::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-bell) center / 16px 16px no-repeat;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(AnnouncementsButton)::before {
+	-webkit-mask-image: var(--gr-icon-megaphone);
+}
+.$(TitleBarControls@AnnouncementsButton) .$(GamepadUIToggle)::before {
+	width: 18px;
+	-webkit-mask-image: var(--gr-icon-gamepad);
+	-webkit-mask-size: 18px 18px;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton) {
+	color: var(--gr-text-2) !important;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(Button@AnnouncementsButton):hover {
+	color: var(--gr-text) !important;
+}
+/* unread notifications: accent icon + dot */
+.$(TitleBarControls@AnnouncementsButton) .$(NotificationsButton).$(HasNew) {
+	position: relative;
+	color: var(--gr-accent) !important;
+}
+.$(TitleBarControls@AnnouncementsButton) .$(NotificationsButton).$(HasNew)::after {
+	content: "";
+	position: absolute;
+	top: 3px;
+	right: 8px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--gr-accent);
+	box-shadow: 0 0 0 2px var(--gr-bg);
+}
+.$(AccountMenu@AnnouncementsButton) > svg {
+	display: none !important;
+}
+.$(AccountMenu@AnnouncementsButton)::after {
+	content: "";
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 12px 12px no-repeat;
+	opacity: 0.7;
+}
+
 /* round avatar with a small status dot instead of Steam's 2px status bar
    (Steam's own rules use !important, hence the doubled classes) */
 .$(AccountMenu@AnnouncementsButton) .avatarHolder.avatarHolder.avatarHolder {
@@ -100,25 +150,28 @@
 	color: var(--gr-text-3) !important;
 }
 
-/* --- Window controls --------------------------------------------------------- */
-.title-area-highlight {
-	display: none !important;
+/* --- Window controls (icons: window-controls.css) --------------------------- */
+/* full-height buttons in the 44px title bar */
+.$(TopBar@FocusNavigationRoot) .$(WindowControls@FocusNavigationRoot) {
+	flex: none !important;
+	position: relative;
+	width: 138px !important;
+	height: 44px !important;
+	align-self: flex-start !important;
 }
-.windowControlButton {
-	border-radius: var(--gr-radius-sm);
-	transition: background var(--gr-fast) var(--gr-ease);
+.$(WindowControls@FocusNavigationRoot) .title-area {
+	top: 0 !important;
+	right: 0 !important;
+	height: 44px !important;
 }
-.windowControlButton:hover {
-	background: var(--gr-hover) !important;
+.$(WindowControls@FocusNavigationRoot) .title-bar-actions {
+	display: flex !important;
+	align-items: stretch !important;
+	height: 44px !important;
 }
-.windowControlButton.closeButton:hover {
-	background: #e5484d !important;
-}
-.title-area-icon-inner {
-	opacity: 0.7;
-}
-.windowControlButton:hover .title-area-icon-inner {
-	opacity: 1;
+.$(WindowControls@FocusNavigationRoot) .windowControlButton {
+	width: 46px !important;
+	height: 44px !important;
 }
 
 /* --- Super nav (Store / Library / Community / Profile) ---------------------- */

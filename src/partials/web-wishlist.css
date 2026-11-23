@@ -60,7 +60,7 @@
 	border-color: var(--gr-accent) !important;
 	outline: none !important;
 }
-.gr-wishlist .gr-wl-toolbar button {
+.gr-wishlist .gr-wl-toolbar > div > button {
 	height: 40px !important;
 	background: var(--gr-surface) !important;
 	background-image: none !important;
@@ -73,17 +73,124 @@
 	font-weight: 500 !important;
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
-.gr-wishlist .gr-wl-toolbar button span {
+.gr-wishlist .gr-wl-toolbar > div > button span {
 	color: var(--gr-text) !important;
 }
-.gr-wishlist .gr-wl-toolbar button:hover {
+.gr-wishlist .gr-wl-toolbar > div > button:hover {
 	background: var(--gr-surface-2) !important;
 	color: var(--gr-text-2) !important;
 }
-.gr-wishlist .gr-wl-toolbar button svg {
+.gr-wishlist .gr-wl-toolbar > div > button svg {
 	color: var(--gr-text-2) !important;
 	fill: currentColor;
 }
+/* --- Toolbar popups: sort menu and the options panel ------------------------- */
+.gr-wishlist .gr-wl-toolbar > div > .Panel {
+	padding: 6px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button {
+	display: flex !important;
+	align-items: center;
+	width: 100% !important;
+	height: 34px !important;
+	margin: 0 !important;
+	padding: 0 12px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	text-align: left !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button:hover,
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button:focus {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+	outline: none !important;
+}
+
+/* options panel (form with sections of radios / checkboxes and a price slider) */
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) {
+	padding: 20px 22px !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form h3 {
+	margin: 0 0 8px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form label {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: center !important;
+	gap: 9px;
+	min-height: 28px !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form label:hover {
+	color: var(--gr-text) !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="radio"],
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="checkbox"] {
+	order: -1;
+	flex: none;
+	width: 15px !important;
+	height: 15px !important;
+	margin: 0 !important;
+	accent-color: var(--gr-accent);
+	cursor: pointer;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="range"] {
+	height: 20px !important;
+	accent-color: var(--gr-accent);
+	background: transparent !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form section {
+	margin-bottom: 14px !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button *,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a * {
+	background: transparent !important;
+	background-image: none !important;
+	color: inherit !important;
+	text-shadow: none !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button:hover,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a:hover {
+	background: color-mix(in srgb, var(--gr-text) 14%, var(--gr-surface-2)) !important;
+}
+
 .gr-wishlist .gr-wl-count,
 .gr-wishlist .gr-wl-count * {
 	color: var(--gr-text-3) !important;
@@ -232,11 +339,12 @@
 	border: none !important;
 	border-radius: var(--gr-radius-sm) !important;
 	color: var(--gr-text-3) !important;
-	opacity: 0;
+	opacity: 0 !important;
 	transition: opacity var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
 }
-.gr-wishlist .gr-wl-row:hover .gr-wl-added button {
-	opacity: 1;
+.gr-wishlist .gr-wl-row:hover .gr-wl-added button,
+.gr-wishlist .gr-wl-added button:focus-visible {
+	opacity: 1 !important;
 }
 .gr-wishlist .gr-wl-added button span {
 	color: inherit !important;

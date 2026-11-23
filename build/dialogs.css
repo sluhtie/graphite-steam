@@ -23,6 +23,74 @@
 	--gr-med: 220ms;
 }
 
+/* Graphite icon set: one stroke style for every title bar control.
+   Used as CSS masks (background: currentColor), so they follow the
+   surrounding text color. */
+:where(:root) {
+	--gr-icon-min: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+	--gr-icon-max: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E");
+	--gr-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E");
+	--gr-icon-megaphone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9.5v5h3.5L15 19V5L7.5 9.5H4z'/%3E%3Cpath d='M18.5 8.5a5 5 0 0 1 0 7'/%3E%3C/svg%3E");
+	--gr-icon-bell: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 16v-5a5.5 5.5 0 0 1 11 0v5l1.5 2H5z'/%3E%3Cpath d='M10 20.5a2 2 0 0 0 4 0'/%3E%3C/svg%3E");
+	--gr-icon-gamepad: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 7.5h9a4.5 4.5 0 0 1 4.5 4.5v.5a4 4 0 0 1-7.2 2.4h-3.6A4 4 0 0 1 3 12.5V12a4.5 4.5 0 0 1 4.5-4.5z'/%3E%3Cpath d='M7.5 10.5v3M6 12h3'/%3E%3Cpath d='M15.5 11.5h.01M17.5 13h.01'/%3E%3C/svg%3E");
+	--gr-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+	--gr-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+	--gr-icon-user-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10' cy='8' r='3.5'/%3E%3Cpath d='M3.5 20a6.5 6.5 0 0 1 13 0'/%3E%3Cpath d='M19 8v6M16 11h6'/%3E%3C/svg%3E");
+	--gr-icon-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+	--gr-icon-send: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h13'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+}
+
+/* Window controls (minimize / maximize / close) in every Steam window:
+   Graphite's own icons instead of Steam's, centered in the button. */
+.title-area-highlight {
+	display: none !important;
+}
+.windowControlButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.windowControlButton:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text);
+}
+.windowControlButton.closeButton:hover {
+	background: #e5484d !important;
+	color: #fff;
+}
+.windowControlButton .title-area-icon-inner {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	opacity: 1 !important;
+}
+.windowControlButton .title-area-icon-inner > svg {
+	display: none !important;
+}
+.windowControlButton .title-area-icon-inner::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-close) center / 16px 16px no-repeat;
+}
+.windowControlButton.minimizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-min);
+}
+.windowControlButton.maximizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-max);
+	width: 14px;
+	height: 14px;
+	-webkit-mask-size: 14px 14px;
+}
+
 /* Shared base for every themed window: type, scrollbars and Steam's global
    dialog controls (these use stable, unhashed class names). */
 
@@ -172,18 +240,6 @@ body.ModalDialogBody,
 .PopupFullWindow,
 .ModalPosition_Content {
 	background: var(--gr-surface) !important;
-}
-.title-area-highlight {
-	display: none !important;
-}
-.windowControlButton {
-	border-radius: var(--gr-radius-sm);
-}
-.windowControlButton:hover {
-	background: var(--gr-hover) !important;
-}
-.windowControlButton.closeButton:hover {
-	background: #e5484d !important;
 }
 
 /* Generic modal */

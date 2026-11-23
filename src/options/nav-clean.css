@@ -99,10 +99,6 @@
 	align-items: center;
 	justify-content: center;
 }
-.$(GamepadUIToggle) > svg {
-	/* the monitor glyph sits high in its box */
-	transform: translateY(2px);
-}
 .$(TitleBarControls@AnnouncementsButton) .tool-tip-source {
 	margin: 0 !important;
 }

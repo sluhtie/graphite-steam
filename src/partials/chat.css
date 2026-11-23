@@ -1,0 +1,337 @@
+/* Chat window (Graphite): pill tabs, an open message area without boxes,
+   one clear entry row with an accent send button and quiet action buttons. */
+
+/* --- Tabs ---------------------------------------------------------------------- */
+.ChatTabs.titleBarContainer {
+	background: var(--gr-bg) !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.chatTabSetContainer {
+	padding-left: 8px !important;
+	background: transparent !important;
+}
+.chatTabSetContainer .ChatTab {
+	box-sizing: border-box;
+	height: 32px !important;
+	margin: 0 4px 0 0 !important;
+	padding: 0 6px 0 4px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.chatTabSetContainer .ChatTab:hover {
+	background: var(--gr-hover) !important;
+}
+.chatTabSetContainer .ChatTab.Active {
+	background: var(--gr-surface-2) !important;
+}
+.chatTabSetContainer .ChatTabRow {
+	height: 32px !important;
+	align-items: center !important;
+	gap: 6px;
+}
+.chatTabSetContainer .ChatTab .playerName {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.chatTabSetContainer .ChatTab.Active .playerName {
+	color: var(--gr-text) !important;
+}
+.chatTabSetContainer .ChatTab .avatarHolder,
+.chatTabSetContainer .ChatTab .avatarHolder img {
+	width: 22px !important;
+	height: 22px !important;
+	border-radius: 50% !important;
+}
+.chatTabSetContainer .ChatTab .SnoozeContainer {
+	display: none !important;
+}
+.chatTabSetContainer .ChatTab .CloseButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 20px !important;
+	height: 20px !important;
+	border-radius: 5px;
+	color: var(--gr-text-3);
+	opacity: 0;
+	transition: opacity var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+.chatTabSetContainer .ChatTab:hover .CloseButton,
+.chatTabSetContainer .ChatTab.Active .CloseButton {
+	opacity: 1;
+}
+.chatTabSetContainer .ChatTab .CloseButton:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.chatTabSetContainer .ChatTab .CloseButton svg {
+	display: none !important;
+}
+.chatTabSetContainer .ChatTab .CloseButton::before {
+	content: "";
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-close) center / 12px 12px no-repeat;
+}
+/* unread tab */
+.chatTabSetContainer .ChatTab.HasUnreadMessages .playerName,
+.chatTabSetContainer .ChatTab.UnreadMessages .playerName {
+	color: var(--gr-accent) !important;
+}
+
+/* --- Message area ------------------------------------------------------------- */
+.chatWindow .chatHeader {
+	display: none !important;
+}
+.chatWindow .chatHistory,
+.chatWindow .chatHistoryScroll,
+.chatWindow .ChatHistoryContainer {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.chatWindow .chatHistory {
+	margin: 0 !important;
+	padding: 12px 20px 8px !important;
+}
+.chatWindow .FriendListInsetShadowTop,
+.chatWindow .FriendListInsetShadowBottom {
+	display: none !important;
+}
+/* date divider */
+.chatWindow .msg.timeDivision {
+	margin: 10px 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em;
+}
+.chatWindow .msg.timeDivision .preHorizDivider,
+.chatWindow .msg.timeDivision .horizDivider {
+	background: var(--gr-border) !important;
+}
+/* messages */
+.chatWindow .ChatMessageBlock {
+	margin-top: 10px !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+.chatWindow .speakerName {
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+}
+.chatWindow .speakerTimeStamp,
+.chatWindow .FriendChatTimestamp {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+}
+.chatWindow .msgText,
+.chatWindow .msg .msgText {
+	color: var(--gr-text) !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+.chatWindow .msgText a {
+	color: var(--gr-accent) !important;
+}
+.chatWindow .ChatMessageBlock .avatarHolder img {
+	border-radius: 50% !important;
+}
+
+/* invite button (top right of the history) */
+.chatWindow .inviteAnotherFriendButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 32px !important;
+	height: 32px !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border);
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2);
+	opacity: 0.85;
+	transition: opacity var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .inviteAnotherFriendButton:hover {
+	opacity: 1;
+	color: var(--gr-text);
+}
+.chatWindow .inviteAnotherFriendButton svg {
+	display: none !important;
+}
+.chatWindow .inviteAnotherFriendButton::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-user-plus) center / 16px 16px no-repeat;
+}
+
+/* typing indicator + scroll-to-bottom */
+.chatWindow .FriendChatTypingNotification {
+	background: linear-gradient(to top, var(--gr-bg) 40%, transparent) !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	padding-left: 20px !important;
+}
+.chatWindow .ScrollToBottomButton span {
+	padding: 4px 12px !important;
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border-radius: 999px !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text) !important;
+	font-size: 12px !important;
+}
+
+/* --- Entry row ------------------------------------------------------------------ */
+.chatWindow .chatEntry {
+	box-sizing: border-box;
+	align-items: center !important;
+	gap: 8px;
+	padding: 10px 12px 12px !important;
+	background: var(--gr-bg) !important;
+	border-top: 1px solid var(--gr-border) !important;
+}
+.chatWindow .chatEntryControls {
+	align-items: center !important;
+	gap: 8px;
+	margin: 0 !important;
+	background: transparent !important;
+}
+.chatWindow .chatTextarea {
+	box-sizing: border-box;
+	scrollbar-width: none;
+	min-height: 44px !important;
+	padding: 12px 14px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	line-height: 1.4 !important;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatTextarea:focus {
+	border-color: var(--gr-accent) !important;
+	outline: none !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	width: 44px !important;
+	height: 44px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	color: var(--gr-bg) !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryControls > .chatSubmitButton:hover {
+	background: var(--gr-accent-strong) !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton.disabled {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text-3) !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton svg {
+	display: none !important;
+}
+.chatWindow .chatEntryControls > .chatSubmitButton::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-send) center / 18px 18px no-repeat;
+}
+
+/* emoji / attachment / voice */
+.chatWindow .chatEntryActionsContainer {
+	align-items: center !important;
+	gap: 8px;
+	margin: 0 !important;
+	height: 44px !important;
+}
+.chatWindow .chatEntryActionsGroup,
+.chatWindow .ChatMessageEntryVoice {
+	height: 44px !important;
+	margin: 0 !important;
+	padding: 0 2px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+.chatWindow .chatEntryActionsGroup > *,
+.chatWindow .ChatMessageEntryVoice > * {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+.chatWindow .chatEntryActionsGroup svg,
+.chatWindow .ChatMessageEntryVoice svg {
+	color: var(--gr-text-2) !important;
+	fill: currentColor !important;
+	opacity: 0.9;
+	transition: color var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryActionsGroup > *:hover svg,
+.chatWindow .ChatMessageEntryVoice:hover svg {
+	color: var(--gr-text) !important;
+}
+.chatWindow .chatEntryActionsGroup > button,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 42px !important;
+	height: 42px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.chatWindow .chatEntryActionsGroup > button:hover,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
+	background: var(--gr-hover) !important;
+}
+.chatWindow .chatEntryActionsGroup svg {
+	width: 20px !important;
+	height: 20px !important;
+}
+/* "new emoticons" marker */
+.chatWindow .NewEmoticonIndicator {
+	background: none !important;
+}
+.chatWindow .NewEmoticonCircle {
+	background: var(--gr-accent) !important;
+	box-shadow: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .VoiceToggle,
+.chatWindow .ChatMessageEntryVoice .VoiceToggle.Inactive {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.chatWindow .ChatMessageEntryVoice .VoiceToggle:hover {
+	background: var(--gr-hover) !important;
+}

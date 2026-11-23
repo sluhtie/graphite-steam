@@ -1,0 +1,50 @@
+/* Window controls (minimize / maximize / close) in every Steam window:
+   Graphite's own icons instead of Steam's, centered in the button. */
+.title-area-highlight {
+	display: none !important;
+}
+.windowControlButton {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-2);
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.windowControlButton:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text);
+}
+.windowControlButton.closeButton:hover {
+	background: #e5484d !important;
+	color: #fff;
+}
+.windowControlButton .title-area-icon-inner {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	opacity: 1 !important;
+}
+.windowControlButton .title-area-icon-inner > svg {
+	display: none !important;
+}
+.windowControlButton .title-area-icon-inner::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-close) center / 16px 16px no-repeat;
+}
+.windowControlButton.minimizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-min);
+}
+.windowControlButton.maximizeButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-max);
+	width: 14px;
+	height: 14px;
+	-webkit-mask-size: 14px 14px;
+}

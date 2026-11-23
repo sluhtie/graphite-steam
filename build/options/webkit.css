@@ -49,6 +49,23 @@
 	--gr-med: 220ms;
 }
 
+/* Graphite icon set: one stroke style for every title bar control.
+   Used as CSS masks (background: currentColor), so they follow the
+   surrounding text color. */
+:where(:root) {
+	--gr-icon-min: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+	--gr-icon-max: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E");
+	--gr-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E");
+	--gr-icon-megaphone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9.5v5h3.5L15 19V5L7.5 9.5H4z'/%3E%3Cpath d='M18.5 8.5a5 5 0 0 1 0 7'/%3E%3C/svg%3E");
+	--gr-icon-bell: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 16v-5a5.5 5.5 0 0 1 11 0v5l1.5 2H5z'/%3E%3Cpath d='M10 20.5a2 2 0 0 0 4 0'/%3E%3C/svg%3E");
+	--gr-icon-gamepad: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 7.5h9a4.5 4.5 0 0 1 4.5 4.5v.5a4 4 0 0 1-7.2 2.4h-3.6A4 4 0 0 1 3 12.5V12a4.5 4.5 0 0 1 4.5-4.5z'/%3E%3Cpath d='M7.5 10.5v3M6 12h3'/%3E%3Cpath d='M15.5 11.5h.01M17.5 13h.01'/%3E%3C/svg%3E");
+	--gr-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+	--gr-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+	--gr-icon-user-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10' cy='8' r='3.5'/%3E%3Cpath d='M3.5 20a6.5 6.5 0 0 1 13 0'/%3E%3Cpath d='M19 8v6M16 11h6'/%3E%3C/svg%3E");
+	--gr-icon-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+	--gr-icon-send: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h13'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+}
+
 /* Shared base for every themed window: type, scrollbars and Steam's global
    dialog controls (these use stable, unhashed class names). */
 
@@ -968,6 +985,96 @@ footer {
 	border-radius: var(--gr-radius) !important;
 }
 
+/* --- Store navigation search -------------------------------------------------- */
+/* One quiet field with the search icon inside on the left. Valve's classes are
+   hashed, the search form's role is stable. */
+form[role="search"] {
+	box-sizing: border-box !important;
+	display: flex !important;
+	align-items: center !important;
+	height: 36px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	transition: border-color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+form[role="search"]:hover {
+	background: var(--gr-surface-2) !important;
+}
+form[role="search"]:focus-within {
+	border-color: var(--gr-accent) !important;
+	background: var(--gr-surface) !important;
+}
+form[role="search"] > div {
+	flex: 1 1 auto;
+	height: 100% !important;
+}
+form[role="search"] input:not([type="hidden"]) {
+	height: 100% !important;
+	padding: 0 12px 0 2px !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+}
+form[role="search"] input::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+form[role="search"] button {
+	order: -1;
+	flex: none;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 36px !important;
+	height: 100% !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-3) !important;
+	cursor: pointer;
+}
+form[role="search"] button:hover,
+form[role="search"]:focus-within button {
+	color: var(--gr-text) !important;
+}
+form[role="search"] button svg {
+	display: none !important;
+}
+form[role="search"] button::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+}
+/* suggestions dropdown under the field */
+:has(> form[role="search"]) > div > div > div {
+	margin-top: 6px;
+	padding: 6px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+:has(> form[role="search"]) > div > div > div a {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+:has(> form[role="search"]) > div > div > div a:hover {
+	background: var(--gr-hover) !important;
+}
+
 /* steamcommunity.com */
 
 /* --- Page backgrounds ------------------------------------------------------ */
@@ -1793,6 +1900,238 @@ footer {
 .commentthread_paging .pagebtn {
 	background: var(--gr-surface-3) !important;
 	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* --- Topic hover preview (and other community tooltips) -------------------- */
+.forum_topic_tooltip,
+.community_tooltip {
+	max-width: 340px;
+	padding: 12px 14px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.forum_topic_tooltip .topic_hover_text {
+	margin-bottom: 8px;
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	line-height: 1.45 !important;
+}
+.forum_topic_tooltip .topic_hover_row {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.forum_topic_tooltip .topic_hover_data {
+	color: var(--gr-text-2) !important;
+	font-weight: 600;
+}
+.forum_topic_tooltip .community_award_ctn_hover {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid var(--gr-border);
+}
+.forum_topic_tooltip .community_award {
+	background: var(--gr-surface-3) !important;
+	border-radius: 999px !important;
+}
+.forum_topic_tooltip .community_award_count {
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Right column (search, actions, subforums) ------------------------------ */
+.rightcol #DiscussionSearchForm {
+	margin: 0 0 12px !important;
+}
+.rightcol .discussionSearchTextContainer {
+	box-sizing: border-box;
+	position: relative;
+	display: flex !important;
+	align-items: center;
+	width: 100% !important;
+	height: 40px !important;
+	padding: 0 !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.rightcol .discussionSearchTextContainer:focus-within {
+	border-color: var(--gr-accent) !important;
+}
+.rightcol .discussionSearchTextContainer::before {
+	content: "" !important;
+	position: absolute;
+	left: 12px;
+	top: 11px;
+	width: 16px !important;
+	height: 16px !important;
+	background: var(--gr-text-3) !important;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+	pointer-events: none;
+}
+.rightcol .discussionSearchText {
+	box-sizing: border-box;
+	position: static !important;
+	top: auto !important;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	padding: 0 12px 0 36px !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	outline: none !important;
+}
+/* the submit image sits invisibly on top of the icon (Enter also submits) */
+.rightcol .discussionSearchTextSubmitImg {
+	position: absolute !important;
+	left: 6px;
+	top: 5px;
+	width: 28px !important;
+	height: 28px !important;
+	margin: 0 !important;
+	opacity: 0 !important;
+}
+
+.rightcol .rightbox {
+	margin-bottom: 12px !important;
+	background: var(--gr-surface) !important;
+	overflow: hidden;
+}
+.rightcol .rightbox > .content {
+	padding: 14px !important;
+}
+.rightcol .rightbox > .rule {
+	height: 1px !important;
+	margin: 0 !important;
+	background: var(--gr-border) !important;
+	background-image: none !important;
+}
+/* full-width actions (the subscribe / unsubscribe wrappers toggle their own
+   visibility, so only their buttons are turned into flex boxes) */
+.rightcol .rightbox .content > a.btn_medium,
+.rightcol .forum_subscribe_button > .btn_medium {
+	box-sizing: border-box;
+	display: flex !important;
+	width: 100% !important;
+	margin: 0 !important;
+}
+.rightcol .forum_subscribe_button {
+	width: 100% !important;
+	margin: 0 !important;
+}
+.rightcol .rightbox .btn_medium > span {
+	flex: 1;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	height: 36px !important;
+	padding: 0 14px !important;
+	font-size: 13.5px !important;
+	line-height: 1 !important;
+}
+.rightcol .rightcol_minor_text {
+	margin-top: 10px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 1.5 !important;
+}
+
+/* subforum list */
+.rightcol .forum_list > .content {
+	padding: 10px 8px !important;
+}
+.rightcol .rightbox_list_header {
+	display: flex !important;
+	justify-content: space-between;
+	margin: 4px 8px 8px !important;
+}
+.rightcol .rightbox_list_header > div {
+	float: none !important;
+	order: 0;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	padding: 0 !important;
+}
+.rightcol .rightbox_list_header > .forum_list_name {
+	order: -1;
+}
+.rightcol .rightbox_list_option {
+	margin: 1px 0 !important;
+	height: auto !important;
+}
+.rightcol .rightbox_list_option_content {
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	height: 34px !important;
+	padding: 0 8px !important;
+}
+.rightcol .rightbox_list_option_content > .forum_list_name {
+	order: -1;
+	flex: 1 1 auto;
+	min-width: 0;
+	float: none !important;
+	height: auto !important;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.rightcol .rightbox_list_option_content > .forum_list_name a {
+	display: inline !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1 !important;
+}
+.rightcol .rightbox_list_option:hover .forum_list_name a,
+.rightcol .rightbox_list_option.selected .forum_list_name a {
+	color: var(--gr-text) !important;
+}
+.rightcol .rightbox_list_option_content > .forum_list_postcount {
+	flex: none;
+	float: none !important;
+	height: auto !important;
+	padding: 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	font-variant-numeric: tabular-nums;
+	line-height: 1 !important;
+}
+
+/* topic rows: room above the title and below the author */
+/* Valve fixes the row at 48px, which left the author line glued to the
+   bottom edge: let it size to its two lines and pad evenly */
+.forum_topic {
+	height: auto !important;
+	min-height: 0 !important;
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+}
+.forum_topic .forum_topic_name {
+	line-height: 22px !important;
+}
+.forum_topic .forum_topic_op {
+	margin-top: 1px !important;
+	line-height: 16px !important;
+}
+.forum_topic .forum_topic_details > div {
+	line-height: 39px !important;
+	height: 39px !important;
+}
+.forum_topic .forum_topic_icon {
+	display: flex !important;
+	align-items: center;
+	height: 39px !important;
+	padding: 0 12px 0 6px !important;
 }
 
 /* Community Market: home, search results, item listing pages, dialogs. */
@@ -2665,7 +3004,7 @@ h1.market_header,
 	border-color: var(--gr-accent) !important;
 	outline: none !important;
 }
-.gr-wishlist .gr-wl-toolbar button {
+.gr-wishlist .gr-wl-toolbar > div > button {
 	height: 40px !important;
 	background: var(--gr-surface) !important;
 	background-image: none !important;
@@ -2678,17 +3017,124 @@ h1.market_header,
 	font-weight: 500 !important;
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
-.gr-wishlist .gr-wl-toolbar button span {
+.gr-wishlist .gr-wl-toolbar > div > button span {
 	color: var(--gr-text) !important;
 }
-.gr-wishlist .gr-wl-toolbar button:hover {
+.gr-wishlist .gr-wl-toolbar > div > button:hover {
 	background: var(--gr-surface-2) !important;
 	color: var(--gr-text-2) !important;
 }
-.gr-wishlist .gr-wl-toolbar button svg {
+.gr-wishlist .gr-wl-toolbar > div > button svg {
 	color: var(--gr-text-2) !important;
 	fill: currentColor;
 }
+/* --- Toolbar popups: sort menu and the options panel ------------------------- */
+.gr-wishlist .gr-wl-toolbar > div > .Panel {
+	padding: 6px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button {
+	display: flex !important;
+	align-items: center;
+	width: 100% !important;
+	height: 34px !important;
+	margin: 0 !important;
+	padding: 0 12px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	text-align: left !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button:hover,
+.gr-wishlist .gr-wl-toolbar > div > .Panel > button:focus {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+	outline: none !important;
+}
+
+/* options panel (form with sections of radios / checkboxes and a price slider) */
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) {
+	padding: 20px 22px !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form h3 {
+	margin: 0 0 8px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form label {
+	display: flex !important;
+	flex-direction: row !important;
+	align-items: center !important;
+	gap: 9px;
+	min-height: 28px !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form label:hover {
+	color: var(--gr-text) !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="radio"],
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="checkbox"] {
+	order: -1;
+	flex: none;
+	width: 15px !important;
+	height: 15px !important;
+	margin: 0 !important;
+	accent-color: var(--gr-accent);
+	cursor: pointer;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form input[type="range"] {
+	height: 20px !important;
+	accent-color: var(--gr-accent);
+	background: transparent !important;
+}
+.gr-wishlist .gr-wl-toolbar .Panel form section {
+	margin-bottom: 14px !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button *,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a * {
+	background: transparent !important;
+	background-image: none !important;
+	color: inherit !important;
+	text-shadow: none !important;
+}
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) button:hover,
+.gr-wishlist .gr-wl-toolbar > div > .Panel:has(form) a:hover {
+	background: color-mix(in srgb, var(--gr-text) 14%, var(--gr-surface-2)) !important;
+}
+
 .gr-wishlist .gr-wl-count,
 .gr-wishlist .gr-wl-count * {
 	color: var(--gr-text-3) !important;
@@ -2837,11 +3283,12 @@ h1.market_header,
 	border: none !important;
 	border-radius: var(--gr-radius-sm) !important;
 	color: var(--gr-text-3) !important;
-	opacity: 0;
+	opacity: 0 !important;
 	transition: opacity var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
 }
-.gr-wishlist .gr-wl-row:hover .gr-wl-added button {
-	opacity: 1;
+.gr-wishlist .gr-wl-row:hover .gr-wl-added button,
+.gr-wishlist .gr-wl-added button:focus-visible {
+	opacity: 1 !important;
 }
 .gr-wishlist .gr-wl-added button span {
 	color: inherit !important;

@@ -199,3 +199,235 @@
 	background: var(--gr-surface-3) !important;
 	border-radius: var(--gr-radius-sm) !important;
 }
+
+/* --- Topic hover preview (and other community tooltips) -------------------- */
+.forum_topic_tooltip,
+.community_tooltip {
+	max-width: 340px;
+	padding: 12px 14px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.forum_topic_tooltip .topic_hover_text {
+	margin-bottom: 8px;
+	color: var(--gr-text) !important;
+	font-size: 13.5px !important;
+	line-height: 1.45 !important;
+}
+.forum_topic_tooltip .topic_hover_row {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.forum_topic_tooltip .topic_hover_data {
+	color: var(--gr-text-2) !important;
+	font-weight: 600;
+}
+.forum_topic_tooltip .community_award_ctn_hover {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid var(--gr-border);
+}
+.forum_topic_tooltip .community_award {
+	background: var(--gr-surface-3) !important;
+	border-radius: 999px !important;
+}
+.forum_topic_tooltip .community_award_count {
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Right column (search, actions, subforums) ------------------------------ */
+.rightcol #DiscussionSearchForm {
+	margin: 0 0 12px !important;
+}
+.rightcol .discussionSearchTextContainer {
+	box-sizing: border-box;
+	position: relative;
+	display: flex !important;
+	align-items: center;
+	width: 100% !important;
+	height: 40px !important;
+	padding: 0 !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.rightcol .discussionSearchTextContainer:focus-within {
+	border-color: var(--gr-accent) !important;
+}
+.rightcol .discussionSearchTextContainer::before {
+	content: "" !important;
+	position: absolute;
+	left: 12px;
+	top: 11px;
+	width: 16px !important;
+	height: 16px !important;
+	background: var(--gr-text-3) !important;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+	pointer-events: none;
+}
+.rightcol .discussionSearchText {
+	box-sizing: border-box;
+	position: static !important;
+	top: auto !important;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	padding: 0 12px 0 36px !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	outline: none !important;
+}
+/* the submit image sits invisibly on top of the icon (Enter also submits) */
+.rightcol .discussionSearchTextSubmitImg {
+	position: absolute !important;
+	left: 6px;
+	top: 5px;
+	width: 28px !important;
+	height: 28px !important;
+	margin: 0 !important;
+	opacity: 0 !important;
+}
+
+.rightcol .rightbox {
+	margin-bottom: 12px !important;
+	background: var(--gr-surface) !important;
+	overflow: hidden;
+}
+.rightcol .rightbox > .content {
+	padding: 14px !important;
+}
+.rightcol .rightbox > .rule {
+	height: 1px !important;
+	margin: 0 !important;
+	background: var(--gr-border) !important;
+	background-image: none !important;
+}
+/* full-width actions (the subscribe / unsubscribe wrappers toggle their own
+   visibility, so only their buttons are turned into flex boxes) */
+.rightcol .rightbox .content > a.btn_medium,
+.rightcol .forum_subscribe_button > .btn_medium {
+	box-sizing: border-box;
+	display: flex !important;
+	width: 100% !important;
+	margin: 0 !important;
+}
+.rightcol .forum_subscribe_button {
+	width: 100% !important;
+	margin: 0 !important;
+}
+.rightcol .rightbox .btn_medium > span {
+	flex: 1;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	height: 36px !important;
+	padding: 0 14px !important;
+	font-size: 13.5px !important;
+	line-height: 1 !important;
+}
+.rightcol .rightcol_minor_text {
+	margin-top: 10px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	line-height: 1.5 !important;
+}
+
+/* subforum list */
+.rightcol .forum_list > .content {
+	padding: 10px 8px !important;
+}
+.rightcol .rightbox_list_header {
+	display: flex !important;
+	justify-content: space-between;
+	margin: 4px 8px 8px !important;
+}
+.rightcol .rightbox_list_header > div {
+	float: none !important;
+	order: 0;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	padding: 0 !important;
+}
+.rightcol .rightbox_list_header > .forum_list_name {
+	order: -1;
+}
+.rightcol .rightbox_list_option {
+	margin: 1px 0 !important;
+	height: auto !important;
+}
+.rightcol .rightbox_list_option_content {
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	height: 34px !important;
+	padding: 0 8px !important;
+}
+.rightcol .rightbox_list_option_content > .forum_list_name {
+	order: -1;
+	flex: 1 1 auto;
+	min-width: 0;
+	float: none !important;
+	height: auto !important;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.rightcol .rightbox_list_option_content > .forum_list_name a {
+	display: inline !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1 !important;
+}
+.rightcol .rightbox_list_option:hover .forum_list_name a,
+.rightcol .rightbox_list_option.selected .forum_list_name a {
+	color: var(--gr-text) !important;
+}
+.rightcol .rightbox_list_option_content > .forum_list_postcount {
+	flex: none;
+	float: none !important;
+	height: auto !important;
+	padding: 0 !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	font-variant-numeric: tabular-nums;
+	line-height: 1 !important;
+}
+
+/* topic rows: room above the title and below the author */
+/* Valve fixes the row at 48px, which left the author line glued to the
+   bottom edge: let it size to its two lines and pad evenly */
+.forum_topic {
+	height: auto !important;
+	min-height: 0 !important;
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+}
+.forum_topic .forum_topic_name {
+	line-height: 22px !important;
+}
+.forum_topic .forum_topic_op {
+	margin-top: 1px !important;
+	line-height: 16px !important;
+}
+.forum_topic .forum_topic_details > div {
+	line-height: 39px !important;
+	height: 39px !important;
+}
+.forum_topic .forum_topic_icon {
+	display: flex !important;
+	align-items: center;
+	height: 39px !important;
+	padding: 0 12px 0 6px !important;
+}

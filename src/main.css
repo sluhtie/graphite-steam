@@ -1,5 +1,7 @@
 /* Main Steam window (title "Steam"): library, store/community frame. */
 @import "./partials/tokens.css";
+@import "./partials/icons.css";
+@import "./partials/window-controls.css";
 @import "./partials/base.css";
 @import "./partials/frame.css";
 @import "./partials/library-list.css";

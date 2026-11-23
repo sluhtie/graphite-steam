@@ -115,6 +115,7 @@
 	};
 	const leaves = root => [...root.querySelectorAll('*')].filter(e => !e.children.length && !(e instanceof SVGElement));
 
+	const ROLES = ['gr-wl-rank', 'gr-wl-name', 'gr-wl-buy', 'gr-wl-added', 'gr-wl-cats', 'gr-wl-info'];
 	function hookWishlist() {
 		if (!/^\/wishlist\//.test(location.pathname)) return;
 		document.documentElement.classList.add('gr-wishlist');
@@ -144,31 +145,46 @@
 		for (const cap of document.querySelectorAll('a[href*="/app/"]')) {
 			if (!cap.querySelector('img')) continue;
 			const row = cap.parentElement;
-			if (!row || row.classList.contains('gr-wl-row') || row.getBoundingClientRect().width < 600) continue;
+			// (re-run on every pass: React fills cards in over several renders)
+			if (!row || row.getBoundingClientRect().width < 600) continue;
 			hook(row, 'gr-wl-row');
-			cap.classList.add('gr-wl-cap');
+			if (!cap.classList.contains('gr-wl-cap')) cap.classList.add('gr-wl-cap');
+			// work out each part's role first, then only touch classes that
+			// actually change (re-adding them would restart CSS transitions)
+			const role = new Map();
 			const rest = [];
 			for (const c of row.children) {
 				if (c === cap) continue;
 				const app = c.querySelector('a[href*="/app/"]');
 				const btn = c.querySelector('button');
-				if (c.querySelector('input') && !app) c.classList.add('gr-wl-rank');
-				else if (app && !btn) c.classList.add('gr-wl-name');
-				else if (app && btn) c.classList.add('gr-wl-buy');
+				if (c.querySelector('input') && !app) role.set(c, 'gr-wl-rank');
+				else if (app && !btn) role.set(c, 'gr-wl-name');
+				else if (app && btn) role.set(c, 'gr-wl-buy');
 				else rest.push(c);
 			}
 			// remaining: "added on / remove" (top right), categories, details
 			const rr = row.getBoundingClientRect();
 			const added = rest.find(c => { const r = c.getBoundingClientRect(); return r.top - rr.top < 30 && rr.right - r.right < 40; });
-			if (added) added.classList.add('gr-wl-added');
-			const others = rest.filter(c => c !== added).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-			if (others.length > 1) others[0].classList.add('gr-wl-cats');
-			if (others.length) others[others.length - 1].classList.add('gr-wl-info');
-			for (const l of leaves(row)) if (/:\s*$/.test(l.textContent)) l.classList.add('gr-wl-label');
-			const info = row.querySelector('.gr-wl-info');
-			if (info) info.querySelectorAll('button').forEach(b => b.classList.add('gr-wl-tag'));
+			if (added) role.set(added, 'gr-wl-added');
+			// details = the block with the tag buttons (or, without tags, the
+			// one with the most text); categories = the top block with one button
+			const others = rest.filter(c => c !== added && c.textContent.trim());
+			const score = c => c.querySelectorAll('button').length * 100 + c.textContent.length;
+			const info = others.slice().sort((x, y) => score(y) - score(x))[0];
+			if (info) role.set(info, 'gr-wl-info');
+			const cats = others.filter(c => c !== info && c.querySelectorAll('button').length === 1)
+				.sort((x, y) => x.getBoundingClientRect().top - y.getBoundingClientRect().top)[0];
+			if (cats) role.set(cats, 'gr-wl-cats');
+			for (const c of row.children) {
+				if (c === cap) continue;
+				const want = role.get(c);
+				for (const k of ROLES) if (k !== want && c.classList.contains(k)) c.classList.remove(k);
+				if (want && !c.classList.contains(want)) c.classList.add(want);
+			}
+			for (const l of leaves(row)) if (/:\s*$/.test(l.textContent) && !l.classList.contains('gr-wl-label')) l.classList.add('gr-wl-label');
+			if (info) info.querySelectorAll('button:not(.gr-wl-tag)').forEach(t => t.classList.add('gr-wl-tag'));
 			const buy = row.querySelector('.gr-wl-buy');
-			if (buy) buy.querySelectorAll('button').forEach(b => b.classList.add('gr-wl-cart'));
+			if (buy) buy.querySelectorAll('button:not(.gr-wl-cart)').forEach(t => t.classList.add('gr-wl-cart'));
 		}
 	}
 

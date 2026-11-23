@@ -5,18 +5,6 @@ body.ModalDialogBody,
 .ModalPosition_Content {
 	background: var(--gr-surface) !important;
 }
-.title-area-highlight {
-	display: none !important;
-}
-.windowControlButton {
-	border-radius: var(--gr-radius-sm);
-}
-.windowControlButton:hover {
-	background: var(--gr-hover) !important;
-}
-.windowControlButton.closeButton:hover {
-	background: #e5484d !important;
-}
 
 /* Generic modal */
 .ModalOverlayBackground,

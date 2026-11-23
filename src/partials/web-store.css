@@ -405,3 +405,93 @@
 	background: var(--gr-surface-2) !important;
 	border-radius: var(--gr-radius) !important;
 }
+
+/* --- Store navigation search -------------------------------------------------- */
+/* One quiet field with the search icon inside on the left. Valve's classes are
+   hashed, the search form's role is stable. */
+form[role="search"] {
+	box-sizing: border-box !important;
+	display: flex !important;
+	align-items: center !important;
+	height: 36px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	transition: border-color var(--gr-fast) var(--gr-ease), background var(--gr-fast) var(--gr-ease);
+}
+form[role="search"]:hover {
+	background: var(--gr-surface-2) !important;
+}
+form[role="search"]:focus-within {
+	border-color: var(--gr-accent) !important;
+	background: var(--gr-surface) !important;
+}
+form[role="search"] > div {
+	flex: 1 1 auto;
+	height: 100% !important;
+}
+form[role="search"] input:not([type="hidden"]) {
+	height: 100% !important;
+	padding: 0 12px 0 2px !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+}
+form[role="search"] input::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+form[role="search"] button {
+	order: -1;
+	flex: none;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 36px !important;
+	height: 100% !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: 0 !important;
+	color: var(--gr-text-3) !important;
+	cursor: pointer;
+}
+form[role="search"] button:hover,
+form[role="search"]:focus-within button {
+	color: var(--gr-text) !important;
+}
+form[role="search"] button svg {
+	display: none !important;
+}
+form[role="search"] button::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-search) center / 16px 16px no-repeat;
+}
+/* suggestions dropdown under the field */
+:has(> form[role="search"]) > div > div > div {
+	margin-top: 6px;
+	padding: 6px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+:has(> form[role="search"]) > div > div > div a {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+:has(> form[role="search"]) > div > div > div a:hover {
+	background: var(--gr-hover) !important;
+}
