@@ -38,6 +38,10 @@
 		{
 			"MatchRegexString": ".friendsui-container",
 			"TargetCss": "build/friends.css"
+		},
+		{
+			"MatchRegexString": "^notificationtoasts",
+			"TargetCss": "build/toasts.css"
 		}
 	],
 	"Conditions": {

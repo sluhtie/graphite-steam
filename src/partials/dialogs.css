@@ -142,11 +142,17 @@ body.ModalDialogBody,
 }
 
 /* --- Paged settings dialog ------------------------------------------------- */
+/* page list = the 2.0 side navigation: 34px rows, 18px icons, the open page
+   lifted with an accent icon. Rows keep their height (Steam lets them shrink
+   to fit the window, which cut off the last entries); the list scrolls. */
 .PagedSettingsDialog_PageListColumn {
 	background: var(--gr-bg) !important;
 	border-right: 1px solid var(--gr-border);
+	overflow-y: auto !important;
+	font-family: var(--gr-font) !important;
 }
 .PagedSettingsDialog_Title {
+	padding: 0 14px 0 16px !important;
 	color: var(--gr-text) !important;
 	font-size: 15px !important;
 	font-weight: 600 !important;
@@ -154,12 +160,18 @@ body.ModalDialogBody,
 	letter-spacing: -0.01em !important;
 }
 .PagedSettingsDialog_PageListItem {
-	color: var(--gr-text-2) !important;
-	background: transparent !important;
-	border-radius: var(--gr-radius-sm) !important;
-	margin: 1px 8px !important;
+	flex-shrink: 0 !important;
+	box-sizing: border-box !important;
+	gap: 10px;
 	width: auto !important;
 	height: 34px !important;
+	margin: 1px 8px !important;
+	padding: 0 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13.5px !important;
+	font-weight: 400 !important;
 	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
 }
 .PagedSettingsDialog_PageListItem:hover {
@@ -167,20 +179,32 @@ body.ModalDialogBody,
 	color: var(--gr-text) !important;
 }
 .PagedSettingsDialog_PageListItem.Active {
-	background: var(--gr-active) !important;
+	background: var(--gr-surface-2) !important;
 	color: var(--gr-text) !important;
 }
 .PagedSettingsDialog_PageListItem .PageListItem_Icon {
-	opacity: 0.7;
+	flex: none;
+	width: 18px !important;
+	height: 18px !important;
+	margin: 0 !important;
+	color: var(--gr-text-3) !important;
+	opacity: 1;
+}
+.PagedSettingsDialog_PageListItem:hover .PageListItem_Icon {
+	color: var(--gr-text-2) !important;
 }
 .PagedSettingsDialog_PageListItem.Active .PageListItem_Icon {
-	opacity: 1;
-	color: var(--gr-accent);
+	color: var(--gr-accent) !important;
 }
 .PagedSettingsDialog_PageListItem .PageListItem_Title {
-	font-size: 13px !important;
+	font-size: 13.5px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .PageListSeparator {
+	flex-shrink: 0;
+	margin: 8px 16px !important;
 	background: var(--gr-border) !important;
 }
 .PagedSettingDialog_ContentColumn,

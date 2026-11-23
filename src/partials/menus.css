@@ -203,6 +203,9 @@ hr.$(MenuItem@MenuWrapper).$(Separator@MenuWrapper),
 	border: none !important;
 }
 
+/* bell dropdown and its entries */
+@import "./notifications.css";
+
 /* --- Account menu ------------------------------------------------------------------------ */
 .$(AccountName@LogoutButton) {
 	color: var(--gr-accent) !important;
