@@ -1129,3 +1129,20 @@
 	width: 16px;
 	height: 16px;
 }
+
+/* --- Narrow windows ---------------------------------------------------------------- */
+@media (max-width: 1199px) {
+	:root {
+		--gr-shell-side: 232px;
+	}
+}
+/* the open dock floats over the page (shell.js sets gr-dock-overlay below 1280px) */
+:root.gr-dock-overlay .$(ContentFrame) {
+	margin-right: 56px !important;
+}
+:root.gr-dock-overlay .gr-dock {
+	width: 316px;
+	padding-left: 8px;
+	background: var(--gr-bg);
+	box-shadow: -24px 0 48px rgba(0, 0, 0, 0.45);
+}

@@ -99,6 +99,10 @@
 		return;
 	}
 
+	// Graphite 2.0: the client's side column is the store / community
+	// navigation, so no sub-navigation or extra links inside the page
+	if (window.__graphiteShellPage) return;
+
 	/* --- Labels ------------------------------------------------------------ */
 	const L = {
 		en: ['Home', 'Discussions', 'Workshop', 'Market', 'Broadcasts', 'Activity', 'Profile', 'Friends', 'Groups', 'Content', 'Badges', 'Inventory', 'Points Shop'],
