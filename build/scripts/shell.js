@@ -11,11 +11,10 @@
 	// In the main window the page sits in Graphite's rounded frame (16px radius,
 	// 1px border), but Steam's browser view is square. So the page paints the
 	// frame's corners itself: window background outside the curve, the border
-	// line along it. The window scrollbar is always drawn above the page, so the
-	// part of the two right-hand arcs that falls into its 10px column is drawn
-	// as the scrollbar's background. Not in the game overlay or in frames.
+	// line along it. The window scrollbar would sit in a 10px column of its own
+	// between page and border, so it is hidden and a thumb floats over the page
+	// instead (below). Not in the game overlay or in frames.
 	const framed = window.top === window && !/GameOverlay/i.test(navigator.userAgent);
-	const ring = (y) => `radial-gradient(circle at -5px ${y}, transparent 14.6px, var(--gr-border, #232328) 15px, var(--gr-border, #232328) 16px, transparent 16.4px)`;
 	const frame = `
 		html::after {
 			content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -23,10 +22,22 @@
 			box-shadow: 0 0 0 1px var(--gr-border, #232328), 0 0 0 40px var(--gr-bg, #0b0b0d);
 		}
 		/* Chromium styles the window's scrollbar from <body> (else <html>) */
-		html::-webkit-scrollbar, body::-webkit-scrollbar { background: ${ring('15px')} top / 100% 15px no-repeat, ${ring('0px')} bottom / 100% 15px no-repeat, var(--gr-bg, #0b0b0d) !important; }
-		/* keep the thumb off the corner arcs */
-		html::-webkit-scrollbar-track, body::-webkit-scrollbar-track,
-		html::-webkit-scrollbar-track-piece, body::-webkit-scrollbar-track-piece { margin-top: 16px !important; margin-bottom: 16px !important; }
+		html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+		#gr-sb {
+			position: fixed; top: 0; right: 1px; width: 12px; z-index: 2147483646;
+			display: flex; justify-content: center; opacity: .6;
+			transition: opacity .2s ease;
+		}
+		#gr-sb[hidden] { display: none; }
+		#gr-sb::before {
+			content: ''; width: 4px; height: 100%; border-radius: 4px;
+			background: color-mix(in srgb, var(--gr-text, #ececf0) 30%, transparent);
+			box-shadow: 0 0 0 1px rgba(0, 0, 0, .2);
+			transition: width .15s ease, background .15s ease;
+		}
+		#gr-sb.gr-on { opacity: 1; }
+		#gr-sb:hover, #gr-sb.gr-drag { opacity: 1; }
+		#gr-sb:hover::before, #gr-sb.gr-drag::before { width: 6px; background: color-mix(in srgb, var(--gr-text, #ececf0) 45%, transparent); }
 	`;
 	const css = `
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
@@ -44,6 +55,65 @@
 	};
 	add();
 	document.addEventListener('DOMContentLoaded', add, { once: true });
+
+	// The floating scroll thumb for the window (the real scrollbar is hidden,
+	// see above): sized and placed from the scroll position, draggable, brighter
+	// while scrolling. Kept 16px off the top and bottom, clear of the corners.
+	const thumb = () => {
+		if (!framed || document.getElementById('gr-sb')) return;
+		const bar = document.createElement('div');
+		bar.id = 'gr-sb';
+		bar.hidden = true;
+		document.body.append(bar);
+		const se = () => document.scrollingElement || document.documentElement;
+		const PAD = 16;
+		let size = 0;
+		let range = 0;
+		let track = 0;
+		const place = () => {
+			const s = se();
+			range = s.scrollHeight - innerHeight;
+			track = innerHeight - PAD * 2;
+			if (range <= 1 || track < 60) { bar.hidden = true; return; }
+			bar.hidden = false;
+			size = Math.max(40, Math.round(track * innerHeight / s.scrollHeight));
+			const y = PAD + (track - size) * Math.min(1, Math.max(0, s.scrollTop / range));
+			bar.style.height = size + 'px';
+			bar.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
+		};
+		let raf = 0;
+		const queue = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; place(); }); };
+		let idle = 0;
+		addEventListener('scroll', () => {
+			queue();
+			bar.classList.add('gr-on');
+			clearTimeout(idle);
+			idle = setTimeout(() => bar.classList.remove('gr-on'), 900);
+		}, { passive: true });
+		addEventListener('resize', queue);
+		new ResizeObserver(queue).observe(document.body);
+		let fromY = 0;
+		let fromTop = 0;
+		bar.addEventListener('pointerdown', (e) => {
+			if (e.button !== 0) return;
+			e.preventDefault();
+			fromY = e.clientY;
+			fromTop = se().scrollTop;
+			bar.setPointerCapture(e.pointerId);
+			bar.classList.add('gr-drag');
+		});
+		bar.addEventListener('pointermove', (e) => {
+			if (!bar.hasPointerCapture(e.pointerId)) return;
+			const k = range / Math.max(1, track - size);
+			se().scrollTo({ top: fromTop + (e.clientY - fromY) * k, behavior: 'instant' });
+		});
+		const end = () => bar.classList.remove('gr-drag');
+		bar.addEventListener('pointerup', end);
+		bar.addEventListener('pointercancel', end);
+		place();
+	};
+	if (document.body) thumb();
+	else document.addEventListener('DOMContentLoaded', thumb, { once: true });
 
 	// Newer React store pages (wishlist, ...) build the bar differently. Find it
 	// from its search form: climb while the parent is still bar-sized (and not
