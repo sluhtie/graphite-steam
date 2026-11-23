@@ -1047,3 +1047,261 @@
 	color: var(--gr-text-3);
 	font-size: 12px;
 }
+
+/* --- Chat inside the dock ------------------------------------------------------------ */
+.gr-chat {
+	display: none;
+	flex: 1;
+	min-height: 0;
+	flex-direction: column;
+	border: 1px solid var(--gr-border);
+	border-radius: 16px;
+	background: color-mix(in srgb, var(--gr-surface) 70%, var(--gr-bg));
+	overflow: hidden;
+}
+.gr-dock.gr-chatting .gr-chat {
+	display: flex;
+}
+.gr-dock.gr-chatting .gr-dock-me,
+.gr-dock.gr-chatting .gr-dock-search,
+.gr-dock.gr-chatting .gr-dock-list,
+.gr-dock.gr-chatting .gr-dock-groups {
+	display: none !important;
+}
+.gr-chat-head {
+	flex: none;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 6px 8px 4px;
+	border-bottom: 1px solid var(--gr-border);
+}
+.gr-chat-who {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.gr-chat-head .gr-av i {
+	box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--gr-surface) 70%, var(--gr-bg));
+}
+.gr-chat-log {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	scrollbar-width: thin;
+	padding: 10px 12px 6px;
+	display: flex;
+	flex-direction: column;
+}
+.gr-chat-day {
+	align-self: center;
+	margin: 10px 0 4px;
+	padding: 2px 10px;
+	border-radius: 999px;
+	color: var(--gr-text-3);
+	font-size: 11px;
+	font-weight: 500;
+}
+.gr-chat-note,
+.gr-chat-empty {
+	align-self: center;
+	margin: 8px 0;
+	color: var(--gr-text-3);
+	font-size: 12px;
+	text-align: center;
+}
+.gr-chat-empty {
+	margin: auto 0;
+}
+.gr-chat-more {
+	align-self: center;
+	margin: 4px 0 6px;
+	padding: 4px 12px;
+	border: 1px solid var(--gr-border);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--gr-text-2);
+	font: inherit;
+	font-size: 12px;
+	cursor: pointer;
+}
+.gr-chat-more:hover {
+	color: var(--gr-text);
+	border-color: var(--gr-text-3);
+}
+.gr-msg {
+	display: flex;
+	flex-direction: column;
+	max-width: 86%;
+	margin-top: 3px;
+}
+.gr-msg.gr-first {
+	margin-top: 10px;
+}
+.gr-msg.gr-mine {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+.gr-msg.gr-theirs {
+	align-self: flex-start;
+	align-items: flex-start;
+}
+.gr-bubble {
+	padding: 7px 12px;
+	border-radius: 16px;
+	color: var(--gr-text);
+	font-size: 13px;
+	line-height: 1.45;
+	white-space: pre-wrap;
+	word-break: break-word;
+	user-select: text;
+}
+.gr-mine .gr-bubble {
+	background: color-mix(in srgb, var(--gr-accent) 24%, var(--gr-surface-2));
+	border-bottom-right-radius: 6px;
+}
+.gr-theirs .gr-bubble {
+	background: var(--gr-surface-2);
+	border-bottom-left-radius: 6px;
+}
+.gr-msg:not(.gr-last).gr-mine .gr-bubble {
+	border-bottom-right-radius: 6px;
+	border-top-right-radius: 6px;
+}
+.gr-msg:not(.gr-first).gr-mine .gr-bubble {
+	border-top-right-radius: 6px;
+}
+.gr-msg:not(.gr-last).gr-theirs .gr-bubble,
+.gr-msg:not(.gr-first).gr-theirs .gr-bubble {
+	border-top-left-radius: 6px;
+}
+.gr-msg.gr-failed .gr-bubble {
+	opacity: 0.6;
+	box-shadow: inset 0 0 0 1px #e5484d;
+}
+.gr-msg time {
+	padding: 3px 4px 0;
+	color: var(--gr-text-3);
+	font-size: 11px;
+}
+.gr-msg.gr-failed time {
+	color: #ff8a8f;
+}
+.gr-bubble a {
+	color: var(--gr-accent);
+	text-decoration: none;
+	word-break: break-all;
+}
+.gr-bubble a:hover {
+	text-decoration: underline;
+}
+.gr-bubble code {
+	padding: 1px 5px;
+	border-radius: 4px;
+	background: var(--gr-surface-3);
+	font-size: 12px;
+}
+.gr-bubble blockquote {
+	margin: 0 0 4px;
+	padding-left: 8px;
+	border-left: 2px solid var(--gr-border);
+	color: var(--gr-text-2);
+}
+.gr-emo {
+	width: 18px;
+	height: 18px;
+	vertical-align: -4px;
+}
+.gr-chat-img {
+	display: block;
+	max-width: 100%;
+	max-height: 220px;
+	margin: 2px 0;
+	border-radius: 10px;
+}
+.gr-chat-tag {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: var(--gr-surface-3);
+	color: var(--gr-text-2);
+	font-size: 12px;
+}
+.gr-spoiler {
+	border-radius: 4px;
+	background: var(--gr-text-3);
+	color: transparent;
+	cursor: pointer;
+}
+.gr-spoiler.gr-shown {
+	background: transparent;
+	color: inherit;
+}
+.gr-chat-typing {
+	flex: none;
+	min-height: 18px;
+	padding: 0 14px;
+	color: var(--gr-text-3);
+	font-size: 12px;
+}
+.gr-chat-compose {
+	flex: none;
+	display: flex;
+	align-items: flex-end;
+	gap: 6px;
+	margin: 0 8px 8px;
+	padding: 5px 5px 5px 12px;
+	border: 1px solid var(--gr-border);
+	border-radius: 14px;
+	background: var(--gr-surface);
+	transition: border-color var(--gr-fast) var(--gr-ease);
+}
+.gr-chat-compose:focus-within {
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent);
+}
+.gr-chat-compose textarea {
+	flex: 1;
+	min-width: 0;
+	min-height: 30px;
+	max-height: 120px;
+	padding: 6px 0;
+	box-sizing: border-box;
+	border: 0;
+	outline: 0;
+	resize: none;
+	background: transparent;
+	color: var(--gr-text);
+	font: inherit;
+	font-size: 13px;
+	line-height: 1.4;
+	scrollbar-width: thin;
+}
+.gr-chat-compose textarea::placeholder {
+	color: var(--gr-text-3);
+	font-style: normal;
+}
+.gr-chat-send {
+	flex: none;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	background: var(--gr-surface-3);
+	color: var(--gr-text-3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-chat-compose:has(textarea:not(:placeholder-shown)) .gr-chat-send {
+	background: var(--gr-accent);
+	color: var(--gr-bg);
+}
+.gr-chat-send svg {
+	width: 16px;
+	height: 16px;
+}

@@ -330,6 +330,9 @@
 			workshop: 'Workshop', market: 'Market', inventory: 'Inventory', badges: 'Badges', console: 'Console',
 			inGame: 'In game', online: 'Online', away: 'Away', offline: 'Offline', searchFriends: 'Search friends', groupChats: 'Group chats',
 			addFriend: 'Add a friend', collapse: 'Collapse', expand: 'Show friends', chatWith: 'Chat with',
+			back: 'Back to friends', popout: 'Open in chat window', send: 'Send', messageTo: 'Message', typing: 'is typing …',
+			today: 'Today', yesterday: 'Yesterday', olderMessages: 'Load older messages', noMessages: 'No messages yet', gameInvite: 'Game invite',
+			failed: 'Not sent', sticker: 'Sticker',
 		},
 		german: {
 			home: 'Startseite', library: 'Bibliothek', store: 'Shop', community: 'Community', downloads: 'Downloads', settings: 'Einstellungen',
@@ -342,6 +345,9 @@
 			workshop: 'Workshop', market: 'Markt', inventory: 'Inventar', badges: 'Abzeichen', console: 'Konsole',
 			inGame: 'Im Spiel', online: 'Online', away: 'Abwesend', offline: 'Offline', searchFriends: 'Freunde suchen', groupChats: 'Gruppenchats',
 			addFriend: 'Freund hinzufügen', collapse: 'Einklappen', expand: 'Freunde ausklappen', chatWith: 'Chat mit',
+			back: 'Zurück zu den Freunden', popout: 'Im Chatfenster öffnen', send: 'Senden', messageTo: 'Nachricht an', typing: 'schreibt …',
+			today: 'Heute', yesterday: 'Gestern', olderMessages: 'Ältere Nachrichten laden', noMessages: 'Noch keine Nachrichten', gameInvite: 'Spieleinladung',
+			failed: 'Nicht gesendet', sticker: 'Sticker',
 		},
 	};
 	const T = Object.assign({}, STR.english, STR[steamLang] || {});
@@ -378,6 +384,9 @@
 		panelL: 'M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5zM9 4v16',
 		chat: 'M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z',
 		chevron: 'M6 9.5l6 6 6-6',
+		chevL: 'M14.5 6l-6 6 6 6',
+		popout: 'M14 4h6v6M20 4l-8 8M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4',
+		send: 'M12 19V6M6.5 11.5 12 6l5.5 5.5',
 	};
 
 	const qs = (sel, root = document) => root.querySelector(sel);
@@ -665,7 +674,144 @@
 			renderDock();
 			return;
 		}
-		if (t.dataset.id) { const f = friendById(Number(t.dataset.id)); if (f && f.OpenChatDialog) f.OpenChatDialog(); }
+		if (t.dataset.act === 'back') { closeChat(); return; }
+		if (t.dataset.act === 'popout') { const f = friendById(chatId); if (f && f.OpenChatDialog) f.OpenChatDialog(); return; }
+		if (t.classList.contains('gr-chat-more')) { const c = chatOf(chatId); if (c && c.LoadMoreHistory) c.LoadMoreHistory(); return; }
+		if (t.dataset.id) {
+			if (dockMode === 'mini') setDock('open');
+			openChat(Number(t.dataset.id));
+		}
+	});
+
+	/* --- Chat inside the dock ---------------------------------------------------------------
+	 * Steam's own friend chat object does the work: LoadChatLogs() fetches the
+	 * history, chat_messages holds it, SendChatMessage() sends (with Steam's
+	 * local echo and retries), OnTyping() / is_friend_typing drive the typing
+	 * note and AckChatMsg() marks messages as read while the chat is open.
+	 */
+	const locale = { german: 'de-DE', english: 'en-US', french: 'fr-FR', spanish: 'es-ES', latam: 'es-419', italian: 'it-IT', polish: 'pl-PL', russian: 'ru-RU' }[steamLang] || 'en-US';
+	const fmtTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
+	const fmtDay = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+	let chatId = null;
+	let lastChatKey = '';
+	const chatPanel = el('div', 'gr-chat');
+	chatPanel.innerHTML = `<div class="gr-chat-head"><button type="button" class="gr-dock-btn" data-act="back" aria-label="${esc(T.back)}" title="${esc(T.back)}">${svg(I.chevL)}</button><div class="gr-chat-who"></div><button type="button" class="gr-dock-btn" data-act="popout" aria-label="${esc(T.popout)}" title="${esc(T.popout)}">${svg(I.popout)}</button></div>`
+		+ '<div class="gr-chat-log"></div><div class="gr-chat-typing"></div>'
+		+ `<form class="gr-chat-compose"><textarea rows="1" spellcheck="true"></textarea><button type="submit" class="gr-chat-send" aria-label="${esc(T.send)}" title="${esc(T.send)}">${svg(I.send, 2)}</button></form>`;
+	qs('.gr-dock-full', dock).append(chatPanel);
+	const chatWho = qs('.gr-chat-who', chatPanel);
+	const chatLog = qs('.gr-chat-log', chatPanel);
+	const chatTyping = qs('.gr-chat-typing', chatPanel);
+	const chatForm = qs('.gr-chat-compose', chatPanel);
+	const chatInput = qs('textarea', chatPanel);
+	const chatOf = id => { try { return id ? chatStore().GetFriendChat(id) : null; } catch (e) { return null; } };
+	const sameDay = (a, b) => a.toDateString() === b.toDateString();
+	const dayLabel = ts => {
+		const d = new Date(ts * 1000);
+		const now = new Date();
+		const yday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+		return sameDay(d, now) ? T.today : sameDay(d, yday) ? T.yesterday : fmtDay.format(d);
+	};
+	// Steam's chat BBCode -> small, safe HTML (everything escaped first)
+	const bb = raw => {
+		let s = esc(raw || '');
+		s = s.replace(/\[emoticon\]([\w-]+)\[\/emoticon\]/g, (_, n) => `<img class="gr-emo" src="https://community.fastly.steamstatic.com/economy/emoticon/${n}" alt=":${n}:" title=":${n}:">`);
+		s = s.replace(/\[sticker[^\]]*\](?:\[\/sticker\])?/g, `<span class="gr-chat-tag">${esc(T.sticker)}</span>`);
+		s = s.replace(/\[url=(?:&quot;)?([^\]]+?)(?:&quot;)?\]([\s\S]*?)\[\/url\]/g, (_, u, t) => `<a href="#" data-url="${u}">${t}</a>`);
+		s = s.replace(/\[img src=&quot;(https?:[^&]+?)&quot;[^\]]*\](?:[\s\S]*?\[\/img\])?/g, (_, u) => `<img class="gr-chat-img" src="${u}" alt="">`);
+		s = s.replace(/\[mention=\d+\]([\s\S]*?)\[\/mention\]/g, '<b>$1</b>');
+		s = s.replace(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/g, '<span class="gr-spoiler">$1</span>');
+		s = s.replace(/\[code\]([\s\S]*?)\[\/code\]/g, '<code>$1</code>');
+		s = s.replace(/\[quote[^\]]*\]([\s\S]*?)\[\/quote\]/g, '<blockquote>$1</blockquote>');
+		s = s.replace(/\[gameinvite[^\]]*\](?:[\s\S]*?\[\/gameinvite\])?/g, `<span class="gr-chat-tag">${esc(T.gameInvite)}</span>`);
+		s = s.replace(/\[\/?[a-z][^\]]*\]/gi, '');
+		s = s.replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g, (_, p, u) => `${p}<a href="#" data-url="${u}">${u}</a>`);
+		return s.replace(/\n/g, '<br>');
+	};
+	const autosize = () => { chatInput.style.height = 'auto'; chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px'; };
+	function renderChat(force) {
+		if (!chatId) return;
+		const f = friendById(chatId);
+		const c = chatOf(chatId);
+		if (!f || !c) return;
+		const v = friendView(f);
+		const msgs = (c.chat_messages || []).filter(m => !m.eDeleteState);
+		const typing = !!c.is_friend_typing;
+		let more = false;
+		try { more = typeof c.IsMoreHistoryAvailable === 'function' ? c.IsMoreHistoryAvailable() : !!c.m_bMoreAvailable; } catch (e) { /* ignore */ }
+		const key = [chatId, v.st, v.status, v.name, typing, more, msgs.map(m => m.unOrdinal + '.' + m.rtTimestamp + (m.BIsLocalEcho && m.BIsLocalEcho() ? 'e' : '') + (m.eErrorSending ? 'x' : '')).join(',')].join('|');
+		if (!force && key === lastChatKey) return;
+		lastChatKey = key;
+		chatWho.innerHTML = `${avatarHtml(v, 34)}<span class="gr-dock-who"><b>${esc(v.name)}</b><small class="gr-tx-${v.st}">${esc(v.status)}</small></span>`;
+		const stick = force || chatLog.scrollHeight - chatLog.scrollTop - chatLog.clientHeight < 80;
+		let me = 0;
+		try { me = friendStore().self.accountid; } catch (e) { /* ignore */ }
+		let html = more ? `<button type="button" class="gr-chat-more">${esc(T.olderMessages)}</button>` : '';
+		let lastDay = '';
+		msgs.forEach((m, i) => {
+			const day = dayLabel(m.rtTimestamp);
+			if (day !== lastDay) { html += `<div class="gr-chat-day">${esc(day)}</div>`; lastDay = day; }
+			if (m.BIsServerMessage && m.BIsServerMessage()) { html += `<div class="gr-chat-note">${bb(m.strMessage)}</div>`; return; }
+			const mine = m.unAccountID === me;
+			const prev = msgs[i - 1];
+			const next = msgs[i + 1];
+			const near = (a, b) => a && b && a.unAccountID === b.unAccountID && Math.abs(b.rtTimestamp - a.rtTimestamp) < 300 && dayLabel(a.rtTimestamp) === dayLabel(b.rtTimestamp);
+			const first = !near(prev, m);
+			const last = !near(m, next);
+			const failed = !!m.eErrorSending;
+			html += `<div class="gr-msg ${mine ? 'gr-mine' : 'gr-theirs'}${first ? ' gr-first' : ''}${last ? ' gr-last' : ''}${failed ? ' gr-failed' : ''}"><div class="gr-bubble">${bb(m.strMessage)}</div>`
+				+ (last || failed ? `<time>${failed ? esc(T.failed) : fmtTime.format(new Date(m.rtTimestamp * 1000))}</time>` : '') + '</div>';
+		});
+		if (!msgs.length) html += `<div class="gr-chat-empty">${esc(T.noMessages)}</div>`;
+		chatLog.innerHTML = html;
+		chatTyping.textContent = typing ? v.name + ' ' + T.typing : '';
+		chatInput.placeholder = T.messageTo + ' ' + v.name;
+		chatInput.setAttribute('aria-label', chatInput.placeholder);
+		if (stick) chatLog.scrollTop = chatLog.scrollHeight;
+		const lastMsg = msgs[msgs.length - 1];
+		if (lastMsg && c.unread_message_count && document.hasFocus()) { try { c.AckChatMsg(lastMsg.rtTimestamp); } catch (e) { /* ignore */ } }
+	}
+	function openChat(id) {
+		chatId = id;
+		lastChatKey = '';
+		const c = chatOf(id);
+		if (c && c.LoadChatLogs) { try { c.LoadChatLogs(); } catch (e) { /* ignore */ } }
+		dock.classList.add('gr-chatting');
+		chatInput.value = '';
+		autosize();
+		renderChat(true);
+		setTimeout(() => chatInput.focus(), 30);
+	}
+	function closeChat() {
+		chatId = null;
+		dock.classList.remove('gr-chatting');
+		lastDock = '';
+		renderDock();
+	}
+	const sendChat = () => {
+		const text = chatInput.value.trim();
+		const c = chatOf(chatId);
+		if (!text || !c || !c.SendChatMessage) return;
+		chatInput.value = '';
+		autosize();
+		c.SendChatMessage(text);
+		setTimeout(() => renderChat(true), 30);
+	};
+	chatForm.addEventListener('submit', e => { e.preventDefault(); sendChat(); });
+	chatInput.addEventListener('keydown', e => {
+		if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendChat(); }
+		else if (e.key === 'Escape') closeChat();
+	});
+	chatInput.addEventListener('input', () => {
+		autosize();
+		const c = chatOf(chatId);
+		if (c && c.OnTyping && chatInput.value.trim()) { try { c.OnTyping(); } catch (e) { /* ignore */ } }
+	});
+	chatLog.addEventListener('click', e => {
+		const a = e.target.closest('a[data-url]');
+		if (a) { e.preventDefault(); openWeb(a.dataset.url); return; }
+		const sp = e.target.closest('.gr-spoiler');
+		if (sp) sp.classList.add('gr-shown');
 	});
 	// the title bar's friends button shows / hides the dock
 	const onFriendsBtn = e => {
@@ -766,6 +912,9 @@
 		}
 		const timer = setInterval(update, 1000);
 		cleanup.push(() => clearInterval(timer));
+		// an open chat refreshes faster (new messages, typing)
+		const chatTimer = setInterval(() => { if (chatId) renderChat(); }, 400);
+		cleanup.push(() => clearInterval(chatTimer));
 		cleanup.push(() => {
 			[rail, side, crumb, searchBox, libHead, tip, dock].forEach(n => n.remove());
 			document.documentElement.classList.remove('gr-shell-web', 'gr-dock-is-open', 'gr-dock-is-mini');
