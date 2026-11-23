@@ -1456,20 +1456,36 @@
 		let colors = [];
 		const saveTimers = {};
 
+		// Every window of this UI (main window, menus, dialogs) has Millennium's
+		// RootColors style; the popup manager keeps their window in m_popup.
 		const liveColor = (name, hex) => {
-			for (const p of W.g_PopupManager.GetPopups()) {
-				const st = p.window && p.window.document.getElementById('RootColors');
-				if (st) st.innerHTML = st.innerHTML.replace(new RegExp(name.replace(/[-]/g, '\\-') + ':.*?;', 'g'), name + ': ' + hex + ';');
+			const wins = new Set([window]);
+			try { for (const p of W.g_PopupManager.GetPopups()) if (p.m_popup || p.window) wins.add(p.m_popup || p.window); } catch (e) { /* main window only */ }
+			const re = new RegExp(name.replace(/[-]/g, '\\-') + ':.*?;', 'g');
+			for (const w of wins) {
+				let st = null;
+				try { st = w.document.getElementById('RootColors'); } catch (e) { continue; }
+				if (st) st.innerHTML = st.innerHTML.replace(re, name + ': ' + hex + ';');
 			}
 		};
+		// Saves are debounced (a color picker fires on every move); the store page
+		// is a browser of its own that reads the colors when it loads, so closing
+		// this page after a color change saves right away and reloads it.
+		const pendingSaves = {};
+		let colorsChanged = false;
+		const saveColor = (c, hex) => api('Core_ChangeColor', [theme, c.color, hex, c.type]).catch(() => flash(G.failed));
 		const setColor = (c, hex) => {
 			c.hex = hex;
+			colorsChanged = true;
 			liveColor(c.color, hex);
 			clearTimeout(saveTimers[c.color]);
-			saveTimers[c.color] = setTimeout(() => {
-				api('Core_ChangeColor', [theme, c.color, hex, c.type]).catch(() => flash(G.failed));
-			}, 350);
+			pendingSaves[c.color] = () => saveColor(c, hex);
+			saveTimers[c.color] = setTimeout(() => { delete pendingSaves[c.color]; saveColor(c, hex); }, 350);
 			paintColors();
+		};
+		const flushColors = () => {
+			const runs = Object.keys(pendingSaves).map(k => { clearTimeout(saveTimers[k]); const fn = pendingSaves[k]; delete pendingSaves[k]; return fn(); });
+			return Promise.all(runs);
 		};
 		const setCondition = (name, value) => {
 			const before = values[name];
@@ -1561,6 +1577,11 @@
 				<section class="gr-gs-card"><h2>${esc(G.layout)}</h2>${CONDS.layout.map(c => row(...c)).join('')}</section>
 				<section class="gr-gs-card"><div class="gr-gs-cardhead"><div><h2>${esc(G.colors)}</h2><p class="gr-gs-hint">${esc(G.colorsHint)}</p></div>
 					<button type="button" class="gr-gs-resetall">${esc(G.resetAll)}</button></div><div class="gr-gs-colors">${colorRows}</div></section>`;
+			paintColors();
+			paintConds();
+			// fill() runs on every open; the listeners on the body only once
+			if (body.dataset.bound) return;
+			body.dataset.bound = '1';
 			const acc = () => colors.find(c => c.color === '--gr-accent');
 			body.addEventListener('click', e => {
 				const sw = e.target.closest('.gr-gs-swatch[data-hex]');
@@ -1583,8 +1604,6 @@
 				const v = t.value.trim();
 				if (/^#[0-9a-f]{6}$/i.test(v)) setColor(c, v.toLowerCase());
 			});
-			paintColors();
-			paintConds();
 		}
 
 		async function load() {
@@ -1613,11 +1632,17 @@
 			window.addEventListener('keydown', onKey);
 		}
 		function close() {
-			if (!page) return;
+			if (!page || page.hidden) return;
 			page.hidden = true;
 			overlay('graphite', false);
 			document.documentElement.classList.remove('gr-gs-open');
 			window.removeEventListener('keydown', onKey);
+			if (colorsChanged) {
+				colorsChanged = false;
+				flushColors().then(() => {
+					try { W.MainWindowBrowserManager.m_browser.Reload(); } catch (e) { /* no store page */ }
+				});
+			}
 		}
 		const isOpen = () => !!page && !page.hidden;
 		cleanup.push(() => { close(); if (page) page.remove(); });
