@@ -1,4 +1,5 @@
 /* Popup menu windows: root menus, nav dropdowns, context menus. */
 @import "./partials/tokens.css";
+@import "./partials/icons.css";
 @import "./partials/base.css";
 @import "./partials/menus.css";

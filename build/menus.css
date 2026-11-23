@@ -23,6 +23,23 @@
 	--gr-med: 220ms;
 }
 
+/* Graphite icon set: one stroke style for every title bar control.
+   Used as CSS masks (background: currentColor), so they follow the
+   surrounding text color. */
+:where(:root) {
+	--gr-icon-min: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+	--gr-icon-max: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E");
+	--gr-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E");
+	--gr-icon-megaphone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9.5v5h3.5L15 19V5L7.5 9.5H4z'/%3E%3Cpath d='M18.5 8.5a5 5 0 0 1 0 7'/%3E%3C/svg%3E");
+	--gr-icon-bell: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 16v-5a5.5 5.5 0 0 1 11 0v5l1.5 2H5z'/%3E%3Cpath d='M10 20.5a2 2 0 0 0 4 0'/%3E%3C/svg%3E");
+	--gr-icon-gamepad: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 7.5h9a4.5 4.5 0 0 1 4.5 4.5v.5a4 4 0 0 1-7.2 2.4h-3.6A4 4 0 0 1 3 12.5V12a4.5 4.5 0 0 1 4.5-4.5z'/%3E%3Cpath d='M7.5 10.5v3M6 12h3'/%3E%3Cpath d='M15.5 11.5h.01M17.5 13h.01'/%3E%3C/svg%3E");
+	--gr-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+	--gr-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+	--gr-icon-user-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10' cy='8' r='3.5'/%3E%3Cpath d='M3.5 20a6.5 6.5 0 0 1 13 0'/%3E%3Cpath d='M19 8v6M16 11h6'/%3E%3C/svg%3E");
+	--gr-icon-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+	--gr-icon-send: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h13'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+}
+
 /* Shared base for every themed window: type, scrollbars and Steam's global
    dialog controls (these use stable, unhashed class names). */
 
@@ -172,6 +189,17 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 body.ContextMenuPopupBody {
 	background: var(--gr-surface-2) !important;
 }
+/* the popup window is square: no rounded frame inside it, no blue-grey
+   backdrop behind the contents */
+body.ContextMenuPopupBody .contextMenu {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+body.ContextMenuPopupBody .contextMenuContents {
+	border-radius: 0 !important;
+	box-shadow: none !important;
+}
 
 .contextMenuContents,
 ._3pofGqV0buiKAfMPEs3_82 {
@@ -184,6 +212,8 @@ body.ContextMenuPopupBody {
 
 .contextMenuItem,
 ._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG {
+	border: none !important;
+	margin: 0 !important;
 	color: var(--gr-text-2) !important;
 	background: transparent !important;
 	border-radius: var(--gr-radius-sm) !important;
@@ -214,6 +244,44 @@ hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
 	background: none !important;
 	margin: 4px 6px !important;
 	height: 0 !important;
+}
+
+/* Steam draws separators as a top border on the next item (curved by the
+   item radius); use one straight line instead */
+.ContextMenuSeparator,
+.contextMenuSeparator,
+hr.ContextMenuHRSeparator {
+	height: 1px !important;
+	margin: 4px 8px !important;
+	padding: 0 !important;
+	background: var(--gr-border) !important;
+	border: none !important;
+}
+.ContextMenuSeparator + .contextMenuItem {
+	border: none !important;
+}
+
+/* submenu arrow: Graphite chevron */
+.contextMenuItem.SubMenu .Arrow svg {
+	display: none !important;
+}
+.contextMenuItem.SubMenu .Arrow {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	color: var(--gr-text-3);
+}
+.contextMenuItem.SubMenu .Arrow::before {
+	content: "";
+	width: 14px;
+	height: 14px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 14px 14px no-repeat;
+	transform: rotate(-90deg);
+}
+.contextMenuItem.SubMenu:hover .Arrow,
+.contextMenuItem.SubMenu.active .Arrow {
+	color: var(--gr-text);
 }
 
 /* Account menu */

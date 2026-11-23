@@ -376,6 +376,17 @@ body.ModalDialogBody,
 body.ContextMenuPopupBody {
 	background: var(--gr-surface-2) !important;
 }
+/* the popup window is square: no rounded frame inside it, no blue-grey
+   backdrop behind the contents */
+body.ContextMenuPopupBody .contextMenu {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+body.ContextMenuPopupBody .contextMenuContents {
+	border-radius: 0 !important;
+	box-shadow: none !important;
+}
 
 .contextMenuContents,
 ._3pofGqV0buiKAfMPEs3_82 {
@@ -388,6 +399,8 @@ body.ContextMenuPopupBody {
 
 .contextMenuItem,
 ._2jXHP0742MyApMUVUM8IFn._2uiDecKkKjAq7nimy3uLhG {
+	border: none !important;
+	margin: 0 !important;
 	color: var(--gr-text-2) !important;
 	background: transparent !important;
 	border-radius: var(--gr-radius-sm) !important;
@@ -418,6 +431,44 @@ hr._2jXHP0742MyApMUVUM8IFn._21GPYlKBCLsHQpTsHw_RL_,
 	background: none !important;
 	margin: 4px 6px !important;
 	height: 0 !important;
+}
+
+/* Steam draws separators as a top border on the next item (curved by the
+   item radius); use one straight line instead */
+.ContextMenuSeparator,
+.contextMenuSeparator,
+hr.ContextMenuHRSeparator {
+	height: 1px !important;
+	margin: 4px 8px !important;
+	padding: 0 !important;
+	background: var(--gr-border) !important;
+	border: none !important;
+}
+.ContextMenuSeparator + .contextMenuItem {
+	border: none !important;
+}
+
+/* submenu arrow: Graphite chevron */
+.contextMenuItem.SubMenu .Arrow svg {
+	display: none !important;
+}
+.contextMenuItem.SubMenu .Arrow {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	color: var(--gr-text-3);
+}
+.contextMenuItem.SubMenu .Arrow::before {
+	content: "";
+	width: 14px;
+	height: 14px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 14px 14px no-repeat;
+	transform: rotate(-90deg);
+}
+.contextMenuItem.SubMenu:hover .Arrow,
+.contextMenuItem.SubMenu.active .Arrow {
+	color: var(--gr-text);
 }
 
 /* Account menu */
