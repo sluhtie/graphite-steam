@@ -209,6 +209,22 @@
 					}
 				}
 			}
+		},
+		"Startup screen": {
+			"description": "Graphite 2.0: show the Graphite logo while the main window loads.",
+			"tab": "Layout",
+			"default": "yes",
+			"values": {
+				"yes": {},
+				"no": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/no-splash.css"
+					}
+				}
+			}
 		}
 	}
 }

@@ -1397,7 +1397,40 @@
 		if (fill) fill.style.strokeDasharray = (busy ? (Math.max(0, Math.min(100, p)) / 100) * 78.54 : 0).toFixed(1) + ' 78.54';
 	}
 
+	// Startup screen: the Graphite logo while the main window loads, once per
+	// window (not on live reloads of this script). At least ~1.1s so the logo's
+	// intro reads, gone as soon as the library's app list is there (6s at most).
+	// The option "Startup screen: no" hides it by CSS; then it is dropped at once.
+	// Steam's store view would sit on top of it, so it counts as an overlay.
+	const splash = () => {
+		if (window.__graphiteSplash) return;
+		window.__graphiteSplash = true;
+		const el = document.createElement('div');
+		el.className = 'gr-splash';
+		el.setAttribute('aria-hidden', 'true');
+		el.innerHTML = '<div class="gr-splash-logo"></div><div class="gr-splash-name">Graphite</div>';
+		document.body.append(el);
+		if (getComputedStyle(el).display === 'none') { el.remove(); return; }
+		overlay('splash', true);
+		const t0 = Date.now();
+		const ready = () => { try { return W.appStore.allApps.length > 0; } catch (e) { return false; } };
+		const done = () => {
+			el.classList.add('gr-out');
+			overlay('splash', false);
+			setTimeout(() => el.remove(), 600);
+		};
+		const tick = () => {
+			if (!el.isConnected) return;
+			const t = Date.now() - t0;
+			if (t > 6000 || (t > 1100 && ready())) done();
+			else setTimeout(tick, 120);
+		};
+		tick();
+		cleanup.push(() => { if (el.isConnected) { el.remove(); overlay('splash', false); } });
+	};
+
 	const start = () => {
+		splash();
 		update();
 		// navigating anywhere closes the Graphite page
 		// (not for the page's own switch to the library and back)

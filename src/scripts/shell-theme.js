@@ -17,6 +17,7 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 baut das Hauptfenster neu auf (Beta).', header: 'Kopfzeile', headerHint: 'Menü und Reiter in einer Zeile.',
 			web: 'Shop & Community im Graphite-Stil', webHint: 'Shop-, Community- und Hilfeseiten im selben Look.', url: 'Adressleiste ausblenden', urlHint: 'Die Zeile mit der Adresse über Shop- und Community-Seiten.',
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
+			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
 			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
 			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0 (beta)': 'Graphite 2.0' },
 			colorNames: { '--gr-accent': 'Akzent', '--gr-bg': 'Hintergrund', '--gr-border': 'Linien', '--gr-play': 'Spielen-Button', '--gr-play-text': 'Spielen-Button, Text', '--gr-surface': 'Fläche', '--gr-surface-2': 'Fläche 2', '--gr-surface-3': 'Fläche 3', '--gr-text': 'Text', '--gr-text-2': 'Text, gedämpft', '--gr-text-3': 'Text, leise' },
@@ -29,13 +30,14 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 rebuilds the main window (beta).', header: 'Header', headerHint: 'Menu and tabs in one row.',
 			web: 'Store & Community in Graphite style', webHint: 'Store, community and help pages in the same look.', url: 'Hide the URL bar', urlHint: 'The address line above store and community pages.',
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
+			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
 			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
 			values: {}, colorNames: {}, colorHints: {},
 		};
 		// condition -> [label, hint, kind]; kind: 'seg' (choices) or 'toggle' (yes/no)
 		const CONDS = {
 			look: [['Font', G.font, G.fontHint, 'seg'], ['Corners', G.corners, G.cornersHint, 'seg']],
-			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle']],
+			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
 		};
 		// order of the choices as shown (2.0 first)
 		const ORDER = { Navigation: ['Graphite 2.0 (beta)', 'Clean', 'Classic'] };

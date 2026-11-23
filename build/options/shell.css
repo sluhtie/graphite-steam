@@ -789,6 +789,105 @@
 	transform: rotate(30deg);
 }
 
+/* --- Startup screen (src/scripts/shell.js; option "Startup screen") ---------- */
+/* the logo draws itself in (ring turns in, core pops), then keeps the
+   spinner's motion until the library is loaded, and the screen fades out */
+.gr-splash {
+	position: fixed;
+	inset: 0;
+	z-index: 2147483000;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 22px;
+	background: var(--gr-bg);
+	-webkit-app-region: drag;
+	transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+.gr-splash::before {
+	content: "";
+	position: absolute;
+	width: 520px;
+	height: 520px;
+	border-radius: 50%;
+	background: radial-gradient(closest-side, color-mix(in srgb, var(--gr-accent) 13%, transparent), transparent);
+	animation: gr-splash-fade 1.2s ease both;
+}
+.gr-splash.gr-out {
+	opacity: 0;
+	visibility: hidden;
+}
+.gr-splash-logo {
+	position: relative;
+	width: 76px;
+	height: 76px;
+}
+.gr-splash-logo::before,
+.gr-splash-logo::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--gr-accent);
+	-webkit-mask: var(--gr-logo-ring) center / contain no-repeat;
+	mask: var(--gr-logo-ring) center / contain no-repeat;
+}
+.gr-splash-logo::before {
+	animation: gr-splash-ring 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both, gr-logo-turn 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.9s infinite;
+}
+.gr-splash-logo::after {
+	-webkit-mask-image: var(--gr-logo-core);
+	mask-image: var(--gr-logo-core);
+	animation: gr-splash-core 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.3) 0.35s both, gr-logo-breathe 1.6s ease-in-out 0.9s infinite;
+}
+.gr-splash-name {
+	position: relative;
+	padding-left: 0.34em;
+	color: var(--gr-text);
+	font: 600 14px/1 var(--gr-font);
+	letter-spacing: 0.34em;
+	text-transform: uppercase;
+	animation: gr-splash-name 0.6s ease 0.5s both;
+}
+@keyframes gr-splash-ring {
+	from {
+		opacity: 0;
+		transform: rotate(-90deg) scale(0.6);
+	}
+	to {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+}
+@keyframes gr-splash-core {
+	from {
+		opacity: 0;
+		transform: scale(0.2);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes gr-splash-name {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 0.85;
+		transform: none;
+	}
+}
+@keyframes gr-splash-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 /* --- Rail (src/scripts/shell.js) --------------------------------------------- */
 .gr-rail {
 	position: fixed;

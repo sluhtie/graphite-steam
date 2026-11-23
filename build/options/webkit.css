@@ -210,6 +210,81 @@ body *:not(pre, code, kbd, samp, svg, svg *) {
 	box-shadow: var(--gr-shadow) !important;
 }
 
+/* The Graphite logo (hexagon ring + core) as masks, and the loading spinner
+   built from it. Steam's spinning Steam logo - in the client and on the React
+   store pages alike - is a div.SteamLogoThrobber holding either an image or
+   two SVGs; its content is hidden and the logo drawn on top: the ring turns
+   in 60 degree steps (the hexagon looks the same every 60 degrees, so the loop
+   is seamless), the core breathes. Used by the 2.0 splash screen too. */
+:root {
+	--gr-logo-ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54' fill='none'%3E%3Cpath d='M27 3.5 47.4 15.25v23.5L27 50.5 6.6 38.75v-23.5L27 3.5Z' stroke='black' stroke-width='4.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+	--gr-logo-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M27 16.5 36 21.75v10.5L27 37.5l-9-5.25v-10.5L27 16.5Z' fill='black'/%3E%3C/svg%3E");
+}
+
+@keyframes gr-logo-turn {
+	0%,
+	14% {
+		transform: rotate(0deg);
+	}
+	42%,
+	64% {
+		transform: rotate(60deg);
+	}
+	92%,
+	100% {
+		transform: rotate(120deg);
+	}
+}
+@keyframes gr-logo-breathe {
+	0%,
+	100% {
+		transform: scale(0.72);
+		opacity: 0.55;
+	}
+	50% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+.SteamLogoThrobber {
+	position: relative !important;
+}
+.SteamLogoThrobber > * {
+	visibility: hidden !important;
+}
+.SteamLogoThrobber::before,
+.SteamLogoThrobber::after {
+	content: "";
+	position: absolute;
+	inset: 16%;
+	background: var(--gr-accent);
+	-webkit-mask: var(--gr-logo-ring) center / contain no-repeat;
+	mask: var(--gr-logo-ring) center / contain no-repeat;
+	animation: gr-logo-turn 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.SteamLogoThrobber::after {
+	-webkit-mask-image: var(--gr-logo-core);
+	mask-image: var(--gr-logo-core);
+	animation: gr-logo-breathe 1.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	.SteamLogoThrobber::before,
+	.SteamLogoThrobber::after {
+		animation-duration: 6s;
+	}
+}
+
+/* the label under the client's spinner ("Loading ..."): quiet text, not blue capitals */
+._21nVi2jNuF_prxLY1mAaKK {
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+
 /* Valve's newer React web pages (store nav, new market item pages, footers,
    dropdowns, ...) are built on a Radix-style design system with color scales
    on :root. Remapping those scales to Graphite restyles all of them at once,

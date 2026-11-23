@@ -1,0 +1,5 @@
+/* "Startup screen: no" - Graphite 2.0 skips the logo screen while the main
+   window loads (shell.js sees it hidden and removes it at once). */
+.gr-splash {
+	display: none !important;
+}
