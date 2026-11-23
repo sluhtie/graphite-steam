@@ -50,6 +50,8 @@
 			catAction: 'Action', catAdventure: 'Adventure', catIndie: 'Indie', catRpg: 'RPG', catSim: 'Simulation', catStrategy: 'Strategy',
 			activity: 'Activity', profile: 'Profile', friends: 'Friends', groups: 'Groups', explore: 'Explore', discussions: 'Discussions',
 			workshop: 'Workshop', market: 'Market', inventory: 'Inventory', badges: 'Badges', console: 'Console',
+			inGame: 'In game', online: 'Online', away: 'Away', offline: 'Offline', searchFriends: 'Search friends', groupChats: 'Group chats',
+			addFriend: 'Add a friend', collapse: 'Collapse', expand: 'Show friends', chatWith: 'Chat with',
 		},
 		german: {
 			home: 'Startseite', library: 'Bibliothek', store: 'Shop', community: 'Community', downloads: 'Downloads', settings: 'Einstellungen',
@@ -60,6 +62,8 @@
 			catAction: 'Action', catAdventure: 'Abenteuer', catIndie: 'Indie', catRpg: 'Rollenspiel', catSim: 'Simulation', catStrategy: 'Strategie',
 			activity: 'Aktivität', profile: 'Profil', friends: 'Freunde', groups: 'Gruppen', explore: 'Entdecken', discussions: 'Diskussionen',
 			workshop: 'Workshop', market: 'Markt', inventory: 'Inventar', badges: 'Abzeichen', console: 'Konsole',
+			inGame: 'Im Spiel', online: 'Online', away: 'Abwesend', offline: 'Offline', searchFriends: 'Freunde suchen', groupChats: 'Gruppenchats',
+			addFriend: 'Freund hinzufügen', collapse: 'Einklappen', expand: 'Freunde ausklappen', chatWith: 'Chat mit',
 		},
 	};
 	const T = Object.assign({}, STR.english, STR[steamLang] || {});
@@ -91,6 +95,11 @@
 		image: 'M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM4 16l4.5-4.5 4 4L16 12l4 4M14.5 8.5h.01',
 		award: 'M7 9a5 5 0 1 0 10 0a5 5 0 1 0 -10 0M9 13.5l-1.5 7 4.5-2.5 4.5 2.5-1.5-7',
 		terminal: 'M4 5h16v14H4zM7.5 10l2.5 2-2.5 2M12 14h4',
+		userPlus: 'M6.5 8a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0M3.5 19.5a6.5 6.5 0 0 1 13 0M18.5 8v6M15.5 11h6',
+		panelR: 'M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5zM15 4v16',
+		panelL: 'M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5zM9 4v16',
+		chat: 'M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z',
+		chevron: 'M6 9.5l6 6 6-6',
 	};
 
 	const qs = (sel, root = document) => root.querySelector(sel);
@@ -278,6 +287,118 @@
 		renderSide(sec);
 	});
 
+	/* --- Friends dock: Steam's friends, in the main window -------------------------------- */
+	// Data comes from Steam's own friends app (g_FriendsUIApp in the shared
+	// context): names, status, game, unread counts. A click opens the chat
+	// with Steam's own OpenChatDialog.
+	const FA = () => W.g_FriendsUIApp;
+	const friendStore = () => FA() && FA().m_FriendStore;
+	const chatStore = () => FA() && FA().m_ChatStore;
+	const avatar = hash => 'https://avatars.steamstatic.com/' + (hash && !/^0+$/.test(hash) ? hash : 'fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb') + '_medium.jpg';
+	const pref = (k, d) => { try { const v = localStorage.getItem('graphite-shell-' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
+	const savePref = (k, v) => { try { localStorage.setItem('graphite-shell-' + k, JSON.stringify(v)); } catch (e) { /* ignore */ } };
+	let dockMode = pref('dock', 'open'); // open | mini
+	let closedSections = pref('dock-closed', { offline: true });
+	let friendQuery = '';
+	let lastDock = '';
+	const dock = el('aside', 'gr-dock');
+	dock.innerHTML = `<div class="gr-dock-full">
+		<div class="gr-dock-me"></div>
+		<label class="gr-dock-search">${svg(I.search)}<input type="text" spellcheck="false" autocomplete="off" aria-label="${esc(T.searchFriends)}" placeholder="${esc(T.searchFriends)}"></label>
+		<div class="gr-dock-list"></div>
+		<button type="button" class="gr-dock-groups">${svg(I.chat)}<span>${esc(T.groupChats)}</span><small></small></button>
+	</div>
+	<div class="gr-dock-mini"><button type="button" class="gr-dock-btn gr-dock-expand" aria-label="${esc(T.expand)}" title="${esc(T.expand)}">${svg(I.panelL)}</button><i class="gr-dock-sep"></i><div class="gr-dock-strip"></div></div>`;
+	const dockMe = qs('.gr-dock-me', dock);
+	const dockList = qs('.gr-dock-list', dock);
+	const dockStrip = qs('.gr-dock-strip', dock);
+	const dockGroups = qs('.gr-dock-groups small', dock);
+	qs('.gr-dock-search input', dock).addEventListener('input', e => { friendQuery = e.target.value.trim().toLowerCase(); lastDock = ''; renderDock(); });
+	const setDock = mode => { dockMode = mode; savePref('dock', mode); lastDock = ''; renderDock(); };
+	const stateOf = f => {
+		const p = f.persona || {};
+		const st = p.m_ePersonaState || 0;
+		if (st && (p.m_unGamePlayedAppID || (p.m_gameid && p.m_gameid !== '0'))) return 'ingame';
+		if (!st) return 'offline';
+		if (st === 3 || st === 4) return 'away';
+		return 'online';
+	};
+	const friendView = f => {
+		const st = stateOf(f);
+		let unread = 0;
+		try { unread = chatStore().GetFriendChat(f.accountid).unread_message_count || 0; } catch (e) { /* ignore */ }
+		let status = '';
+		try { status = st === 'ingame' ? f.current_game_name || T.inGame : f.localized_online_status || ''; } catch (e) { /* ignore */ }
+		let icon = '';
+		try { icon = st === 'ingame' ? f.current_game_icon_url || '' : ''; } catch (e) { /* ignore */ }
+		return { id: f.accountid, name: f.display_name || (f.persona && f.persona.m_strPlayerName) || '', st, status, icon, unread, avatar: avatar(f.persona && f.persona.m_strAvatarHash) };
+	};
+	const friendById = id => { try { return friendStore().GetFriend(id); } catch (e) { return null; } };
+	const avatarHtml = (v, size) => `<span class="gr-av gr-st-${v.st}" style="--s:${size}px"><img src="${esc(v.avatar)}" alt="" loading="lazy"><i></i></span>`;
+	function renderDock() {
+		const open = dockMode !== 'mini';
+		document.documentElement.classList.toggle('gr-dock-is-open', open);
+		document.documentElement.classList.toggle('gr-dock-is-mini', !open);
+		const fs = friendStore();
+		if (!fs) return;
+		let friends = [];
+		try { friends = fs.all_friends.map(friendView); } catch (e) { return; }
+		let me = null;
+		try { me = friendView(fs.self); } catch (e) { /* ignore */ }
+		let groups = 0;
+		try { groups = chatStore().currentChatRoomGroups.length; } catch (e) { /* ignore */ }
+		const key = dockMode + '|' + friendQuery + '|' + JSON.stringify(closedSections) + '|' + JSON.stringify(me) + '|' + groups + '|'
+			+ friends.map(v => [v.id, v.st, v.status, v.unread, v.avatar, v.icon, v.name].join(':')).join(',');
+		if (key === lastDock) return;
+		lastDock = key;
+		if (me) {
+			dockMe.innerHTML = `<div class="gr-dock-self">${avatarHtml(me, 36)}<span class="gr-dock-who"><b>${esc(me.name)}</b><small class="gr-tx-${me.st}">${esc(me.status)}</small></span></div>`
+				+ `<button type="button" class="gr-dock-btn" data-act="add" aria-label="${esc(T.addFriend)}" title="${esc(T.addFriend)}">${svg(I.userPlus)}</button>`
+				+ `<button type="button" class="gr-dock-btn" data-act="mini" aria-label="${esc(T.collapse)}" title="${esc(T.collapse)}">${svg(I.panelR)}</button>`;
+		}
+		const shown = friends.filter(v => !friendQuery || v.name.toLowerCase().includes(friendQuery));
+		const SECTIONS = [['ingame', T.inGame], ['online', T.online], ['away', T.away], ['offline', T.offline]];
+		const order = { ingame: 0, online: 1, away: 2, offline: 3 };
+		dockList.innerHTML = SECTIONS.map(([k, title]) => {
+			const rows = shown.filter(v => v.st === k).sort((a, b) => (b.unread - a.unread) || a.name.localeCompare(b.name));
+			if (!rows.length) return '';
+			const closed = !!closedSections[k] && !friendQuery;
+			return `<button type="button" class="gr-dock-head${closed ? ' gr-closed' : ''}" data-sec="${k}">${svg(I.chevron, 2.2)}<span>${esc(title)}</span><small>${rows.length}</small></button>`
+				+ (closed ? '' : rows.map(v => `<button type="button" class="gr-dock-row gr-row-${v.st}" data-id="${v.id}">${avatarHtml(v, 34)}`
+					+ `<span class="gr-dock-who"><b>${esc(v.name)}</b><small class="gr-tx-${v.st}">${esc(v.status)}</small></span>`
+					+ (v.icon ? `<img class="gr-dock-game" src="${esc(v.icon)}" alt="">` : '')
+					+ (v.unread ? `<em class="gr-badge">${v.unread}</em>` : '') + '</button>').join(''));
+		}).join('');
+		dockGroups.textContent = groups ? String(groups) : '';
+		dockStrip.innerHTML = friends.filter(v => v.st !== 'offline').sort((a, b) => order[a.st] - order[b.st] || a.name.localeCompare(b.name))
+			.map(v => `<button type="button" class="gr-dock-btn gr-dock-pic" data-id="${v.id}" aria-label="${esc(T.chatWith + ' ' + v.name)}" title="${esc(v.name + ' · ' + v.status)}">${avatarHtml(v, 34)}${v.unread ? `<em class="gr-badge">${v.unread}</em>` : ''}</button>`).join('');
+	}
+	dock.addEventListener('click', e => {
+		const t = e.target.closest('button');
+		if (!t) return;
+		if (t.classList.contains('gr-dock-expand')) { setDock('open'); return; }
+		if (t.dataset.act === 'mini') { setDock('mini'); return; }
+		if (t.dataset.act === 'add') { steamUrl('steam://friends/add'); return; }
+		if (t.classList.contains('gr-dock-groups')) { const b = qs('.$(FriendsButton)'); if (b) b.click(); return; }
+		if (t.dataset.sec) {
+			closedSections = Object.assign({}, closedSections, { [t.dataset.sec]: !closedSections[t.dataset.sec] });
+			savePref('dock-closed', closedSections);
+			lastDock = '';
+			renderDock();
+			return;
+		}
+		if (t.dataset.id) { const f = friendById(Number(t.dataset.id)); if (f && f.OpenChatDialog) f.OpenChatDialog(); }
+	});
+	// the title bar's friends button shows / hides the dock
+	const onFriendsBtn = e => {
+		if (!e.target.closest || !e.target.closest('.gr-q-fr')) return;
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		setDock(dockMode === 'mini' ? 'open' : 'mini');
+	};
+	document.addEventListener('click', onFriendsBtn, true);
+	cleanup.push(() => document.removeEventListener('click', onFriendsBtn, true));
+
 	/* --- Library list header: title + number of games (Home lives in the rail) ------------ */
 	const libHead = el('div', 'gr-libhead');
 	const gameCount = () => games().length;
@@ -296,6 +417,7 @@
 		if (homeRow) updateLibHead();
 		if (!rail.isConnected) document.body.append(rail);
 		if (!side.isConnected) document.body.append(side);
+		if (!dock.isConnected) document.body.append(dock);
 		const nav = qs('.$(SuperNavBar) .$(SuperNav)');
 		if (nav && !crumb.isConnected) nav.append(crumb);
 		const drag = qs('.$(DragArea)');
@@ -345,6 +467,7 @@
 		document.documentElement.classList.toggle('gr-shell-web', web);
 		side.hidden = !web;
 		if (web) renderSide(sec);
+		renderDock();
 		// downloads ring
 		const p = progress();
 		const dlb = btns.downloads;
@@ -366,8 +489,8 @@
 		const timer = setInterval(update, 1000);
 		cleanup.push(() => clearInterval(timer));
 		cleanup.push(() => {
-			[rail, side, crumb, searchBox, libHead, tip].forEach(n => n.remove());
-			document.documentElement.classList.remove('gr-shell-web');
+			[rail, side, crumb, searchBox, libHead, tip, dock].forEach(n => n.remove());
+			document.documentElement.classList.remove('gr-shell-web', 'gr-dock-is-open', 'gr-dock-is-mini');
 		});
 	};
 	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });

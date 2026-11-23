@@ -541,3 +541,333 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+/* --- Friends dock (shell.js) ------------------------------------------------------ */
+:root {
+	--gr-shell-dock: 0px;
+	--gr-st-ingame: #8fc45a;
+	--gr-st-online: #62c3e0;
+	--gr-tx-ingame: #a3d16a;
+}
+:root.gr-dock-is-open {
+	--gr-shell-dock: 300px;
+}
+:root.gr-dock-is-mini {
+	--gr-shell-dock: 56px;
+}
+.$(ContentFrame) {
+	margin-right: var(--gr-shell-dock) !important;
+}
+.gr-dock {
+	position: fixed;
+	right: 0;
+	top: var(--gr-shell-top);
+	bottom: 8px;
+	width: var(--gr-shell-dock);
+	z-index: 40;
+	box-sizing: border-box;
+	padding: 0 8px 0 0;
+	font-family: var(--gr-font);
+	display: flex;
+	flex-direction: column;
+}
+.gr-dock-is-mini .gr-dock-full,
+.gr-dock-is-open .gr-dock-mini {
+	display: none !important;
+}
+.gr-dock-full,
+.gr-dock-mini {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+.gr-dock-mini {
+	align-items: center;
+	gap: 4px;
+	padding-left: 8px;
+}
+.gr-dock-btn {
+	position: relative;
+	flex: none;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	border: 0;
+	border-radius: 9px;
+	background: transparent;
+	color: var(--gr-text-2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.gr-dock-btn:hover {
+	background: var(--gr-hover);
+	color: var(--gr-text);
+}
+.gr-dock-btn svg {
+	width: 18px;
+	height: 18px;
+}
+.gr-dock-pic {
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+}
+.gr-dock-sep {
+	width: 22px;
+	height: 1px;
+	margin: 4px 0;
+	background: var(--gr-border);
+}
+.gr-dock-strip {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	overflow: auto;
+	scrollbar-width: none;
+}
+/* you */
+.gr-dock-me {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	padding: 0 0 10px;
+}
+.gr-dock-self {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 6px;
+}
+.gr-dock-who {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+}
+.gr-dock-who b {
+	color: var(--gr-text);
+	font-size: 13px;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.gr-dock-self .gr-dock-who b {
+	font-size: 13.5px;
+	font-weight: 600;
+}
+.gr-dock-who small {
+	color: var(--gr-text-3);
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.gr-dock-who small.gr-tx-ingame {
+	color: var(--gr-tx-ingame);
+}
+.gr-dock-who small.gr-tx-online {
+	color: var(--gr-st-online);
+}
+/* avatar + status dot */
+.gr-av {
+	position: relative;
+	flex: none;
+	width: var(--s);
+	height: var(--s);
+}
+.gr-av img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	display: block;
+	background: var(--gr-surface-2);
+}
+.gr-av i {
+	position: absolute;
+	right: -1px;
+	bottom: -1px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2.5px var(--gr-bg);
+	background: transparent;
+}
+.gr-av.gr-st-ingame i { background: var(--gr-st-ingame); }
+.gr-av.gr-st-online i { background: var(--gr-st-online); }
+.gr-av.gr-st-away i { background: var(--gr-st-online); opacity: 0.5; }
+.gr-av.gr-st-offline i { display: none; }
+.gr-av.gr-st-offline img { opacity: 0.55; }
+/* search */
+.gr-dock-search {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: 34px;
+	margin: 0 4px 6px;
+	padding: 0 10px;
+	box-sizing: border-box;
+	border-radius: 9px;
+	background: var(--gr-surface);
+	border: 1px solid var(--gr-border);
+	color: var(--gr-text-3);
+}
+.gr-dock-search:focus-within {
+	border-color: color-mix(in srgb, var(--gr-accent) 55%, transparent);
+}
+.gr-dock-search svg {
+	flex: none;
+	width: 15px;
+	height: 15px;
+}
+.gr-dock-search input {
+	flex: 1;
+	min-width: 0;
+	height: 100%;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--gr-text);
+	font: inherit;
+	font-size: 13px;
+}
+.gr-dock-search input::placeholder {
+	color: var(--gr-text-3);
+	font-style: normal;
+}
+/* list */
+.gr-dock-list {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	scrollbar-width: thin;
+	padding-bottom: 8px;
+}
+.gr-dock-head {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	width: 100%;
+	height: 30px;
+	margin-top: 4px;
+	padding: 0 8px;
+	border: 0;
+	background: transparent;
+	color: var(--gr-text-3);
+	font: inherit;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+.gr-dock-head:hover {
+	color: var(--gr-text-2);
+}
+.gr-dock-head svg {
+	width: 12px;
+	height: 12px;
+	transition: transform var(--gr-fast) var(--gr-ease);
+}
+.gr-dock-head.gr-closed svg {
+	transform: rotate(-90deg);
+}
+.gr-dock-head span {
+	flex: 1;
+	text-align: left;
+}
+.gr-dock-head small {
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0;
+}
+.gr-dock-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	height: 50px;
+	padding: 0 8px;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	font: inherit;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.gr-dock-row:hover {
+	background: var(--gr-hover);
+}
+.gr-row-offline .gr-dock-who b {
+	color: var(--gr-text-2);
+}
+.gr-dock-game {
+	flex: none;
+	width: 22px;
+	height: 22px;
+	border-radius: 6px;
+}
+.gr-badge {
+	flex: none;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 5px;
+	box-sizing: border-box;
+	border-radius: 9px;
+	background: var(--gr-accent);
+	color: var(--gr-bg);
+	font-size: 11px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 18px;
+	text-align: center;
+}
+.gr-dock-pic .gr-badge {
+	position: absolute;
+	top: 2px;
+	right: 0;
+	box-shadow: 0 0 0 2px var(--gr-bg);
+}
+.gr-dock-groups {
+	flex: none;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 44px;
+	margin-top: 4px;
+	padding: 0 10px;
+	border: 1px solid var(--gr-border);
+	border-radius: 12px;
+	background: var(--gr-surface);
+	color: var(--gr-text-2);
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.gr-dock-groups:hover {
+	background: var(--gr-surface-2);
+	color: var(--gr-text);
+}
+.gr-dock-groups svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+}
+.gr-dock-groups span {
+	flex: 1;
+	text-align: left;
+}
+.gr-dock-groups small {
+	color: var(--gr-text-3);
+	font-size: 12px;
+}
