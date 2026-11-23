@@ -39,10 +39,27 @@
 	const surface = l => (l < 0.075 ? '--gr-bg' : l < 0.115 ? '--gr-surface' : l < 0.17 ? '--gr-surface-2' : '--gr-surface-3');
 	const alpha = (v, a) => (a >= 0.99 ? `var(${v})` : `color-mix(in srgb, var(${v}) ${Math.round(a * 100)}%, transparent)`);
 
+	// legacy store markup that web-app.css restyles completely: never paint
+	// surfaces or accent buttons there, only fix link text colors
+	const OWN = [
+		'.game_page_background_ctn', '.game_background_lighten', '.queue_actions_ctn',
+		'.game_purchase_action', '#category_block', '.details_block',
+		'.recommendation_noinfo', '#shareEmbedRow', '.sysreq_tabs', '.game_area_play_stats',
+		'.game_area_already_owned', '.game_area_purchase_not_refundable',
+		'.steam_curators_block .block_header'
+	].join(',');
+
 	function recolor(el) {
 		if (el.dataset && el.dataset[DONE]) return;
 		const cs = getComputedStyle(el);
 		const set = [];
+		if (el.closest && el.closest(OWN)) {
+			textColor(el, cs, set);
+			for (const [p, v] of set) el.style.setProperty(p, v, 'important');
+			if (set.length) applied.set(el, set.map(([p]) => p));
+			if (el.dataset) el.dataset[DONE] = '1';
+			return;
+		}
 		// parts restyled by Graphite's own CSS (see hooks below): leave their
 		// surfaces alone, only fix text colors
 		const hooked = !!(el.closest && el.closest('[data-gr-hook]'));
@@ -282,13 +299,43 @@
 		}
 	}
 
+	// game page: React parts inside the legacy layout (shelves, side widgets,
+	// user reviews) get gr-app-* / gr-rv-* classes; web-app.css styles them
+	let appCount = -1;
+	function hookAppPage() {
+		if (!document.body.classList.contains('app') || location.hostname !== 'store.steampowered.com') return;
+		const scope = document.querySelector('.page_content_ctn');
+		if (!scope) return;
+		const n = scope.getElementsByTagName('div').length;
+		if (n === appCount) return; // nothing new rendered
+		appCount = n;
+		for (const p of document.querySelectorAll('.related_items_ctn > .page_content > div:not([class]) > div > .Panel')) hook(p, 'gr-app-shelf');
+		for (const side of document.querySelectorAll('.rightcol.game_meta_data > div:not([class]):not([id])')) {
+			for (const e of side.querySelectorAll('div')) {
+				if (e.classList.contains('gr-app-side')) continue;
+				if (getComputedStyle(e).backgroundImage.startsWith('linear-gradient') && e.getBoundingClientRect().width > 300) hook(e, 'gr-app-side');
+			}
+		}
+		const rv = document.getElementById('app_reviews_hash');
+		if (!rv) return;
+		for (const e of rv.querySelectorAll('div')) {
+			if (e.matches('.gr-rv-card, .gr-rv-head, .gr-rv-bar, .gr-rv-sum')) continue;
+			const cs = getComputedStyle(e);
+			if (cs.backgroundImage.startsWith('radial-gradient')) { hook(e, 'gr-rv-sum'); continue; }
+			if (cs.backgroundColor !== 'rgba(0, 0, 0, 0.2)') continue;
+			const r = e.getBoundingClientRect();
+			if (r.width > 1000) hook(e, r.height > 80 ? 'gr-rv-card' : 'gr-rv-bar');
+			else if (r.width > 500 && r.height < 70) hook(e, 'gr-rv-head');
+		}
+	}
+
 	const queue = new Set();
 	let scheduled = false;
 	const idle = window.requestIdleCallback || (fn => setTimeout(() => fn({ timeRemaining: () => 8 }), 50));
 
 	function flush(deadline) {
 		scheduled = false;
-		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); hookStoreHome(); } catch (e) { /* never break the page */ }
+		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); hookStoreHome(); hookAppPage(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;

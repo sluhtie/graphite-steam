@@ -785,150 +785,7 @@ footer {
 	background: transparent !important;
 }
 
-/* --- App page -------------------------------------------------------------- */
-.game_page_background {
-	background-color: var(--gr-bg) !important;
-}
-.game_page_background::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(to bottom, color-mix(in srgb, var(--gr-bg) 70%, transparent), var(--gr-bg) 900px);
-	pointer-events: none;
-}
-.game_page_background > * {
-	position: relative;
-	z-index: 1;
-}
-.apphub_AppName,
-.apphub_HomeHeaderContent .apphub_AppName {
-	color: var(--gr-text) !important;
-	font-weight: 600 !important;
-	letter-spacing: -0.02em !important;
-}
-.blockbg {
-	background: transparent !important;
-}
-.blockbg a {
-	color: var(--gr-text-3) !important;
-}
-.game_background_glow,
-.page_content_ctn .game_background_glow {
-	background: transparent !important;
-}
-.glance_ctn,
-.game_header_image_ctn,
-.highlight_ctn {
-	background: transparent !important;
-}
-.game_description_snippet {
-	color: var(--gr-text-2) !important;
-}
-.user_reviews_summary_row .subtitle,
-.release_date .subtitle,
-.dev_row .subtitle {
-	color: var(--gr-text-3) !important;
-}
-
-.queue_overflow_ctn,
-.queue_ctn,
-#queueActionsCtn {
-	background: transparent !important;
-	background-image: none !important;
-	border: none !important;
-	box-shadow: none !important;
-}
-.game_area_details_specs_ctn,
-.game_area_details_specs .game_area_details_specs_ctn {
-	background: var(--gr-surface-3) !important;
-	border-radius: var(--gr-radius-sm) !important;
-}
-.game_area_details_specs_ctn .label,
-.game_area_details_specs_ctn a {
-	color: var(--gr-text) !important;
-}
-.game_area_dlc_row {
-	background: var(--gr-surface-3) !important;
-	border-radius: var(--gr-radius-sm) !important;
-}
-.game_area_purchase_game,
-.game_area_purchase_game_dropdown_subscription,
-.game_area_purchase_game_wrapper .game_area_purchase_game,
-.game_area_comingsoon,
-.game_area_already_owned,
-.game_area_dlc_section,
-.block.responsive_apppage_details_right,
-.block.responsive_apppage_reviewblock,
-.review_box,
-.game_meta_data .block,
-.rightcol .block,
-.glance_tags_ctn {
-	background: var(--gr-surface-2) !important;
-	background-image: none !important;
-	border: 1px solid var(--gr-border) !important;
-	border-radius: var(--gr-radius) !important;
-	box-shadow: none !important;
-}
-.game_area_purchase_game h1 {
-	color: var(--gr-text) !important;
-	font-size: 17px !important;
-	font-weight: 600 !important;
-}
-.game_purchase_action_bg,
-.game_purchase_action .game_purchase_price,
-.game_purchase_action .price {
-	background: var(--gr-surface-3) !important;
-	border-radius: var(--gr-radius-sm) !important;
-	color: var(--gr-text) !important;
-}
-.game_area_already_owned {
-	color: var(--gr-text) !important;
-}
-#queueActionsCtn .queue_control_button,
-.queue_actions_ctn .btnv6_blue_hoverfade {
-	border-radius: var(--gr-radius-sm) !important;
-}
-
-.game_page_autocollapse_ctn,
-.game_area_description,
-#game_area_description {
-	color: var(--gr-text-2) !important;
-}
-.game_area_description h2,
-.block_title,
-.game_area_purchase h2,
-#game_area_description h2,
-.page_content h2 {
-	color: var(--gr-text-3) !important;
-	background: none !important;
-	border: none !important;
-	font-size: 12px !important;
-	font-weight: 600 !important;
-	letter-spacing: 0.08em !important;
-	text-transform: uppercase !important;
-}
-.game_page_autocollapse_fade,
-.game_page_autocollapse_readmore {
-	background: linear-gradient(to bottom, transparent, var(--gr-bg)) !important;
-}
-
-/* Screenshot strip */
-.highlight_strip,
-.highlight_strip_scroll,
-#highlight_strip {
-	background: transparent !important;
-}
-.highlight_strip_item.focus {
-	border-color: var(--gr-accent) !important;
-}
-.slider_ctn {
-	background: var(--gr-surface-2) !important;
-	border-radius: var(--gr-radius-sm);
-}
-.slider .handle {
-	background: var(--gr-surface-3) !important;
-	border-radius: var(--gr-radius-sm);
-}
+/* App page: see web-app.css */
 
 /* --- Explore / discovery queue page --------------------------------------- */
 .page_header_ctn {
@@ -4068,4 +3925,1215 @@ h1.market_header,
 	background: var(--gr-surface-2) !important;
 	border-radius: 999px !important;
 	color: var(--gr-text-2) !important;
+}
+
+/* Store game page (store.steampowered.com/app/...). Calm and flat: no game
+   background art, one rounded media player, cards with a single surface,
+   prices and buttons in one row, plain lists instead of Valve's blue bars.
+   web-recolor.js leaves these legacy parts alone (OWN list), so the rules
+   below decide their colors. */
+
+/* --- Page --------------------------------------------------------------------- */
+.game_page_background,
+.game_page_background.game {
+	background: var(--gr-bg) !important;
+	background-image: none !important;
+}
+.game_page_background_ctn,
+.game_background_lighten {
+	display: none !important;
+}
+.game_background_glow,
+.page_content_ctn .game_background_glow,
+.game_media_and_summary_ctn,
+#game_highlights,
+.page_title_area.game_title_area,
+.glance_ctn,
+.game_header_image_ctn,
+.highlight_ctn {
+	background: transparent !important;
+	background-image: none !important;
+}
+
+/* --- Title ------------------------------------------------------------------------ */
+.game_title_area .blockbg,
+.game_title_area .blockbg a {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.game_title_area .blockbg a:hover {
+	color: var(--gr-text) !important;
+}
+.apphub_AppName,
+.apphub_HomeHeaderContent .apphub_AppName {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 30px !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.025em !important;
+	line-height: 1.15 !important;
+}
+.game_title_area .apphub_OtherSiteInfo a {
+	display: inline-flex !important;
+	align-items: center;
+	height: 32px !important;
+	padding: 0 14px !important;
+	background: transparent !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+}
+.game_title_area .apphub_OtherSiteInfo a:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.game_title_area .apphub_OtherSiteInfo a > span {
+	padding: 0 !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1 !important;
+}
+
+/* --- Media player ---------------------------------------------------------------- */
+.highlight_ctn .highlight_player_area,
+#highlight_player_area {
+	border-radius: var(--gr-radius-lg) !important;
+	overflow: hidden;
+	background: #000 !important;
+}
+.highlight_strip,
+.highlight_strip_scroll,
+#highlight_strip {
+	background: transparent !important;
+}
+.highlight_strip_item {
+	box-sizing: border-box;
+	border: 2px solid transparent !important;
+	border-radius: 8px !important;
+	overflow: hidden;
+	opacity: 0.6;
+	transition: opacity var(--gr-fast) var(--gr-ease), border-color var(--gr-fast) var(--gr-ease);
+}
+.highlight_strip_item:hover {
+	opacity: 1;
+}
+.highlight_strip_item.focus {
+	border-color: var(--gr-text) !important;
+	opacity: 1;
+}
+.highlight_selector {
+	display: none !important;
+}
+.highlight_ctn .slider_ctn,
+.slider_ctn {
+	height: 14px !important;
+	background: transparent !important;
+	border-radius: 999px;
+}
+.highlight_ctn .slider_left,
+.highlight_ctn .slider_right,
+#highlight_slider_left,
+#highlight_slider_right {
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+}
+.highlight_ctn .slider .handle,
+.slider .handle {
+	height: 4px !important;
+	margin-top: 5px;
+	background: var(--gr-surface-3) !important;
+	border-radius: 999px !important;
+}
+.highlight_ctn .slider,
+.slider {
+	background: transparent !important;
+}
+
+/* --- Summary column ------------------------------------------------------------- */
+.game_header_image_full {
+	border-radius: var(--gr-radius) !important;
+}
+.game_description_snippet {
+	color: var(--gr-text-2) !important;
+	font-size: 14px !important;
+	line-height: 1.55 !important;
+}
+.glance_ctn .subtitle,
+.user_reviews_summary_row .subtitle,
+.release_date .subtitle,
+.dev_row .subtitle {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	letter-spacing: 0.04em !important;
+}
+.glance_ctn .dev_row a,
+.glance_ctn .user_reviews_summary_row .game_review_summary {
+	font-weight: 500;
+}
+/* tags: chips, no box around them */
+.glance_tags_ctn,
+.glance_ctn .glance_tags_ctn {
+	padding: 0 !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+.glance_tags_label {
+	margin-bottom: 6px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+}
+.glance_tags.popular_tags {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 6px;
+	height: auto !important;
+	max-height: 62px;
+	overflow: hidden;
+}
+.glance_tags .app_tag {
+	float: none !important;
+	margin: 0 !important;
+	padding: 4px 10px !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: 999px !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	line-height: 16px !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.glance_tags .app_tag:hover {
+	background: var(--gr-surface-3) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Wishlist / follow / ignore row ---------------------------------------------- */
+.queue_overflow_ctn,
+.queue_ctn,
+#queueActionsCtn {
+	background: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+#queueActionsCtn {
+	gap: 8px;
+}
+#queueActionsCtn > div {
+	margin-right: 0 !important;
+}
+#queueActionsCtn .btnv6_blue_hoverfade,
+#queueActionsCtn .queue_menu_arrow {
+	box-sizing: border-box;
+	height: 34px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+#queueActionsCtn .btnv6_blue_hoverfade:hover,
+#queueActionsCtn .queue_menu_arrow:hover {
+	background: var(--gr-surface-3) !important;
+}
+#queueActionsCtn .btnv6_blue_hoverfade > span,
+#queueActionsCtn .queue_menu_arrow > span {
+	display: flex !important;
+	align-items: center;
+	gap: 6px;
+	height: 32px !important;
+	padding: 0 14px !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	line-height: 32px !important;
+}
+/* already wishlisted / followed / ignored */
+#queueActionsCtn .queue_btn_active,
+#queueActionsCtn .btnv6_blue_hoverfade.queue_btn_active {
+	background: var(--gr-accent-soft) !important;
+	border-color: color-mix(in srgb, var(--gr-accent) 35%, transparent) !important;
+	color: var(--gr-accent) !important;
+}
+/* ignore + its dropdown arrow read as one split button */
+#ignoreBtn {
+	display: flex !important;
+}
+#ignoreBtn .queue_btn_ignore .btnv6_blue_hoverfade,
+#add_to_wishlist_area_success #view_wishlist_btn {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+#queueActionsCtn .queue_menu_arrow {
+	width: 30px !important;
+	border-left: none !important;
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	color: var(--gr-text-2) !important;
+}
+#queueActionsCtn .queue_menu_arrow > span {
+	padding: 0 !important;
+	font-size: 0 !important;
+	justify-content: center;
+	background-image: none !important;
+}
+#queueActionsCtn .queue_menu_arrow > span::before {
+	content: "";
+	width: 12px;
+	height: 12px;
+	background: currentColor;
+	-webkit-mask: var(--gr-icon-chevron) center / 12px 12px no-repeat;
+}
+.queue_menu_flyout,
+.queue_menu_flyout_content {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: var(--gr-shadow) !important;
+}
+.queue_menu_flyout_content {
+	border: none !important;
+}
+.queue_menu_option {
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+}
+.queue_menu_option:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+
+/* --- Purchase cards ------------------------------------------------------------------ */
+.game_area_purchase_game,
+.game_area_purchase_game_dropdown_subscription,
+.game_area_purchase_game_wrapper .game_area_purchase_game,
+.game_area_comingsoon,
+.game_area_already_owned,
+.game_area_dlc_section {
+	box-sizing: border-box;
+	margin-bottom: 12px !important;
+	padding: 18px 20px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	box-shadow: none !important;
+	color: var(--gr-text-2) !important;
+}
+.game_area_purchase_game h1,
+.game_area_purchase_game h2.title,
+.game_area_purchase_game > h2,
+.game_area_comingsoon h1 {
+	margin: 0 0 4px !important;
+	padding-right: 60px;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.01em !important;
+	text-transform: none !important;
+}
+.game_area_purchase_game .bundle_label {
+	color: var(--gr-accent) !important;
+	font-size: inherit !important;
+}
+.game_area_purchase_game p,
+.game_area_purchase_game .package_contents {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.game_area_purchase_platform {
+	opacity: 0.55;
+}
+/* price + buttons: one row, inside the card instead of hanging off its edge */
+.game_purchase_action {
+	position: static !important;
+	display: flex !important;
+	justify-content: flex-end;
+	margin-top: 14px !important;
+	height: auto !important;
+	background: transparent !important;
+}
+.game_purchase_action_bg {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	height: auto !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+.game_purchase_action_bg > div,
+.game_purchase_action .btn_addtocart {
+	float: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+.game_purchase_action .game_purchase_price,
+.game_purchase_action .price {
+	display: flex !important;
+	align-items: center;
+	height: 36px !important;
+	padding: 0 6px !important;
+	background: transparent !important;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	line-height: 36px !important;
+}
+.game_purchase_action .discount_block {
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	height: 36px !important;
+	background: transparent !important;
+}
+.game_purchase_action .discount_pct {
+	display: flex !important;
+	align-items: center;
+	height: 26px !important;
+	padding: 0 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: #4c6b22 !important;
+	color: #beee11 !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	line-height: 26px !important;
+}
+.game_purchase_action .discount_prices {
+	background: transparent !important;
+	padding: 0 !important;
+}
+.game_purchase_action .discount_original_price {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+}
+.game_purchase_action .discount_final_price {
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+/* buttons: accent for "add to cart", neutral for everything else */
+.game_purchase_action .btn_addtocart a,
+.game_purchase_action a.btn_medium {
+	box-sizing: border-box;
+	display: inline-flex !important;
+	align-items: center;
+	height: 36px !important;
+	padding: 0 !important;
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-bg) !important;
+	transition: filter var(--gr-fast) var(--gr-ease);
+}
+.game_purchase_action .btn_addtocart a:hover,
+.game_purchase_action a.btn_medium:hover {
+	filter: brightness(1.08);
+}
+.game_purchase_action .btn_addtocart a > span,
+.game_purchase_action a.btn_medium > span {
+	padding: 0 18px !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+	line-height: 36px !important;
+}
+.game_purchase_action .btn_packageinfo a,
+.game_purchase_action a.btn_blue_steamui,
+.game_purchase_action .btn_addtocart a.btnv6_blue_hoverfade {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	color: var(--gr-text) !important;
+}
+.game_purchase_action .btn_packageinfo a:hover,
+.game_purchase_action a.btn_blue_steamui:hover {
+	background: var(--gr-surface-3) !important;
+	filter: none;
+}
+/* "already in your library" + playtime: one card under the action row */
+.queue_and_playtime .game_area_already_owned {
+	box-sizing: border-box;
+	height: auto !important;
+	margin: 8px auto 0 !important;
+	padding: 18px 20px 6px !important;
+	border-bottom: none !important;
+	border-radius: var(--gr-radius-lg) var(--gr-radius-lg) 0 0 !important;
+	color: var(--gr-text) !important;
+}
+.game_area_already_owned_ctn {
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	height: auto !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+.game_area_already_owned .ds_owned_flag {
+	position: static !important;
+	box-shadow: none !important;
+	background-image: none !important;
+	float: none !important;
+	flex: none;
+	margin: 0 !important;
+	padding: 3px 8px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: color-mix(in srgb, #a3cf06 18%, transparent) !important;
+	color: #c4ec3b !important;
+	font-size: 10.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.04em;
+	line-height: 14px !important;
+}
+.game_area_already_owned .already_in_library {
+	height: auto !important;
+	color: var(--gr-text) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
+	letter-spacing: -0.01em;
+}
+.queue_and_playtime .game_area_play_stats {
+	box-sizing: border-box;
+	width: 1200px;
+	max-width: 100%;
+	margin: 0 auto 8px !important;
+	padding: 6px 20px 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-top: none !important;
+	border-radius: 0 0 var(--gr-radius-lg) var(--gr-radius-lg) !important;
+}
+.game_area_play_stats div,
+.game_area_play_stats .myactivity_block {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border-color: var(--gr-border) !important;
+	box-shadow: none !important;
+}
+.game_area_play_stats a.btnv6_blue_hoverfade,
+.game_area_play_stats a[class*="btn_"] {
+	display: inline-flex !important;
+	align-items: center;
+	height: 34px !important;
+	padding: 0 !important;
+	background: var(--gr-accent) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-bg) !important;
+}
+.game_area_play_stats a[class*="btn_"] > span {
+	padding: 0 16px !important;
+	background: transparent !important;
+	color: var(--gr-bg) !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+	line-height: 34px !important;
+}
+.game_area_play_stats .already_owned_actions a {
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.game_area_play_stats .already_owned_actions a:hover {
+	color: var(--gr-text) !important;
+}
+.game_area_purchase_not_refundable {
+	margin: -4px 0 12px !important;
+	padding: 0 4px !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+.game_area_purchase_not_refundable a {
+	color: var(--gr-text-2) !important;
+}
+
+/* DLC list */
+.game_area_dlc_section .gradientbg,
+.game_area_dlc_section h2 {
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+}
+.game_area_dlc_row {
+	box-sizing: border-box;
+	margin: 0 !important;
+	padding: 8px !important;
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.game_area_dlc_row:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.game_area_dlc_row .game_area_dlc_price,
+.game_area_dlc_row .discount_final_price {
+	color: var(--gr-text) !important;
+}
+.game_area_dlc_section .gameDlcBlocks,
+.game_area_dlc_section .dlc_footer_element {
+	background: transparent !important;
+}
+.btnv6_white_transparent {
+	display: inline-flex !important;
+	align-items: center;
+	height: 28px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+}
+.btnv6_white_transparent:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.btnv6_white_transparent > span {
+	padding: 0 12px !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	line-height: 1 !important;
+}
+
+/* --- Description column ------------------------------------------------------------- */
+.game_page_autocollapse_ctn,
+.game_area_description,
+#game_area_description {
+	color: var(--gr-text-2) !important;
+	font-size: 14px !important;
+	line-height: 1.65 !important;
+}
+.game_area_description img,
+#game_area_description img,
+.game_area_description video {
+	border-radius: var(--gr-radius) !important;
+}
+.game_area_description h2,
+.block_title,
+.game_area_purchase h2,
+#game_area_description h2,
+.page_content h2 {
+	color: var(--gr-text-3) !important;
+	background: none !important;
+	border: none !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase !important;
+}
+.game_area_description h2.bb_tag {
+	margin-top: 24px !important;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	letter-spacing: -0.01em !important;
+	text-transform: none !important;
+}
+.game_page_autocollapse_fade,
+.game_page_autocollapse_readmore {
+	background: linear-gradient(to bottom, transparent, var(--gr-bg) 70%) !important;
+}
+.game_page_autocollapse_readmore {
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.game_page_autocollapse_readmore:hover {
+	color: var(--gr-text) !important;
+}
+
+/* system requirements */
+.sysreq_tabs {
+	display: flex !important;
+	gap: 4px;
+	margin-bottom: 12px !important;
+	background: transparent !important;
+	border: none !important;
+}
+.sysreq_tab {
+	margin: 0 !important;
+	padding: 5px 12px !important;
+	background: transparent !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12.5px !important;
+	font-weight: 500 !important;
+}
+.sysreq_tab:hover {
+	color: var(--gr-text) !important;
+}
+.sysreq_tab.active {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+}
+.sysreq_contents .game_area_sys_req_leftCol,
+.sysreq_contents .game_area_sys_req_rightCol,
+.sysreq_contents .game_area_sys_req_full {
+	color: var(--gr-text-2) !important;
+}
+.sysreq_contents strong {
+	color: var(--gr-text) !important;
+	font-weight: 500 !important;
+}
+
+/* --- Right column ---------------------------------------------------------------------- */
+.rightcol.game_meta_data .block,
+.game_meta_data .block {
+	box-sizing: border-box;
+	margin-bottom: 12px !important;
+	padding: 16px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+	box-shadow: none !important;
+}
+.game_meta_data .block_title {
+	margin-bottom: 10px !important;
+}
+.game_meta_data .block_content,
+.game_meta_data .block_content_inner {
+	padding: 0 !important;
+	background: transparent !important;
+}
+/* "Is this game relevant to you?" reads as one card */
+.game_meta_data .block.heading {
+	margin-bottom: 0 !important;
+	padding-bottom: 4px !important;
+	border-bottom: none !important;
+	border-radius: var(--gr-radius-lg) var(--gr-radius-lg) 0 0 !important;
+	color: var(--gr-text) !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.game_meta_data .block.heading + .block {
+	padding-top: 4px !important;
+	border-top: none !important;
+	border-radius: 0 0 var(--gr-radius-lg) var(--gr-radius-lg) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.5 !important;
+}
+.recommendation_noinfo br {
+	display: none;
+}
+.recommendation_noinfo p {
+	margin: 0 0 12px !important;
+}
+
+/* neutral buttons in the column (more info, embed, report, ...) */
+.game_meta_data .btnv6_blue_hoverfade {
+	box-sizing: border-box;
+	display: inline-flex !important;
+	align-items: center;
+	height: 32px !important;
+	padding: 0 !important;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.game_meta_data .btnv6_blue_hoverfade:hover {
+	background: var(--gr-surface-3) !important;
+}
+.game_meta_data .btnv6_blue_hoverfade > span {
+	display: flex !important;
+	align-items: center;
+	gap: 6px;
+	padding: 0 12px !important;
+	background: transparent !important;
+	color: inherit !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 30px !important;
+}
+#shareEmbedRow {
+	display: flex !important;
+	gap: 8px;
+}
+#shareEmbedRow a {
+	margin: 0 !important;
+}
+#ReportAppBtn > span {
+	padding: 0 9px !important;
+}
+#ReportAppBtn img {
+	filter: grayscale(1) brightness(1.6);
+	opacity: 0.75;
+}
+
+/* features: a plain list with icons */
+.game_area_features_list_ctn {
+	display: flex !important;
+	flex-direction: column;
+	gap: 1px;
+}
+.game_area_details_specs_ctn,
+.game_area_details_specs .game_area_details_specs_ctn {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+	gap: 10px;
+	min-height: 32px;
+	margin: 0 -6px !important;
+	padding: 0 6px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.game_area_details_specs_ctn:hover {
+	background: var(--gr-hover) !important;
+}
+.game_area_details_specs_ctn .icon {
+	flex: none;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 20px !important;
+	height: 20px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	opacity: 0.7;
+}
+.game_area_details_specs_ctn .icon img {
+	max-width: 18px;
+	max-height: 18px;
+}
+.game_area_details_specs_ctn .label {
+	flex: 1 1 auto;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.35 !important;
+}
+.game_area_details_specs_ctn:hover .label {
+	color: var(--gr-text) !important;
+}
+#category_block > div:not(.game_area_features_list_ctn) {
+	margin-top: 10px;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+}
+
+/* languages */
+#languageTable table.game_language_options {
+	width: 100%;
+	border-collapse: collapse;
+}
+#languageTable th,
+#languageTable td {
+	padding: 5px 0 !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12.5px !important;
+}
+#languageTable th {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	font-weight: 500 !important;
+}
+#languageTable tr:last-child td {
+	border-bottom: none !important;
+}
+#languageTable .checkcol span {
+	color: var(--gr-text) !important;
+}
+.all_languages,
+#languageTable a {
+	color: var(--gr-accent) !important;
+	font-size: 12.5px !important;
+}
+
+/* details + external links */
+.details_block {
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.7 !important;
+}
+.details_block b {
+	color: var(--gr-text-3) !important;
+	font-weight: 500 !important;
+}
+.details_block a:not(.linkbar) {
+	color: var(--gr-accent) !important;
+}
+.details_block + .details_block,
+.details_block:has(> .linkbar) {
+	margin-top: 10px !important;
+	padding-top: 8px !important;
+	border-top: 1px solid var(--gr-border);
+}
+.details_block a.linkbar {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+	gap: 8px;
+	height: 32px !important;
+	margin: 0 -6px !important;
+	padding: 0 6px !important;
+	background: transparent !important;
+	background-image: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 32px !important;
+	transition: background var(--gr-fast) var(--gr-ease), color var(--gr-fast) var(--gr-ease);
+}
+.details_block a.linkbar:hover {
+	background: var(--gr-hover) !important;
+	color: var(--gr-text) !important;
+}
+.details_block a.linkbar img {
+	filter: grayscale(1);
+	opacity: 0.8;
+}
+
+/* achievements / points shop thumbnails */
+.communitylink_achievement_images img,
+.communitylink_points_shop_images img,
+.communitylink_achievement_inline img {
+	border-radius: var(--gr-radius-sm) !important;
+}
+.communitylink_achievement_images .communitylink_achievement,
+.communitylink_points_shop_images a {
+	border-radius: var(--gr-radius-sm) !important;
+}
+a.communitylink_achievement_more,
+.communitylink_points_shop_images .communitylink_achievement_more,
+.communitylink_achievement_images .communitylink_achievement_more {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text-2) !important;
+}
+
+/* --- Bottom: more from the developer, similar games, curators, reviews ------------ */
+.related_items_ctn,
+.related_items_ctn > .page_content,
+.review_ctn,
+.review_ctn > .page_content {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+.steam_curators_block {
+	padding: 16px 20px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+}
+.steam_curators_block .block_header {
+	background: transparent !important;
+	border: none !important;
+}
+.steam_curators_block .block_header .right a {
+	display: inline-flex;
+	align-items: center;
+	height: 28px;
+	padding: 0 12px !important;
+	background: transparent !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+}
+.steam_curators_block .block_header .right a:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.steam_curators_block .no_curators_followed {
+	margin-top: 8px !important;
+	padding: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+}
+.steam_curators_block .no_curators_followed a {
+	color: var(--gr-accent) !important;
+	font-weight: 500;
+}
+
+/* --- Fixes ------------------------------------------------------------------------------ */
+#queueActionsCtn .queue_menu_arrow img {
+	display: none !important;
+}
+.game_purchase_action .discount_block.no_discount .discount_pct {
+	display: none !important;
+}
+.game_purchase_action .bundle_base_discount {
+	display: flex !important;
+	align-items: center;
+	height: 26px !important;
+	padding: 0 8px !important;
+	background: #4c6b22 !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: #beee11 !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	line-height: 26px !important;
+}
+.game_area_dlc_section .note a {
+	display: inline-block;
+	height: 26px;
+	line-height: 24px !important;
+	padding: 0 10px !important;
+	background: transparent !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+.game_area_dlc_section .note a:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+.game_area_dlc_section .note {
+	background: transparent !important;
+	border: none !important;
+}
+/* controller support rows (React, same look as the feature list) */
+#category_block > div:not(.game_area_features_list_ctn) > div > * {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+	gap: 10px;
+	min-height: 32px;
+	margin: 0 -6px !important;
+	padding: 0 6px !important;
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+#category_block > div:not(.game_area_features_list_ctn) > div > a:hover {
+	background: var(--gr-hover) !important;
+}
+#category_block > div:not(.game_area_features_list_ctn) > div > * > div {
+	height: auto !important;
+	padding: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+	line-height: 1.35 !important;
+}
+#category_block > div:not(.game_area_features_list_ctn) > div > * > div:first-child:not(:last-child) {
+	flex: none;
+	display: flex;
+	justify-content: center;
+	width: 20px !important;
+	opacity: 0.7;
+}
+
+.gameDlcBlocks {
+	display: block !important;
+}
+.game_area_dlc_row {
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	width: 100% !important;
+}
+#category_block > div:not(.game_area_features_list_ctn) > div {
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
+}
+.game_area_dlc_row .game_area_dlc_name {
+	flex: 1 1 auto;
+}
+.game_area_dlc_row .game_area_dlc_price {
+	margin-left: auto !important;
+	float: none !important;
+}
+
+/* events header link ("see all") */
+.page_content.middle_page h2 > a.Focusable {
+	display: inline-flex !important;
+	align-items: center;
+	height: 26px !important;
+	padding: 0 10px !important;
+	background: transparent !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: 999px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+}
+.page_content.middle_page h2 > a.Focusable:hover {
+	border-color: var(--gr-text-3) !important;
+	color: var(--gr-text) !important;
+}
+
+/* React widgets in the right column (Steam Deck, achievements) */
+.game_meta_data > div:not([class]):not([id]) [id*="«"] {
+	margin-bottom: 8px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+	text-transform: uppercase !important;
+}
+.gr-app-side {
+	box-sizing: border-box;
+	margin-bottom: 12px !important;
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+}
+.gr-app-side a[class$="-"]:not(:has(img)) {
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.gr-app-side a[class$="-"]:not(:has(img)):hover {
+	background: var(--gr-surface-3) !important;
+}
+.gr-app-side img {
+	border-radius: var(--gr-radius-sm);
+}
+
+/* shelves: "more from the developer", "similar games" */
+.gr-app-shelf {
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.gr-app-shelf [class*="CapsuleBottomBar"] {
+	background: var(--gr-surface) !important;
+	border-radius: 0 0 var(--gr-radius-sm) var(--gr-radius-sm) !important;
+}
+
+/* --- User reviews ---------------------------------------------------------------- */
+.gr-rv-sum {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+}
+.gr-rv-bar {
+	background: transparent !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	border-radius: 0 !important;
+}
+.gr-rv-card {
+	margin-bottom: 12px !important;
+	background: var(--gr-surface) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg) !important;
+}
+.gr-rv-head {
+	background: transparent !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.gr-rv-card img {
+	border-radius: var(--gr-radius-sm);
+}
+#app_reviews_hash a[href*="/profiles/"] img,
+#app_reviews_hash a[href*="/id/"] img {
+	border-radius: 50%;
+}
+
+/* bundle: Valve crosses out the base bundle discount when an extra sale applies */
+.game_purchase_action .discount_block:not(.no_discount) .bundle_base_discount {
+	height: auto !important;
+	padding: 0 !important;
+	background: transparent !important;
+	color: var(--gr-text-3) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+/* accessibility features (React <details> in the feature list) */
+.game_area_features_list_ctn details summary {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 32px;
+	margin: 0 -6px;
+	padding: 0 6px;
+	border-radius: var(--gr-radius-sm);
+	list-style: none;
+	cursor: pointer;
+}
+.game_area_features_list_ctn details summary:hover {
+	background: var(--gr-hover);
+}
+.game_area_features_list_ctn details summary > span,
+.game_area_features_list_ctn details summary > span * {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.game_area_features_list_ctn details summary > span:first-child:not(:last-child) {
+	flex: none;
+	display: flex;
+	justify-content: center;
+	width: 20px;
+	opacity: 0.7;
+}
+.game_area_features_list_ctn details summary * {
+	background-color: transparent !important;
+}
+.game_area_play_stats a[class*="btn_"] * {
+	color: var(--gr-bg) !important;
+}
+/* "relevant to you" reasons: keep the icons inside the card */
+.recommendation_reasons p.reason {
+	position: relative;
+	padding-left: 24px !important;
+	color: var(--gr-text-2) !important;
+	font-size: 13px !important;
+}
+.recommendation_reasons p.reason::before {
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+.recommendation_reasons .friend_blocks_grid {
+	padding-left: 24px;
+}
+.recommendation_reasons hr {
+	background: var(--gr-border) !important;
+	border: none !important;
+	height: 1px !important;
+	margin: 10px 0 !important;
 }
