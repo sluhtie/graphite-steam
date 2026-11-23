@@ -414,6 +414,44 @@
 		[data-gr-ps="cardinfo"] { background: transparent !important; background-image: none !important; }
 		[data-gr-ps="cardname"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0 !important; text-transform: none !important; background: none !important; -webkit-text-fill-color: currentColor !important; }
 		[data-gr-ps="price"] { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-weight: 600 !important; font-variant-numeric: tabular-nums; }
+
+		/* item dialog (click on an item) */
+		.gr-ps-modal { font-family: var(--gr-font) !important; }
+		.gr-ps-modal .ModalPosition_TopBar { display: none !important; }
+		[data-gr-ps="mcard"] { border: 1px solid var(--gr-border) !important; border-radius: 16px !important; overflow: hidden; background: var(--gr-surface-2) !important; background-image: none !important; box-shadow: 0 24px 64px rgba(0,0,0,.55) !important; }
+		[data-gr-ps="mtitle"], [data-gr-ps="mtitle"] * { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 22px !important; font-weight: 700 !important; letter-spacing: -.02em !important; text-transform: none !important; }
+		[data-gr-ps="mtype"] { margin-top: 2px; color: var(--gr-text-2) !important; font-size: 14px !important; }
+		[data-gr-ps="mgame"], [data-gr-ps="mgame"] * { color: var(--gr-text-3) !important; font-size: 13px !important; }
+		/* balance: the same pill as in the banner (coin, number, "points") */
+		[data-gr-ps="mbal"] { display: flex !important; align-items: center !important; align-self: flex-start !important; gap: 8px; height: 40px !important; box-sizing: border-box; margin: 0 !important; padding: 0 14px 0 7px !important; border-radius: 999px !important; background: rgba(11,11,13,.55) !important; background-image: none !important; border: 1px solid rgba(255,255,255,.1) !important; box-shadow: none !important; }
+		[data-gr-ps="mbal"] > svg { width: 26px !important; height: 26px !important; margin: 0 !important; flex: none; }
+		[data-gr-ps="mbal"] > div { display: flex !important; align-items: baseline; gap: 6px; }
+		[data-gr-ps="mbal"] > div > div:first-child { display: none !important; }
+		[data-gr-ps="mbal"] > div > div:last-child { color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 17px !important; font-weight: 700 !important; line-height: 1 !important; letter-spacing: -.01em !important; font-variant-numeric: tabular-nums; }
+		[data-gr-ps="mbal"] > div::after { content: '${T.points}'; color: var(--gr-text-3); font-size: 12.5px; }
+		[data-gr-ps="mprev"] { margin: 4px 0 0 !important; border: 1px solid var(--gr-border) !important; border-radius: 12px !important; overflow: hidden !important; background: var(--gr-bg) !important; }
+		[data-gr-ps="mprev"] iframe { display: block; width: 200% !important; border: 0 !important; }
+		[data-gr-ps="mlink"] { display: flex; justify-content: flex-end; height: auto !important; margin: 8px 0 14px !important; }
+		[data-gr-ps="mlink"] a { color: var(--gr-text-3) !important; font-size: 12.5px !important; text-decoration: none !important; }
+		[data-gr-ps="mlink"] a:hover { color: var(--gr-accent) !important; }
+		[data-gr-ps="mlist"] { border: 1px solid var(--gr-border) !important; border-radius: 12px !important; overflow: hidden; }
+		[data-gr-ps="mhead"], [data-gr-ps="mitem"] { margin: 0 !important; padding: 10px 12px !important; background: transparent !important; border-top: 1px solid var(--gr-border) !important; }
+		[data-gr-ps="mhead"] { border-top: 0 !important; background: rgba(255,255,255,.025) !important; }
+		[data-gr-ps="mitem"] { padding-left: 28px !important; }
+		[data-gr-ps="mhead"] > div:first-child, [data-gr-ps="mitem"] > div:first-child { border-radius: 10px !important; border: 0 !important; background: var(--gr-bg) !important; overflow: hidden; }
+		[data-gr-ps="mhead"] > div:first-child img, [data-gr-ps="mitem"] > div:first-child img { object-fit: cover; }
+		[data-gr-ps="mhead"] > div:last-child > div:first-child, [data-gr-ps="mitem"] > div:last-child > div:first-child { color: var(--gr-text) !important; font-size: 13.5px !important; font-weight: 600 !important; }
+		[data-gr-ps="mhead"] > div:last-child > div:last-child, [data-gr-ps="mitem"] > div:last-child > div:last-child { color: var(--gr-text-3) !important; font-size: 12px !important; }
+		[data-gr-ps="mtext"] { margin: 22px 0 0 !important; }
+		[data-gr-ps="mdesc"] { margin: 0 !important; color: var(--gr-text-2) !important; font-size: 14px !important; line-height: 1.55 !important; }
+		[data-gr-ps="mnote"] { margin: 8px 0 0 !important; color: var(--gr-text-3) !important; font-size: 12.5px !important; }
+		[data-gr-ps="mbtns"] { display: flex !important; flex-direction: row-reverse !important; justify-content: flex-start !important; gap: 8px; margin: 22px 0 0 !important; }
+		[data-gr-ps="mcancel"] { height: 40px !important; margin: 0 !important; padding: 0 16px !important; border: 0 !important; border-radius: 10px !important; background: var(--gr-surface-3, #222227) !important; background-image: none !important; color: var(--gr-text) !important; font-family: var(--gr-font) !important; font-size: 14px !important; font-weight: 500 !important; letter-spacing: 0 !important; text-transform: none !important; }
+		[data-gr-ps="mcancel"]:hover { background: color-mix(in srgb, var(--gr-text) 10%, var(--gr-surface-3, #222227)) !important; }
+		[data-gr-ps="mbuy"] { margin: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: none !important; }
+		[data-gr-ps="mbuy"] > div { display: flex; align-items: center; height: 40px; box-sizing: border-box; padding: 0 18px !important; background: var(--gr-accent) !important; background-image: none !important; color: var(--gr-bg) !important; font-family: var(--gr-font) !important; font-size: 14px !important; font-weight: 700 !important; transition: filter var(--gr-fast) var(--gr-ease); }
+		[data-gr-ps="mbuy"]:hover > div { filter: brightness(1.08); }
+		[data-gr-ps="mbuy"] div { color: var(--gr-bg) !important; font-size: 14px !important; letter-spacing: 0 !important; }
 	`;
 
 	const leafText = (root, re) => [...root.querySelectorAll('*')].find((e) => e.children.length === 0 && re.test(e.textContent.trim()));
@@ -639,6 +677,57 @@
 		}
 	}
 
+	// the dialog that opens on an item: Steam's modal frame, hashed parts inside
+	function modal() {
+		for (const box of document.querySelectorAll('.ModalPosition_Content')) {
+			const lab = [...box.querySelectorAll('div, span')].find((e) => !e.children.length && /^(ihre punkte|your points)$/i.test(e.textContent.trim()));
+			if (!lab) continue;
+			box.classList.add('gr-ps-modal');
+			const card = [...box.querySelectorAll('.Panel')].find((e) => getComputedStyle(e).backgroundImage !== 'none' && e.getBoundingClientRect().width > 400);
+			if (card) mark(card, 'mcard');
+			// the balance block: the label, its value, the coin next to them
+			let bal = lab.parentElement;
+			if (bal && bal.parentElement && bal.parentElement.querySelector('svg')) bal = bal.parentElement;
+			mark(bal, 'mbal');
+			const divs = [...box.querySelectorAll('div')];
+			const title = divs.find((e) => getComputedStyle(e).textTransform === 'uppercase' && parseFloat(getComputedStyle(e).fontSize) >= 20);
+			if (title) {
+				mark(title, 'mtitle');
+				const type = title.nextElementSibling;
+				if (type && !type.querySelector('img')) mark(type, 'mtype');
+				const game = type && type.nextElementSibling;
+				if (game) mark(game, 'mgame');
+			}
+			// the rest hangs off the button row: [buy] [cancel] at the bottom of the body
+			const cancel = [...box.querySelectorAll('button')].find((b) => /^(abbrechen|cancel)$/i.test(b.textContent.trim()));
+			if (!cancel) continue;
+			mark(cancel, 'mcancel');
+			const row = cancel.parentElement;
+			mark(row, 'mbtns');
+			const buy = [...row.children].find((c) => c !== cancel && /[0-9]/.test(c.textContent));
+			if (buy) mark(buy, 'mbuy');
+			// description and refund note sit right above the buttons
+			const text = row.previousElementSibling;
+			if (text && text.children.length <= 3 && !text.querySelector('img, iframe')) {
+				if (text.children[0]) mark(text.children[0], 'mdesc');
+				if (text.children[1]) mark(text.children[1], 'mnote');
+				mark(text, 'mtext');
+			}
+			// between head and text: preview, "open preview" link, bundle contents
+			const body = row.parentElement;
+			for (const part of body.children) {
+				if (part === row || part === text) continue;
+				const kids = [...part.children];
+				if (part.querySelector('iframe, video') || (part === body.firstElementChild && part.getBoundingClientRect().height > 120)) mark(part, 'mprev');
+				else if (kids.length === 1 && kids[0].tagName === 'A') mark(part, 'mlink');
+				else if (kids.length > 1 && kids.every((k) => k.querySelector('img'))) {
+					mark(part, 'mlist');
+					kids.forEach((k, i) => mark(k, i ? 'mitem' : 'mhead'));
+				}
+			}
+		}
+	}
+
 	function cards() {
 		for (const c of document.querySelectorAll('[role="button"].Panel')) {
 			if (c.dataset.grPs === 'card' || inBanner(c)) continue;
@@ -684,7 +773,7 @@
 		document.documentElement.classList.toggle('gr-ps-off', !shop && !how);
 		if (!shop && !how) return;
 		try {
-			if (shop) { nav(); banner(); nav(); rows(); features(); cards(); mosaic(); widths(); }
+			if (shop) { nav(); banner(); nav(); rows(); features(); cards(); mosaic(); widths(); modal(); }
 			else { nav(); howBanner(); nav(); widths(); }
 		} catch (e) { /* page still building */ }
 	};
