@@ -628,6 +628,26 @@
 .gr-search-pop[hidden] {
 	display: none;
 }
+/* searching from a store page: the library is switched in underneath, the
+   scrim keeps it out of the way (shell.js) */
+.gr-search-scrim {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: var(--gr-shell-top);
+	bottom: 0;
+	z-index: 900;
+	background: color-mix(in srgb, var(--gr-bg) 72%, transparent);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.gr-search-scrim.gr-on {
+	opacity: 1;
+	pointer-events: auto;
+}
 .gr-search-head {
 	padding: 6px 8px 4px;
 	color: var(--gr-text-3);

@@ -839,10 +839,60 @@
 		overlay('search', true);
 		askStore(raw);
 	};
+	// On a store or community page the page is Steam's native view, which keeps
+	// taking the mouse even while it is hidden: the popup showed, but its rows
+	// could not be clicked. Searching there switches the library in underneath
+	// (a scrim covers it, the view goes away with it) and the page comes back
+	// when the search closes without a pick.
+	let fromWeb = false;
+	let fromWebKey = null;
+	let searchNavAt = 0;
+	// a blur this soon after the switch came from it, not from the user
+	const searchNav = () => Date.now() - searchNavAt < 500;
+	const scrim = el('div', 'gr-search-scrim');
+	const showScrim = on => {
+		if (on && !scrim.isConnected) document.body.append(scrim);
+		scrim.classList.toggle('gr-on', on);
+	};
+	const enterSearch = () => {
+		if (fromWeb || !route().startsWith('/browser')) return;
+		fromWeb = true;
+		searchNavAt = Date.now();
+		showScrim(true);
+		go('/library/home');
+		setTimeout(() => { try { fromWebKey = history().location.key; } catch (e) { fromWebKey = null; } if (document.activeElement !== input) input.focus(); }, 0);
+	};
+	// back to the page, unless something else was opened meanwhile (a rail click)
+	const leaveSearch = () => {
+		showScrim(false);
+		if (!fromWeb) return;
+		fromWeb = false;
+		let here = true;
+		try { here = route() === '/library/home' && (!fromWebKey || history().location.key === fromWebKey); } catch (e) { /* keep */ }
+		if (!here) return;
+		searchNavAt = Date.now();
+		try { const h = history(); if (h.canGo(-1)) h.goBack(); else go('/browser/'); } catch (e) { go('/browser/'); }
+	};
+	// a pick from a store page: library results replace the stand-in library
+	// page in the history, web results go back to the page and open from there
+	const pickNav = (libPath, webUrl) => {
+		const wasWeb = fromWeb;
+		fromWeb = false;
+		showScrim(false);
+		if (libPath) {
+			if (wasWeb) { try { history().replace(libPath); return; } catch (e) { /* push instead */ } }
+			go(libPath);
+		} else if (webUrl) {
+			if (!wasWeb) { openWeb(webUrl); return; }
+			searchNavAt = Date.now();
+			try { const h = history(); if (h.canGo(-1)) h.goBack(); } catch (e) { /* ignore */ }
+			setTimeout(() => openWeb(webUrl), 120);
+		}
+	};
 	const pick = i => {
 		const r = results[i];
-		if (r && r.lib) go('/library/app/' + r.lib.appid);
-		else if (r && r.store) openWeb('https://store.steampowered.com/app/' + r.store.appid + '/');
+		if (r && r.lib) pickNav('/library/app/' + r.lib.appid);
+		else if (r && r.store) pickNav(null, 'https://store.steampowered.com/app/' + r.store.appid + '/');
 		input.value = '';
 		pop.hidden = true;
 		overlay('search', false);
@@ -850,20 +900,27 @@
 	};
 	const searchStore = () => {
 		const q = input.value.trim();
-		if (q) openWeb('https://store.steampowered.com/search/?term=' + encodeURIComponent(q));
+		if (q) pickNav(null, 'https://store.steampowered.com/search/?term=' + encodeURIComponent(q));
 		input.value = '';
 		pop.hidden = true;
 		overlay('search', false);
 		input.blur();
 	};
 	input.addEventListener('input', () => { active = 0; renderPop(); });
-	input.addEventListener('focus', renderPop);
-	input.addEventListener('blur', () => setTimeout(() => { pop.hidden = true; overlay('search', false); }, 120));
+	input.addEventListener('focus', () => { enterSearch(); renderPop(); });
+	input.addEventListener('blur', () => setTimeout(() => {
+		// the switch to the library can take the focus: keep searching
+		if (fromWeb && searchNav() && document.activeElement !== input) { input.focus(); return; }
+		if (document.activeElement === input) return;
+		pop.hidden = true;
+		overlay('search', false);
+		leaveSearch();
+	}, 120));
 	input.addEventListener('keydown', e => {
 		if (e.key === 'ArrowDown') { active = Math.min(active + 1, results.length - 1); renderPop(); e.preventDefault(); }
 		else if (e.key === 'ArrowUp') { active = Math.max(active - 1, 0); renderPop(); e.preventDefault(); }
 		else if (e.key === 'Enter') { if (results.length) pick(active); else searchStore(); e.preventDefault(); }
-		else if (e.key === 'Escape') { input.value = ''; pop.hidden = true; overlay('search', false); input.blur(); }
+		else if (e.key === 'Escape') { input.value = ''; pop.hidden = true; overlay('search', false); input.blur(); } // blur: leaveSearch
 	});
 	pop.addEventListener('mousedown', e => {
 		const row = e.target.closest('.gr-search-row');
@@ -875,7 +932,7 @@
 		if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'k') { input.focus(); input.select(); e.preventDefault(); }
 	};
 	window.addEventListener('keydown', onKey);
-	cleanup.push(() => window.removeEventListener('keydown', onKey));
+	cleanup.push(() => { window.removeEventListener('keydown', onKey); scrim.remove(); });
 
 	/* --- Store / community side navigation ---------------------------------------------- */
 	const side = el('aside', 'gr-side');
