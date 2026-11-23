@@ -241,3 +241,22 @@
 	background: var(--gr-surface-3) !important;
 	border-radius: var(--gr-radius-sm);
 }
+
+/* "Featured" event card on a game's page: Valve's bright blue header band
+   and outline -> quiet accent label */
+.PartnerEventFeatured {
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	overflow: hidden;
+}
+.PartnerEventFeaturedHeader {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: none !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+	color: var(--gr-accent) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.08em !important;
+}
