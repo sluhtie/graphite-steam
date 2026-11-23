@@ -3516,3 +3516,181 @@ h1.market_header,
 .gr-newshub .gr-nh-side div:has(> svg) svg {
 	fill: currentColor !important;
 }
+
+/* Event detail overlay (news, patch notes) on store and community pages.
+   The banner uses Valve's readable .AppPartnerEventsBanner; the cards and side
+   buttons are tagged by web-recolor.js (gr-ev-*). */
+
+.FullModalOverlay .ModalOverlayBackground {
+	background: var(--gr-scrim) !important;
+}
+
+/* --- App banner ---------------------------------------------------------------- */
+.gr-ev-banner {
+	background: var(--gr-bg) !important;
+	background-image: none !important;
+	border-bottom: 1px solid var(--gr-border) !important;
+}
+.gr-ev-banner > div > div:first-child[style*="url("],
+.gr-ev-banner > div > div:first-child {
+	opacity: 0.12;
+	filter: blur(2px) saturate(0.6);
+}
+.gr-ev-banner a img,
+.gr-ev-banner a {
+	border-radius: var(--gr-radius-sm) !important;
+	overflow: hidden;
+}
+.gr-ev-banner div[class]:not(:has(*)) {
+	font-family: var(--gr-font) !important;
+}
+.gr-ev-banner .FollowButton {
+	height: 30px !important;
+	padding: 0 12px !important;
+	display: flex !important;
+	align-items: center;
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	color: var(--gr-text) !important;
+}
+.gr-ev-banner .FollowButton * {
+	color: inherit !important;
+	font-size: 12.5px !important;
+	font-weight: 600 !important;
+}
+.gr-ev-banner .DialogDropDown {
+	height: 30px !important;
+	background: var(--gr-surface-2) !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+
+/* --- Event cards --------------------------------------------------------------- */
+.gr-ev-card {
+	background: var(--gr-surface) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-lg, 14px) !important;
+	box-shadow: var(--gr-shadow) !important;
+	overflow: hidden;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+}
+.gr-ev-card .gr-ev-head,
+.gr-ev-card .gr-ev-head > div {
+	background: transparent !important;
+	background-image: none !important;
+}
+.gr-ev-card .gr-ev-head {
+	border-bottom: 1px solid var(--gr-border);
+}
+.gr-ev-card .gr-ev-head span {
+	color: var(--gr-accent) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+}
+.gr-ev-card .gr-ev-head div:not(:has(*)) {
+	color: var(--gr-text-3) !important;
+	font-size: 11.5px !important;
+	letter-spacing: 0.02em !important;
+}
+.gr-ev-card .gr-ev-title {
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 24px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.02em !important;
+	line-height: 1.25 !important;
+	text-decoration: none !important;
+}
+.gr-ev-card .gr-ev-title + div,
+.gr-ev-card .gr-ev-head div:has(> .gr-ev-title) ~ div {
+	color: var(--gr-text-2) !important;
+}
+/* body text */
+.gr-ev-card .eventbbcodeparser_EventDetailsBody,
+.gr-ev-card .gr-ev-head ~ div:not(.gr-ev-foot) {
+	background: transparent !important;
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 14px !important;
+	line-height: 1.65 !important;
+}
+.gr-ev-card .gr-ev-head ~ div:not(.gr-ev-foot) a {
+	color: var(--gr-accent) !important;
+	text-decoration: none !important;
+}
+.gr-ev-card .gr-ev-head ~ div:not(.gr-ev-foot) a:hover {
+	text-decoration: underline !important;
+}
+.gr-ev-card .EventEditorTextTitle {
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.gr-ev-card img {
+	border-radius: var(--gr-radius-sm);
+}
+
+/* footer: rating, discussion, share */
+.gr-ev-card .gr-ev-foot {
+	background: transparent !important;
+	background-image: none !important;
+	border-top: 1px solid var(--gr-border);
+}
+.gr-ev-card .gr-ev-foot div[class]:has(> .Panel, > a) {
+	background: var(--gr-surface-2) !important;
+	border-radius: var(--gr-radius) !important;
+}
+.gr-ev-card .gr-ev-foot .Panel,
+.gr-ev-card .gr-ev-foot a > div {
+	background: var(--gr-surface-3) !important;
+	background-image: none !important;
+	border: none !important;
+	border-radius: var(--gr-radius-sm) !important;
+	box-shadow: none !important;
+	color: var(--gr-text) !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.gr-ev-card .gr-ev-foot .Panel:hover,
+.gr-ev-card .gr-ev-foot a:hover > div {
+	background: color-mix(in srgb, var(--gr-text) 14%, var(--gr-surface-2)) !important;
+}
+.gr-ev-card .gr-ev-foot span {
+	color: var(--gr-text) !important;
+	font-weight: 600 !important;
+}
+.gr-ev-card .gr-ev-foot div:not(:has(*)) {
+	color: var(--gr-text) !important;
+}
+
+/* --- Close / previous / next / app buttons ------------------------------------- */
+.gr-ev-navbtn {
+	background: var(--gr-surface-2) !important;
+	background-image: none !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius) !important;
+	box-shadow: none !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.gr-ev-navbtn:first-child {
+	border-radius: 50% !important;
+}
+.gr-ev-navbtn:hover {
+	background: var(--gr-surface-3) !important;
+}
+.gr-ev-navbtn svg {
+	fill: var(--gr-text-2) !important;
+	color: var(--gr-text-2) !important;
+}
+.gr-ev-card .gr-ev-foot svg {
+	fill: var(--gr-text-2) !important;
+}
+.gr-ev-card .gr-ev-foot div:first-child > div:first-child svg {
+	fill: var(--gr-accent) !important;
+}

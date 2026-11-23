@@ -236,6 +236,32 @@
 		}
 	}
 
+	// event detail overlay (news / patch notes) on store and community pages
+	function hookEventModal() {
+		const root = document.querySelector('.FullModalOverlay .ModalOverlayContent.active');
+		if (!root) return;
+		const banner = root.querySelector('.AppPartnerEventsBanner');
+		if (banner) hook(banner, 'gr-ev-banner');
+		for (const a of root.querySelectorAll('a')) {
+			if (a.classList.contains('gr-ev-title') || parseFloat(getComputedStyle(a).fontSize) < 20) continue;
+			let card = a.parentElement;
+			while (card && card !== root && !(card.getBoundingClientRect().width >= 600 && getComputedStyle(card).backgroundColor !== 'rgba(0, 0, 0, 0)')) card = card.parentElement;
+			if (!card || card === root) continue;
+			addCls(a, 'gr-ev-title');
+			hook(card, 'gr-ev-card');
+			addCls(card.firstElementChild, 'gr-ev-head');
+			if (card.children.length > 2) addCls(card.lastElementChild, 'gr-ev-foot');
+		}
+		// round close button and the up / down / app buttons next to the card
+		for (const b of root.querySelectorAll('div')) {
+			if (b.classList.contains('gr-ev-navbtn')) continue;
+			const r = b.getBoundingClientRect();
+			if (r.width !== 50 || r.height < 25 || r.height > 50) continue;
+			if (getComputedStyle(b).backgroundColor === 'rgba(0, 0, 0, 0)') continue;
+			hook(b, 'gr-ev-navbtn');
+		}
+	}
+
 	// store navigation search button: Valve paints it bright blue on some pages
 	function hookStoreNav() {
 		if (location.hostname !== 'store.steampowered.com') return;
@@ -254,7 +280,7 @@
 
 	function flush(deadline) {
 		scheduled = false;
-		try { hookWishlist(); hookStoreNav(); hookNewsHub(); } catch (e) { /* never break the page */ }
+		try { hookWishlist(); hookStoreNav(); hookNewsHub(); hookEventModal(); } catch (e) { /* never break the page */ }
 		for (const root of queue) {
 			queue.delete(root);
 			if (!root.isConnected) continue;
