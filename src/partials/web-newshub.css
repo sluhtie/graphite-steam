@@ -159,3 +159,43 @@
 .gr-newshub .gr-nh-side div:has(> svg) svg {
 	fill: currentColor !important;
 }
+
+/* sidebar spacing: Steam gives each link a fixed-height inner block with its
+   own padding and marks the open one with a 4px blue border on the right */
+.gr-newshub .gr-nh-link {
+	min-height: 0 !important;
+	padding: 0 !important;
+}
+.gr-newshub .gr-nh-link > div {
+	margin: 0 !important;
+	padding: 7px 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+}
+.gr-newshub .gr-nh-link > div > div {
+	height: auto !important;
+	min-height: 0 !important;
+}
+/* the open entry (its block carries a second class) */
+.gr-newshub .gr-nh-link > div[class*=" "] {
+	background: var(--gr-surface-2) !important;
+	color: var(--gr-text) !important;
+}
+.gr-newshub .gr-nh-side .gr-nh-label {
+	padding-left: 10px !important;
+}
+.gr-newshub .gr-nh-title {
+	font-size: 20px !important;
+}
+.gr-newshub .gr-nh-side input {
+	box-sizing: border-box !important;
+	min-height: 0 !important;
+	padding: 0 10px !important;
+}
+.gr-newshub .gr-nh-side .DialogInput_Wrapper {
+	height: auto !important;
+	min-height: 0 !important;
+}
+.gr-newshub .gr-nh-title {
+	white-space: nowrap !important;
+}

@@ -398,8 +398,15 @@ body,
 .ChatUnreadMessageIndicator {
 	background: none !important;
 }
+/* unread chats: Steam draws a soft glow behind the row; a solid fill turned it
+   into a hard oval (group chats in the friends list), so keep it soft */
 .ChatUnreadMessageIndicator::after {
-	background: var(--gr-accent) !important;
+	background: radial-gradient(closest-side, color-mix(in srgb, var(--gr-accent) 30%, transparent), transparent) !important;
+}
+.ChatUnreadMessageIndicator .chatUnreadCircle {
+	background-color: var(--gr-accent) !important;
+	color: var(--gr-accent) !important;
+	box-shadow: 0 0 8px color-mix(in srgb, var(--gr-accent) 60%, transparent) !important;
 }
 
 .friendListFooter {
@@ -1324,6 +1331,105 @@ textarea.chatentry_chatTextarea {
 	justify-content: center;
 	width: auto !important;
 	height: 100% !important;
+}
+
+/* --- Group chats ------------------------------------------------------------------------ */
+/* channel column: labelled groups, rows like the side navigation */
+.chatRoomChannelGroups {
+	padding: 6px 8px !important;
+	background: var(--gr-bg) !important;
+}
+.chatRoomChannelGroups .ChannelTypeTitle {
+	display: flex !important;
+	align-items: center;
+	padding: 12px 6px 6px 10px !important;
+}
+.chatRoomChannelGroups .ChannelTypeLabel {
+	flex: 1;
+	padding: 0 !important;
+	color: var(--gr-text-3) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+}
+.chatRoomChannelGroups .ChannelTypeTitle svg {
+	width: 14px !important;
+	height: 14px !important;
+	opacity: 0.55;
+	transition: opacity var(--gr-fast) var(--gr-ease);
+}
+.chatRoomChannelGroups .ChannelTypeTitle:hover svg {
+	opacity: 1;
+}
+.chatRoomVoiceChannelsGroup {
+	padding-bottom: 12px !important;
+}
+.chatRoomTextChannel,
+.chatRoomVoiceChannel {
+	min-height: 34px;
+	margin: 1px 0 !important;
+	padding: 0 10px !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
+	transition: background var(--gr-fast) var(--gr-ease);
+}
+.chatRoomTextChannel:hover,
+.chatRoomVoiceChannel:hover {
+	background: var(--gr-hover) !important;
+}
+.chatRoomTextChannel.ActiveTextChannel {
+	background: var(--gr-surface-2) !important;
+}
+.chatRoomTextChannelName,
+.chatRoomVoiceChannelName {
+	color: var(--gr-text-2) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 13.5px !important;
+	font-style: normal !important;
+	font-weight: 500 !important;
+}
+.chatRoomTextChannel.ActiveTextChannel .chatRoomTextChannelName {
+	color: var(--gr-text) !important;
+}
+.chatRoomTextChannel svg,
+.chatRoomVoiceChannel svg {
+	opacity: 0.6;
+}
+
+/* system lines ("X was invited by Y"): a centred, quiet note */
+.msg.serverMsg {
+	display: flex !important;
+	justify-content: center;
+	padding: 8px 0 !important;
+	text-align: center !important;
+}
+.msg.serverMsg .msgText {
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: var(--gr-surface-2);
+	color: var(--gr-text-3) !important;
+	font-size: 12.5px !important;
+}
+
+/* member list: filter field and header */
+.MemberListOptionsContainer .friendSearchInput {
+	height: 30px !important;
+	border: 1px solid var(--gr-border) !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: var(--gr-surface) !important;
+	color: var(--gr-text) !important;
+	font-family: var(--gr-font) !important;
+	font-size: 12.5px !important;
+	font-style: normal !important;
+}
+.MemberListOptionsContainer .friendSearchInput::placeholder {
+	color: var(--gr-text-3) !important;
+	font-style: normal !important;
+}
+.MemberListOptionsContainer .friendSearchInput:focus {
+	border-color: var(--gr-accent) !important;
 }
 
 /* Menus: one look for every menu in the client.
