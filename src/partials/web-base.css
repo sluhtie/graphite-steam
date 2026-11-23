@@ -232,25 +232,65 @@ footer {
 }
 
 /* --- Web dropdown menus ----------------------------------------------------- */
+/* same card, rows and spacing as the client's menus (partials/menus.css) */
 .popup_body.popup_menu,
 .popup_block .popup_body {
 	background: var(--gr-surface-2) !important;
+	background-image: none !important;
 	border: 1px solid var(--gr-border) !important;
 	border-radius: var(--gr-radius) !important;
 	box-shadow: var(--gr-shadow) !important;
+}
+.popup_body.popup_menu {
+	padding: 4px !important;
+	min-width: 200px;
+	box-sizing: border-box;
 }
 .popup_block [class^="shadow_"]:not(.shadow_content) {
 	display: none !important;
 }
 .popup_menu_item,
 .popup_menu .popup_menu_item {
+	display: block;
+	min-height: 32px;
+	box-sizing: border-box;
+	margin: 0 !important;
+	padding: 7px 10px !important;
+	border: 0 !important;
+	border-radius: var(--gr-radius-sm) !important;
+	background: transparent !important;
 	color: var(--gr-text-2) !important;
-	border-radius: var(--gr-radius-sm);
+	font-family: var(--gr-font) !important;
+	font-size: 13px !important;
+	line-height: 18px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	text-decoration: none !important;
+	white-space: nowrap;
 }
 .popup_menu_item:hover,
 .popup_menu .popup_menu_item:hover {
 	background: var(--gr-active) !important;
 	color: var(--gr-text) !important;
+}
+.popup_menu_item img {
+	vertical-align: middle;
+	margin-right: 8px;
+}
+.popup_menu hr,
+.popup_menu .popup_menu_separator {
+	height: 1px;
+	margin: 4px 6px !important;
+	border: 0 !important;
+	background: var(--gr-border) !important;
+}
+.popup_menu_subheader {
+	padding: 8px 10px 4px !important;
+	color: var(--gr-text-3) !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
 }
 #footer .valve_links a,
 #footer a {

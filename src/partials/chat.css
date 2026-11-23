@@ -355,17 +355,7 @@
 	margin-left: 8px !important;
 }
 
-/* --- Inline popups (emoticon picker, context menus) --------------------------- */
-.contextMenu {
-	background: none !important;
-	background-image: none !important;
-	box-shadow: none !important;
-}
-.contextMenu .contextMenuContents {
-	border-radius: var(--gr-radius) !important;
-	box-shadow: var(--gr-shadow) !important;
-	overflow: hidden;
-}
+/* --- Inline popups (emoticon picker; context menus: partials/menus.css) ------- */
 .Picker .Tabs {
 	border-bottom: 1px solid var(--gr-border) !important;
 }
