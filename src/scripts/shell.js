@@ -1366,6 +1366,7 @@
 	};
 	const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.2v13.6L19 12z" fill="currentColor"/></svg>';
 	const cont = el('section', 'gr-continue');
+	cont.addEventListener('error', e => onArtError(e), true);
 	let contKey = '';
 	const lastGame = () => {
 		try { return games().filter(a => a.rt_last_time_played).sort((a, b) => b.rt_last_time_played - a.rt_last_time_played)[0] || null; } catch (e) { return null; }
@@ -1376,29 +1377,15 @@
 		const key = [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':');
 		if (key === contKey) return true;
 		contKey = key;
-		// Steam games: local asset cache, then the CDN. Non-Steam games (shortcuts)
-		// only have the art the user set, in Steam's custom images (png or jpg).
-		const shortcut = a.app_type === 1073741824;
-		const local = f => `https://steamloopback.host/assets/${a.appid}/${f}`;
-		const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
-		const custom = (kind, ext) => `https://steamloopback.host/customimages/${a.appid}_${kind}.${ext}`;
-		const art = (file, kind) => (shortcut
-			? `src="${custom(kind, 'png')}" data-fallback="${custom(kind, 'jpg')}"`
-			: `src="${local(file)}" data-fallback="${cdn(file)}"`);
 		const since = ago(a.rt_last_time_played);
 		cont.dataset.appid = a.appid;
-		cont.innerHTML = `<img alt="" ${art('library_hero.jpg', 'hero')}>`
+		// art and its fallbacks: artAttrs / onArtError (shell-home.js)
+		cont.innerHTML = `<img alt="" ${artAttrs(a, 'hero')}>`
 			+ `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
-			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" ${art('logo.png', 'logo')}>`
+			+ `<img class="gr-continue-logo" alt="" data-name="${esc(a.display_name)}" ${artAttrs(a, 'logo')}>`
 			+ `<span class="gr-continue-meta">${since ? esc(T.lastPlayed + ' ' + since) : ''}${a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : ''}</span>`
 			+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
 			+ `<button type="button" class="gr-continue-open">${esc(T.gamePage)}</button></div></div>`;
-		// local cache -> CDN -> no picture (the logo becomes the name)
-		cont.querySelectorAll('img').forEach(img => img.addEventListener('error', () => {
-			if (img.dataset.fallback) { const u = img.dataset.fallback; delete img.dataset.fallback; img.src = u; return; }
-			if (img.classList.contains('gr-continue-logo')) { const n = el('span', 'gr-continue-name'); n.textContent = a.display_name; img.replaceWith(n); }
-			else img.remove();
-		}));
 		return true;
 	};
 	const playApp = id => {
@@ -1431,6 +1418,8 @@
 		if (!renderContinue()) return;
 		if (cont.parentElement !== parent || parent.firstElementChild !== cont) parent.prepend(cont);
 	};
+
+/* @include shell-home.js */
 
 	/* --- Library list header: title + number of games (Home lives in the rail) ------------ */
 	const libHead = el('div', 'gr-libhead');
@@ -1515,7 +1504,8 @@
 		side.hidden = !web;
 		if (web) renderSide(sec);
 		renderDock();
-		mountContinue(sec);
+		renderHome(sec);
+		mountContinue(homeStyle === 'Library' ? sec : '');
 		// downloads ring
 		const p = progress();
 		const dlb = btns.downloads;

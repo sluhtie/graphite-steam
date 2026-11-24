@@ -157,6 +157,17 @@
 				}
 			}
 		},
+		"Start page": {
+			"description": "Graphite 2.0: what Home shows. Cockpit: your last game, friends online, downloads and recently played. Spotlight: your last game full-bleed. Bento: tiles for game, friends, downloads, playtime and collections. Library: Steam's library home.",
+			"tab": "Layout",
+			"default": "Cockpit",
+			"values": {
+				"Cockpit": {},
+				"Spotlight": {},
+				"Bento": {},
+				"Library": {}
+			}
+		},
 		"Store & community pages": {
 			"description": "Also restyle the Store and Community web pages shown inside Steam. Includes a small local script that recolors Valve's newer React pages (wishlist, calendar, news hub, charts).",
 			"tab": "Layout",

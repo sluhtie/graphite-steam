@@ -8,6 +8,7 @@
    kept (hover blocking, Steam menu, quick buttons). */
 @import "./nav-clean.css";
 @import "../partials/shell-library.css";
+@import "../partials/shell-home.css";
 
 :root {
 	--gr-shell-rail: 64px;

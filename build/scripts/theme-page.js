@@ -51,9 +51,10 @@
 			web: 'Shop & Community im Graphite-Stil', webHint: 'Shop-, Community- und Hilfeseiten im selben Look.', url: 'Adressleiste ausblenden', urlHint: 'Die Zeile mit der Adresse über Shop- und Community-Seiten.',
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
 			shelf: '„Regal hinzufügen“ ausblenden', shelfHint: 'Den Button unter den Regalen auf der Startseite der Bibliothek.',
+			home: 'Startseite', homeHint: 'Was „Startseite“ in der Leiste zeigt. Wechselt sofort.',
 			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
 			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', restartPending: 'Das neue Layout gilt nach einem Neustart von Steam.', restart: 'Steam neu starten', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
-			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0' },
+			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0', Library: 'Bibliothek' },
 			colorNames: { '--gr-accent': 'Akzent', '--gr-bg': 'Hintergrund', '--gr-border': 'Linien', '--gr-play': 'Spielen-Button', '--gr-play-text': 'Spielen-Button, Text', '--gr-surface': 'Fläche', '--gr-surface-2': 'Fläche 2', '--gr-surface-3': 'Fläche 3', '--gr-text': 'Text', '--gr-text-2': 'Text, gedämpft', '--gr-text-3': 'Text, leise' },
 			colorHints: { '--gr-accent': 'Auswahl, Links, Hauptbuttons', '--gr-bg': 'Fenster, Titelleiste, Spieleliste', '--gr-border': 'Trennlinien und Rahmen', '--gr-play': 'Hintergrund des Spielen-/Installieren-Buttons', '--gr-play-text': 'Schrift auf dem Spielen-Button', '--gr-surface': 'Inhaltsbereich und Dialoge', '--gr-surface-2': 'Karten, Menüs, Eingabefelder', '--gr-surface-3': 'Hover und Buttons', '--gr-text': 'Überschriften und wichtiger Text', '--gr-text-2': 'Normaler Text', '--gr-text-3': 'Beschriftungen und Hinweise' },
 		} : {
@@ -65,6 +66,7 @@
 			web: 'Store & Community in Graphite style', webHint: 'Store, community and help pages in the same look.', url: 'Hide the URL bar', urlHint: 'The address line above store and community pages.',
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
 			shelf: 'Hide "Add shelf"', shelfHint: 'The button under the shelves on the library home.',
+			home: 'Start page', homeHint: 'What Home in the rail shows. Switches right away.',
 			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
 			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', restartPending: 'The new layout takes effect after restarting Steam.', restart: 'Restart Steam', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
 			values: {}, colorNames: {}, colorHints: {},
@@ -72,10 +74,10 @@
 		// condition -> [label, hint, kind]; kind: 'seg' (choices) or 'toggle' (yes/no)
 		const CONDS = {
 			look: [['Font', G.font, G.fontHint, 'seg'], ['Corners', G.corners, G.cornersHint, 'seg']],
-			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Hide Add shelf', G.shelf, G.shelfHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
+			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Start page', G.home, G.homeHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Hide Add shelf', G.shelf, G.shelfHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
 		};
 		// order of the choices as shown (2.0 first)
-		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'] };
+		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'], 'Start page': ['Cockpit', 'Spotlight', 'Bento', 'Library'] };
 		const PRESETS = ['#8fa8ff', '#6cc6ff', '#5eead4', '#8fd16a', '#ffc46b', '#ff9a6c', '#ff7a90', '#f08fd8', '#b79cff', '#ececf0'];
 
 		const api = (m, args = []) => W.Millennium.callServerMethod('core', m, args).then(r => (typeof r === 'string' ? JSON.parse(r) : r));
@@ -123,6 +125,9 @@
 			paintConds();
 			api('Core_ChangeCondition', [theme, value, name]).then(r => {
 				if (r && r.success === false) throw new Error('failed');
+				// shell.js applies what it can right away (the start page)
+				window.dispatchEvent(new CustomEvent('graphite-condition', { detail: { name, value } }));
+				if (name === 'Start page') return;
 				// A new layout also changes the scripts of the store and community
 				// pages, which only a Steam restart reloads; the rest needs a UI reload.
 				if (name === 'Navigation') restart = true;
@@ -171,6 +176,8 @@
 		function row(name, label, hint, kind) {
 			const def = skin.Conditions[name];
 			if (!def) return '';
+			// the start pages belong to the 2.0 layout (shell.js)
+			if (name === 'Start page' && !window.__graphiteShell) return '';
 			let control;
 			if (kind === 'toggle') {
 				control = `<button type="button" class="gr-gs-switch" role="switch" aria-label="${esc(label)}"><i></i></button>`;

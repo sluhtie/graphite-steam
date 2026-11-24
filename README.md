@@ -23,6 +23,7 @@ Neutral graphite surfaces, one accent color you choose and quiet typography. Gra
 Graphite 2.0 is the default layout for the main window. The earlier layouts stay available under **Navigation** (see [Make it yours](#make-it-yours)): Clean and Classic.
 
 - **Icon rail** on the left: Home, Library, Store, Community, Downloads (with a progress ring), Graphite settings and Steam settings. The Graphite logo replaces the Steam logo and holds View / Friends / Games / Help.
+- **Start page** of your choice for Home: **Cockpit** (your last game, friends online, downloads and recently played), **Spotlight** (your last game full-bleed) or **Bento** (tiles for game, friends, downloads, playtime and collections), or Steam's library home.
 - **One search** in the title bar for your library and the store, with live store suggestions, prices and discounts as you type (`Ctrl K`).
 - **Side navigation** for the store (Discover, Wishlist, Points Shop, Cart, browse, categories, news, charts) and the community (activity, profile, friends, groups, discussions, workshop, market, inventory, badges ...). The page sits next to it in a rounded frame with a floating scrollbar and a thin loading bar.
 - **Friends dock** on the right: friends by status, a status menu (Online, Away, Invisible, Offline, Do not disturb), unread glow and your chats.
@@ -75,6 +76,7 @@ Everything is set in **Millennium → Themes → Graphite**, and also on the **G
 | **Navigation** | Graphite 2.0 (default), Clean, Classic (Steam's own menus and hover dropdowns) |
 | **Header** | Single row (default), Classic two-row layout |
 | **Store & community pages** | Restyle the in-client web pages (on by default) |
+| **Start page** | What Home shows (2.0): Cockpit (default), Spotlight, Bento, Library. Switches right away on the Graphite page |
 | **Startup screen** | The Graphite logo while the main window loads (2.0, on by default) |
 | **Extras** | Hide URL bar (on by default), Hide What's New, Hide "Add shelf" |
 
@@ -148,7 +150,7 @@ src/             Source CSS with $(Token) class references
   toasts.css     Desktop notifications
   partials/      Shared pieces pulled in with @import
   options/       Stylesheets toggled by theme options (shell.css = 2.0 layout, webkit.css = store/community)
-  scripts/       shell.js (2.0 layout, incl. shell-theme.js, points.js, nav.js), clean.js (nav.js + theme-page.js),
+  scripts/       shell.js (2.0 layout, incl. shell-home.js, shell-theme.js, points.js, nav.js), clean.js (nav.js + theme-page.js),
                  theme-page.js (Graphite page for Clean / Classic), web-recolor.js (React web pages, incl. marketing.js)
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview, lookup and docs render scripts
