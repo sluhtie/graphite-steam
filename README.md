@@ -6,7 +6,7 @@
 
 Neutral graphite surfaces, one accent color you choose and quiet typography. Graphite restyles the whole client, from the library and menus to the store, community and friends chat, without gradients, glow or visual noise.
 
-**New in 2.0:** a rebuilt app layout with an icon rail, one search for your library and the store, a side navigation for the store and community, a friends dock and a settings page of its own.
+**New in 2.1:** a start page of your own for Home (Cockpit, Spotlight or Bento), the Graphite settings page in every layout, layout options that show what works together, and fixes from your reports. Graphite 2.0 brought the rebuilt app layout with an icon rail, one search for your library and the store, a side navigation and a friends dock.
 
 [![Millennium theme](https://img.shields.io/badge/Millennium-theme-8fa8ff?style=for-the-badge&labelColor=18181c&logo=steam&logoColor=ececf0)](https://steambrew.app/theme/AhWCRyHBVXoohiaVWWBW)
 [![Version](https://img.shields.io/github/package-json/v/sluhtie/graphite-steam?style=for-the-badge&labelColor=18181c&color=8fa8ff&label=version)](https://github.com/sluhtie/graphite-steam/commits/main)
@@ -16,19 +16,44 @@ Neutral graphite surfaces, one accent color you choose and quiet typography. Gra
 
 ---
 
-## What's new in 2.0
+## What's new in 2.1
+
+![Start page: Cockpit](docs/home-cockpit.jpg)
+
+- **Start pages** for Home in Graphite 2.0, set under **Start page**:
+  - **Cockpit** (default): a greeting, your last game with Play, friends online, downloads or recently updated games, and your recently played games.
+  - **Spotlight**: your last game full-bleed, with recent games and friends / downloads along the bottom.
+  - **Bento**: tiles for your game, friends, downloads, playtime (last two weeks, most played) and collections.
+  - **Library**: Steam's library home with a "continue playing" card, as in 2.0.
+
+  It switches right away on the Graphite page. Your custom game art is used where you set it.
+- **Graphite page in every layout**: Clean and Classic open it with the palette button next to the notifications.
+- **Options that show what works together**: an option that has no effect with your other choices is greyed out and says what it needs. After picking a new layout, the page offers to restart Steam.
+- **Fixes**:
+  - the maximize button showing an X while maximized;
+  - the store's own navigation missing in Clean and Classic after a layout switch;
+  - Continue playing with non-Steam games;
+  - Hide URL bar now also working in Graphite 2.0;
+  - Brew Hub in Graphite colors;
+  - a new option to hide "Add shelf".
+
+| **Spotlight** | **Bento** |
+| --- | --- |
+| ![Start page: Spotlight](docs/home-spotlight.jpg) | ![Start page: Bento](docs/home-bento.jpg) |
+
+## The Graphite 2.0 layout
 
 ![Graphite 2.0 highlights](docs/features.jpg)
 
 Graphite 2.0 is the default layout for the main window. The earlier layouts stay available under **Navigation** (see [Make it yours](#make-it-yours)): Clean and Classic.
 
 - **Icon rail** on the left: Home, Library, Store, Community, Downloads (with a progress ring), Graphite settings and Steam settings. The Graphite logo replaces the Steam logo and holds View / Friends / Games / Help.
-- **Start page** of your choice for Home: **Cockpit** (your last game, friends online, downloads and recently played), **Spotlight** (your last game full-bleed) or **Bento** (tiles for game, friends, downloads, playtime and collections), or Steam's library home.
+- **Start page** of your own for Home (Cockpit, Spotlight, Bento; see [What's new in 2.1](#whats-new-in-21)), or Steam's library home.
 - **One search** in the title bar for your library and the store, with live store suggestions, prices and discounts as you type (`Ctrl K`).
 - **Side navigation** for the store (Discover, Wishlist, Points Shop, Cart, browse, categories, news, charts) and the community (activity, profile, friends, groups, discussions, workshop, market, inventory, badges ...). The page sits next to it in a rounded frame with a floating scrollbar and a thin loading bar.
 - **Friends dock** on the right: friends by status, a status menu (Online, Away, Invisible, Offline, Do not disturb), unread glow and your chats.
 - **Store, redesigned**: hero cards on the store front and on every category page (art, logo, description, price, add to cart, wishlist), a Points Shop with its own banner and category chips, calm capsules, prices and hover cards.
-- **Graphite settings page**: accent presets and every color applied live, font, corners and layout options, one click to reload the UI.
+- **Graphite settings page**: accent presets and every color applied live, font, corners and layout options, one click to reload the UI. Since 2.1 also in Clean and Classic.
 - **The details**: a startup screen and loading spinners with the Graphite logo, notifications and toasts in the same style.
 
 ## Screenshots
@@ -53,7 +78,7 @@ Graphite 2.0 is the default layout for the main window. The earlier layouts stay
 | --- | --- | --- |
 | 🧭 | **Navigation** | **Graphite 2.0:** icon rail, title bar search, side navigation for store and community, friends dock. **Clean:** one row with back / forward, Store / Library / Community, downloads, friends, notifications and account; View / Friends / Games / Help fold away behind the logo. **Classic:** Steam's own menus. |
 | 🪟 | **Window frame** | Own icon set for the title bar and window controls, round avatar with a status dot, no bottom bar. In 2.0 the store and community sit in a rounded frame with a loading bar. |
-| 🎮 | **Library** | Game list, home shelves and capsules, hover cards, game details (hero, play bar, sections, activity), news and patch notes overlay, downloads with the bandwidth graph, install / uninstall dialogs, console. |
+| 🎮 | **Library** | Start pages (Cockpit, Spotlight, Bento) in 2.0, game list, home shelves and capsules, hover cards, game details (hero, play bar, sections, activity), news and patch notes overlay, downloads with the bandwidth graph, install / uninstall dialogs, console. |
 | 🛒 | **Store** | Store front and category pages with one hero card each, game pages (one card per purchase option), wishlist and its dialogs, search with filters, new & trending, points shop and points history, discovery queue, news hub, calendar and charts. |
 | 👥 | **Community** | Home, hubs, discussions, workshop, activity, profiles, friends and groups, screenshots / artwork / guides, badges, inventory and the Community Market incl. the new item pages. |
 | 💬 | **Friends & chat** | Friends list with status dots, group chats with channels, a roomy chat window, emoji picker. |
@@ -94,7 +119,7 @@ Options other than colors take effect after reloading the UI (the Graphite page 
 
    You can also download the ZIP and extract it there.
 3. Restart Steam, open **Steam → Millennium → Themes** and select **Graphite**.
-4. Graphite 2.0 is the default layout. For Clean or Classic, change **Navigation** and restart Steam.
+4. Graphite 2.0 is the default layout, with the Cockpit start page. Pick another start page under **Start page**. For Clean or Classic, change **Navigation** and restart Steam.
 
 ## After a Steam update
 
@@ -123,7 +148,7 @@ Graphite's source CSS in `src/` uses readable tokens instead of hashes, and a sm
 
 The store and community are Valve's web pages. Older parts use stable class names; newer React parts use Valve's web design system, whose color scales Graphite remaps on `:root`. Small local scripts handle the rest:
 
-- **`src/scripts/shell.js`** (Navigation: Graphite 2.0): builds the 2.0 layout on top of Steam's own UI. Rail, search and side navigation use Steam's router and `steam://` URLs, so every page is still Steam's real page. The store and community are Steam's native browser view, which follows a placeholder element, so resizing that element moves the page into the frame. Also includes the Graphite settings page (`shell-theme.js`), the store hero cards and the Points Shop (`points.js`).
+- **`src/scripts/shell.js`** (Navigation: Graphite 2.0): builds the 2.0 layout on top of Steam's own UI. Rail, search and side navigation use Steam's router and `steam://` URLs, so every page is still Steam's real page. The store and community are Steam's native browser view, which follows a placeholder element, so resizing that element moves the page into the frame. Also includes the start pages (`shell-home.js`), the Graphite settings page (`shell-theme.js`), the store hero cards and the Points Shop (`points.js`). On store and community pages it asks Millennium for the layout and steps back if Graphite 2.0 isn't set, so a layout switch without a restart doesn't hide the store's own navigation.
 - **`src/scripts/web-recolor.js`** (Store & community option): swaps the hardcoded blue-greys of Valve's newest React pages for Graphite surfaces, and tags the parts of the wishlist, game pages, news hub, category pages and event overlay with stable `gr-*` classes, so the theme can restyle them despite Valve's changing class names.
 - **`src/scripts/clean.js`** (Navigation: Clean): `nav.js` stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation; `theme-page.js` adds the Graphite page with its title bar button.
 - **`src/scripts/theme-page.js`** (Navigation: Classic): the Graphite page and its title bar button.

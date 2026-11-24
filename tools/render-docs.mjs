@@ -33,7 +33,12 @@ const candidates = [
 const browser = candidates.find(p => fs.existsSync(p));
 if (!browser) { console.error('No Chromium browser found; set BROWSER.'); process.exit(1); }
 
-const port = 9300 + Math.floor(Math.random() * 600);
+// a port nothing listens on (a browser left over from an earlier run would
+// otherwise answer and hand back its old page)
+const busy = async p => { try { await fetch(`http://127.0.0.1:${p}/json/version`); return true; } catch { return false; } };
+let port = 0;
+for (let i = 0; i < 20 && !port; i++) { const p = 9300 + Math.floor(Math.random() * 600); if (!(await busy(p))) port = p; }
+if (!port) { console.error('No free debugging port found.'); process.exit(1); }
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'graphite-render-'));
 const proc = spawn(browser, [
 	'--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
@@ -83,6 +88,15 @@ if (mode === 'frames') {
 	console.log('saved', out);
 }
 
+// Close the whole browser through DevTools: on Windows killing the launched
+// process leaves the browser's own processes running.
+try {
+	const { webSocketDebuggerUrl } = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json();
+	const bws = new WebSocket(webSocketDebuggerUrl);
+	await new Promise((r, j) => { bws.onopen = r; bws.onerror = j; });
+	bws.send(JSON.stringify({ id: 1, method: 'Browser.close' }));
+	await new Promise(r => setTimeout(r, 300));
+} catch { /* already gone */ }
 ws.close();
 proc.kill();
 setTimeout(() => { try { fs.rmSync(profile, { recursive: true, force: true }); } catch { /* locked */ } process.exit(0); }, 600);
