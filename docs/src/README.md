@@ -8,7 +8,7 @@ the repo root.
 | --- | --- | --- |
 | `docs/banner.webp` | `banner.html` | frames, then encode (below) |
 | `docs/thumbnail.jpg` (steambrew header) | `thumbnail.html` | `node tools/render-docs.mjs still docs/src/thumbnail.html docs/thumbnail.jpg 1920 1080` |
-| `docs/library.jpg`, `game.jpg`, `store.jpg`, `category.jpg`, `points.jpg`, `app.jpg`, `wishlist.jpg`, `market.jpg`, `graphite.jpg` | `frame.html#<shot>` | `node tools/render-docs.mjs still "docs/src/frame.html#library" docs/library.jpg 1800 1060` |
+| `docs/library.jpg`, `game.jpg`, `store.jpg`, `category.jpg`, `points.jpg`, `app.jpg`, `wishlist.jpg`, `market.jpg`, `graphite.jpg`, `home-cockpit.jpg`, `home-spotlight.jpg`, `home-bento.jpg` | `frame.html#<shot>` | `node tools/render-docs.mjs still "docs/src/frame.html#library" docs/library.jpg 1800 1060` |
 | `docs/features.jpg` | `features.html` | `node tools/render-docs.mjs still docs/src/features.html docs/features.jpg 1800 760` |
 | `docs/accents.jpg` | `accents.html` | `node tools/render-docs.mjs still docs/src/accents.html docs/accents.jpg 1800 1150` |
 | `docs/splash.jpg` (Millennium splash) | top of `shots/game.jpg` | crop to 3.56 : 1, 1811×509 |
