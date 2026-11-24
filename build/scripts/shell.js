@@ -40,6 +40,11 @@
 		#gr-sb:hover::before, #gr-sb.gr-drag::before { width: 6px; background: color-mix(in srgb, var(--gr-text, #ececf0) 45%, transparent); }
 	`;
 	const css = `
+		/* tokens used below; webkit.css (option "Store & community pages") has the real ones */
+		:where(:root) { --gr-fast: 120ms; --gr-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+		/* with the address bar shown (option "Hide URL bar: no") it sits on top of the
+		   page inside the frame, so only the page's bottom corners are the frame's */
+		html.gr-urlbar::after { border-radius: 0 0 15px 15px; }
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
 		.responsive_page_content > div:has(form[role="search"]),
 		#store_header, .store_header_btn_gray, #global_header { display: none !important; }
@@ -119,6 +124,7 @@
 	// from its search form: climb while the parent is still bar-sized (and not
 	// an out-of-flow wrapper of height 0), then hide that element.
 	const hideBar = () => {
+		if (off) return;
 		const form = document.querySelector('form[role="search"]');
 		if (!form || form.closest('[data-gr-bar]')) return;
 		let bar = form;
@@ -137,16 +143,49 @@
 	let queued = false;
 	const watch = () => {
 		hideBar();
-		new MutationObserver(() => {
+		mo = new MutationObserver(() => {
 			if (queued) return;
 			queued = true;
 			requestAnimationFrame(() => { queued = false; hideBar(); });
-		}).observe(document.body, { childList: true, subtree: true });
+		});
+		mo.observe(document.body, { childList: true, subtree: true });
 	};
+	let off = false;
+	let mo = null;
 	if (h === 'store.steampowered.com') {
 		if (document.body) watch();
 		else document.addEventListener('DOMContentLoaded', watch, { once: true });
 	}
+
+	// The layout can be switched without restarting Steam (Graphite page,
+	// Millennium's panel), and store / community pages may then still get this
+	// script while the main window already runs Clean or Classic. Those layouts
+	// need the page's own navigation and no frame, so ask Millennium which
+	// layout is set and step back if it is not Graphite 2.0. The same answer
+	// says whether the address bar is shown above the page.
+	const undo = () => {
+		off = true;
+		window.__graphiteShellPage = false;
+		if (mo) mo.disconnect();
+		const st = document.getElementById('gr-shell-page');
+		if (st) st.remove();
+		const sb = document.getElementById('gr-sb');
+		if (sb) sb.remove();
+		for (const bar of document.querySelectorAll('[data-gr-bar]')) { bar.style.removeProperty('display'); delete bar.dataset.grBar; }
+	};
+	(async () => {
+		try {
+			const M = window.Millennium;
+			if (!M || typeof M.callServerMethod !== 'function') return;
+			const r = await M.callServerMethod('core', 'Core_GetBackendConfig', []);
+			const cfg = typeof r === 'string' ? JSON.parse(r) : r;
+			const themes = (cfg && cfg.themes) || {};
+			const set = themes.conditions && themes.conditions[themes.activeTheme];
+			const nav = set && set.Navigation;
+			if (nav && nav !== 'Graphite 2.0') { undo(); return; }
+			if (set && set['Hide URL bar'] === 'no') document.documentElement.classList.add('gr-urlbar');
+		} catch (e) { /* keep the 2.0 page */ }
+	})();
 })();
 
 /*
@@ -1472,9 +1511,12 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 baut das Hauptfenster neu auf.', header: 'Kopfzeile', headerHint: 'Menü und Reiter in einer Zeile.',
 			web: 'Shop & Community im Graphite-Stil', webHint: 'Shop-, Community- und Hilfeseiten im selben Look.', url: 'Adressleiste ausblenden', urlHint: 'Die Zeile mit der Adresse über Shop- und Community-Seiten.',
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
+			shelf: '„Regal hinzufügen“ ausblenden', shelfHint: 'Den Button unter den Regalen auf der Startseite der Bibliothek.',
+			home: 'Startseite', homeHint: 'Was „Startseite“ in der Leiste zeigt. Wechselt sofort.',
+			needs20: 'Nur mit Navigation: Graphite 2.0.', headerIn20: 'Graphite 2.0 hat eine eigene Titelleiste, hier ändert das nichts.', needsLibrary: 'Nur mit Startseite: Bibliothek. Deine Startseite ersetzt Steams Bibliotheks-Startseite.',
 			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
-			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
-			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0' },
+			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', restartPending: 'Das neue Layout gilt nach einem Neustart von Steam.', restart: 'Steam neu starten', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
+			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0', Library: 'Bibliothek' },
 			colorNames: { '--gr-accent': 'Akzent', '--gr-bg': 'Hintergrund', '--gr-border': 'Linien', '--gr-play': 'Spielen-Button', '--gr-play-text': 'Spielen-Button, Text', '--gr-surface': 'Fläche', '--gr-surface-2': 'Fläche 2', '--gr-surface-3': 'Fläche 3', '--gr-text': 'Text', '--gr-text-2': 'Text, gedämpft', '--gr-text-3': 'Text, leise' },
 			colorHints: { '--gr-accent': 'Auswahl, Links, Hauptbuttons', '--gr-bg': 'Fenster, Titelleiste, Spieleliste', '--gr-border': 'Trennlinien und Rahmen', '--gr-play': 'Hintergrund des Spielen-/Installieren-Buttons', '--gr-play-text': 'Schrift auf dem Spielen-Button', '--gr-surface': 'Inhaltsbereich und Dialoge', '--gr-surface-2': 'Karten, Menüs, Eingabefelder', '--gr-surface-3': 'Hover und Buttons', '--gr-text': 'Überschriften und wichtiger Text', '--gr-text-2': 'Normaler Text', '--gr-text-3': 'Beschriftungen und Hinweise' },
 		} : {
@@ -1485,17 +1527,31 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 rebuilds the main window.', header: 'Header', headerHint: 'Menu and tabs in one row.',
 			web: 'Store & Community in Graphite style', webHint: 'Store, community and help pages in the same look.', url: 'Hide the URL bar', urlHint: 'The address line above store and community pages.',
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
+			shelf: 'Hide "Add shelf"', shelfHint: 'The button under the shelves on the library home.',
+			home: 'Start page', homeHint: 'What Home in the rail shows. Switches right away.',
+			needs20: 'Only with Navigation: Graphite 2.0.', headerIn20: 'Graphite 2.0 has its own title bar, so this changes nothing there.', needsLibrary: 'Only with Start page: Library. Your start page replaces Steam\'s library home.',
 			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
-			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
+			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', restartPending: 'The new layout takes effect after restarting Steam.', restart: 'Restart Steam', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
 			values: {}, colorNames: {}, colorHints: {},
 		};
 		// condition -> [label, hint, kind]; kind: 'seg' (choices) or 'toggle' (yes/no)
 		const CONDS = {
 			look: [['Font', G.font, G.fontHint, 'seg'], ['Corners', G.corners, G.cornersHint, 'seg']],
-			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
+			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Start page', G.home, G.homeHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Hide Add shelf', G.shelf, G.shelfHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
+		};
+		// Options that only apply with certain other choices: condition -> the
+		// reason it does not apply right now (or ''). Such rows are greyed out and
+		// say what they need, and come back as soon as the other choice does.
+		const steamHome = v => v.Navigation !== 'Graphite 2.0' || v['Start page'] === 'Library';
+		const REQUIRES = {
+			'Start page': v => (v.Navigation !== 'Graphite 2.0' ? G.needs20 : ''),
+			'Startup screen': v => (v.Navigation !== 'Graphite 2.0' ? G.needs20 : ''),
+			Header: v => (v.Navigation === 'Graphite 2.0' ? G.headerIn20 : ''),
+			"Hide What's New": v => (steamHome(v) ? '' : G.needsLibrary),
+			'Hide Add shelf': v => (steamHome(v) ? '' : G.needsLibrary),
 		};
 		// order of the choices as shown (2.0 first)
-		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'] };
+		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'], 'Start page': ['Cockpit', 'Spotlight', 'Bento', 'Library'] };
 		const PRESETS = ['#8fa8ff', '#6cc6ff', '#5eead4', '#8fd16a', '#ffc46b', '#ff9a6c', '#ff7a90', '#f08fd8', '#b79cff', '#ececf0'];
 
 		const api = (m, args = []) => W.Millennium.callServerMethod('core', m, args).then(r => (typeof r === 'string' ? JSON.parse(r) : r));
@@ -1543,9 +1599,19 @@
 			paintConds();
 			api('Core_ChangeCondition', [theme, value, name]).then(r => {
 				if (r && r.success === false) throw new Error('failed');
-				qs('.gr-gs-reload', page).hidden = false;
+				// shell.js applies what it can right away (the start page)
+				window.dispatchEvent(new CustomEvent('graphite-condition', { detail: { name, value } }));
+				if (name === 'Start page') return;
+				// A new layout also changes the scripts of the store and community
+				// pages, which only a Steam restart reloads; the rest needs a UI reload.
+				if (name === 'Navigation') restart = true;
+				const bar = qs('.gr-gs-reload', page);
+				qs('span', bar).textContent = restart ? G.restartPending : G.pending;
+				qs('button', bar).textContent = restart ? G.restart : G.reload;
+				bar.hidden = false;
 			}).catch(() => { values[name] = before; paintConds(); flash(G.failed); });
 		};
+		let restart = false;
 		const flash = text => {
 			const bar = qs('.gr-gs-reload', page);
 			qs('span', bar).textContent = text;
@@ -1578,6 +1644,12 @@
 				for (const b of g.querySelectorAll('button[data-value]')) b.classList.toggle('gr-on', b.dataset.value === v);
 				const sw = g.querySelector('.gr-gs-switch');
 				if (sw) sw.setAttribute('aria-checked', String(v === 'yes'));
+				const why = REQUIRES[g.dataset.cond] ? REQUIRES[g.dataset.cond](values) : '';
+				g.classList.toggle('gr-gs-off', !!why);
+				for (const b of g.querySelectorAll('button')) b.disabled = !!why;
+				const note = g.querySelector('.gr-gs-why');
+				note.hidden = !why;
+				note.lastChild.textContent = why;
 			}
 		}
 
@@ -1591,7 +1663,8 @@
 				const opts = ORDER[name] || Object.keys(def.values);
 				control = `<div class="gr-gs-seg" role="radiogroup">${opts.filter(o => o in def.values).map(o => `<button type="button" data-value="${esc(o)}">${esc(G.values[o] || o)}</button>`).join('')}</div>`;
 			}
-			return `<div class="gr-gs-row" data-cond="${esc(name)}"><div class="gr-gs-label"><b>${esc(label)}</b><small>${esc(hint)}</small></div>${control}</div>`;
+			return `<div class="gr-gs-row" data-cond="${esc(name)}"><div class="gr-gs-label"><b>${esc(label)}</b><small>${esc(hint)}</small>`
+				+ `<small class="gr-gs-why" hidden>${svg('M12 8v5M12 16.5h.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 2)}<span></span></small></div>${control}</div>`;
 		}
 
 		function build() {
@@ -1604,7 +1677,9 @@
 				<div class="gr-gs-reload" hidden><span>${esc(G.pending)}</span><button type="button">${esc(G.reload)}</button></div>
 			</div>`;
 			qs('.gr-gs-x', page).addEventListener('click', close);
-			qs('.gr-gs-reload button', page).addEventListener('click', () => { try { W.SteamClient.Browser.RestartJSContext(); } catch (e) {} });
+			qs('.gr-gs-reload button', page).addEventListener('click', () => {
+				try { if (restart) W.SteamClient.User.StartRestart(false); else W.SteamClient.Browser.RestartJSContext(); } catch (e) { /* ignore */ }
+			});
 			document.body.append(page);
 		}
 
@@ -2342,6 +2417,7 @@
 	};
 	const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.2v13.6L19 12z" fill="currentColor"/></svg>';
 	const cont = el('section', 'gr-continue');
+	cont.addEventListener('error', e => onArtError(e), true);
 	let contKey = '';
 	const lastGame = () => {
 		try { return games().filter(a => a.rt_last_time_played).sort((a, b) => b.rt_last_time_played - a.rt_last_time_played)[0] || null; } catch (e) { return null; }
@@ -2352,30 +2428,28 @@
 		const key = [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':');
 		if (key === contKey) return true;
 		contKey = key;
-		const local = f => `https://steamloopback.host/assets/${a.appid}/${f}`;
-		const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
 		const since = ago(a.rt_last_time_played);
 		cont.dataset.appid = a.appid;
-		cont.innerHTML = `<img alt="" src="${local('library_hero.jpg')}" data-fallback="${cdn('library_hero.jpg')}">`
+		// art and its fallbacks: artAttrs / onArtError (shell-home.js)
+		cont.innerHTML = `<img alt="" ${artAttrs(a, 'hero')}>`
 			+ `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
-			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" src="${local('logo.png')}" data-fallback="${cdn('logo.png')}">`
+			+ `<img class="gr-continue-logo" alt="" data-name="${esc(a.display_name)}" ${artAttrs(a, 'logo')}>`
 			+ `<span class="gr-continue-meta">${since ? esc(T.lastPlayed + ' ' + since) : ''}${a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : ''}</span>`
 			+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
 			+ `<button type="button" class="gr-continue-open">${esc(T.gamePage)}</button></div></div>`;
-		// local cache -> CDN -> no picture (the logo becomes the name)
-		cont.querySelectorAll('img').forEach(img => img.addEventListener('error', () => {
-			if (img.dataset.fallback) { const u = img.dataset.fallback; delete img.dataset.fallback; img.src = u; return; }
-			if (img.classList.contains('gr-continue-logo')) { const n = el('span', 'gr-continue-name'); n.textContent = a.display_name; img.replaceWith(n); }
-			else img.remove();
-		}));
 		return true;
 	};
 	const playApp = id => {
 		go('/library/app/' + id);
 		const t0 = Date.now();
+		let onPage = 0;
 		const tick = () => {
-			// only press once the page really shows this game (its art is from /assets/<id>/)
-			const ready = route() === '/library/app/' + id && qs('.NZMJ6g2iVnFsOOp-lDmIP img[src*="/assets/' + id + '/"]');
+			// only press once the page really shows this game: its art is from
+			// /assets/<id>/ (or /customimages/<id>_ for custom art). A non-Steam
+			// game without custom art has none, so there give the page a moment.
+			const here = route() === '/library/app/' + id;
+			if (here && !onPage) onPage = Date.now();
+			const ready = here && (qs('.NZMJ6g2iVnFsOOp-lDmIP img[src*="/assets/' + id + '/"], .NZMJ6g2iVnFsOOp-lDmIP img[src*="/customimages/' + id + '_"]') || Date.now() - onPage > 800);
 			const btn = ready && qs('._1U7LKpx70kEsz3jJwAFOi- ._1FnJ6dPuknQFQ2RTpKTI16 ._3ydigb6zZAjJ0JCDgHwSYA');
 			if (btn) { setTimeout(() => btn.click(), 200); return; }
 			if (Date.now() - t0 < 6000) setTimeout(tick, 120);
@@ -2395,6 +2469,261 @@
 		if (!renderContinue()) return;
 		if (cont.parentElement !== parent || parent.firstElementChild !== cont) parent.prepend(cont);
 	};
+
+	/* --- Home: start pages ------------------------------------------------------------------
+	 * Option "Start page": instead of Steam's library home, a page of its own over
+	 * the whole content area (the game list too):
+	 * - Cockpit: greeting, the last played game, friends online, downloads and a
+	 *   row of recently played games;
+	 * - Spotlight: the last played game full-bleed, recent games along the bottom;
+	 * - Bento: tiles of different sizes (game, friends, downloads, playtime,
+	 *   collections, recent games);
+	 * - Library: Steam's library home with the "continue playing" card.
+	 * All data is Steam's own (app list, friends, downloads, collections); art from
+	 * the local asset cache, then the CDN. Changing the option on the Graphite page
+	 * applies at once ("graphite-condition" event from shell-theme.js).
+	 * (Included into shell.js after "continue playing": uses its helpers.)
+	 */
+	const HOME_STYLES = ['Cockpit', 'Spotlight', 'Bento', 'Library'];
+	let homeStyle = null; // until Millennium says which one is set
+	const HS = steamLang === 'german' ? {
+		morning: 'Guten Morgen', day: 'Guten Tag', evening: 'Guten Abend', recent: 'Kürzlich gespielt', friendsOn: 'Freunde online',
+		noFriends: 'Gerade ist niemand online.', downloading: 'Wird heruntergeladen', noDl: 'Keine Downloads', dlDone: 'Kürzlich aktualisiert',
+		twoWeeks: 'Letzte zwei Wochen', mostPlayed: 'Am meisten gespielt', library: 'Deine Bibliothek', games: 'Spiele', installed: 'installiert',
+		collections: 'Sammlungen', allGames: 'Alle Spiele', allTime: 'Am meisten gespielt, insgesamt', openDl: 'Downloads öffnen', inGameN: 'im Spiel', onlineN: 'online', none: 'Noch nichts gespielt.',
+	} : {
+		morning: 'Good morning', day: 'Good afternoon', evening: 'Good evening', recent: 'Recently played', friendsOn: 'Friends online',
+		noFriends: 'Nobody is online right now.', downloading: 'Downloading', noDl: 'Nothing downloading', dlDone: 'Recently updated',
+		twoWeeks: 'Last two weeks', mostPlayed: 'Most played', library: 'Your library', games: 'games', installed: 'installed',
+		collections: 'Collections', allGames: 'All games', allTime: 'Most played, all time', openDl: 'Open downloads', inGameN: 'in game', onlineN: 'online', none: 'Nothing played yet.',
+	};
+
+	// Art, in the order Steam's own library uses it: the user's custom art, the
+	// local asset cache, then the CDN (newer games keep their art under hashed
+	// file names, which Steam's app store knows). Non-Steam games only have
+	// custom art. The <img> gets the first URL, the rest wait in data-fallback.
+	const abs = u => (u && u.startsWith('/') ? 'https://steamloopback.host' + u : u);
+	const urls = (fn, a) => {
+		try { const r = W.appStore[fn](a); return (Array.isArray(r) ? r : r ? [r] : []).filter(Boolean); } catch (e) { return []; }
+	};
+	const CUSTOM = { hero: 'GetCustomHeroImageURLs', logo: 'GetCustomLogoImageURLs', capsule: 'GetCustomVerticalCapsuleURLs', header: 'GetCustomLandcapeImageURLs' };
+	const CUSTOM_SUFFIX = { hero: '_hero', logo: '_logo', capsule: 'p', header: '' };
+	const artUrls = (a, kind) => {
+		const list = urls(CUSTOM[kind], a);
+		if (a.app_type === 1073741824) {
+			if (!list.length) for (const ext of ['png', 'jpg']) list.push(`/customimages/${a.appid}${CUSTOM_SUFFIX[kind]}.${ext}`);
+		} else {
+			const local = f => `/assets/${a.appid}/${f}`;
+			const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
+			if (kind === 'capsule') list.push(...urls('GetCachedVerticalCapsuleURL', a), ...urls('GetVerticalCapsuleURLForApp', a), local('library_600x900.jpg'));
+			else if (kind === 'header') { if (a.header_filename) list.push(local(a.header_filename), cdn(a.header_filename)); list.push(local('header.jpg'), cdn('header.jpg')); }
+			else { const f = kind === 'hero' ? 'library_hero.jpg' : 'logo.png'; list.push(local(f), cdn(f)); }
+		}
+		return [...new Set(list.map(abs))];
+	};
+	const iconAttrs = a => {
+		const l = [...urls('GetCachedIconURLsForApp', a), ...urls('GetIconURLForApp', a)].map(abs);
+		return `src="${esc(l[0] || 'data:,')}" data-fallback="${esc(l.slice(1).join(' '))}"`;
+	};
+	const appById = id => { try { return W.appStore.GetAppOverviewByAppID(Number(id)); } catch (e) { return null; } };
+	const artAttrs = (a, kind) => {
+		const l = artUrls(a, kind);
+		return `src="${esc(l[0] || 'data:,')}" data-fallback="${esc(l.slice(1).join(' '))}"`;
+	};
+	// next URL -> the name instead of a logo -> a plain tile with the name
+	const onArtError = e => {
+		const img = e.target;
+		if (!(img instanceof HTMLImageElement)) return;
+		const rest = (img.dataset.fallback || '').split(' ').filter(Boolean);
+		if (rest.length) { img.dataset.fallback = rest.slice(1).join(' '); img.src = rest[0]; return; }
+		if (img.dataset.name) { const n = el('span', 'gr-continue-name'); n.textContent = img.dataset.name; img.replaceWith(n); return; }
+		const box = img.parentElement;
+		if (box && box.dataset.name) { box.classList.add('gr-noart'); img.remove(); } else img.style.visibility = 'hidden';
+	};
+	const recentGames = n => {
+		try { return games().filter(a => a.rt_last_time_played).sort((a, b) => b.rt_last_time_played - a.rt_last_time_played).slice(0, n); } catch (e) { return []; }
+	};
+	const friendsNow = () => {
+		try {
+			return friendStore().all_friends.map(friendView).filter(v => v.st === 'ingame' || v.st === 'online')
+				.sort((a, b) => (a.st === 'ingame' ? 0 : 1) - (b.st === 'ingame' ? 0 : 1) || a.name.localeCompare(b.name));
+		} catch (e) { return []; }
+	};
+	const myName = () => { try { const s = friendStore().self; return s.display_name || (s.persona && s.persona.m_strPlayerName) || ''; } catch (e) { return ''; } };
+	const dlNow = () => {
+		try {
+			const ov = W.downloadsStore.m_DownloadOverview.get('0');
+			if (!ov || !ov.update_appid) return null;
+			return { id: ov.update_appid, name: appName(ov.update_appid), rate: ov.update_network_bytes_per_second || 0 };
+		} catch (e) { return null; }
+	};
+	const dlDone = () => { try { return [...W.downloadsStore.m_rgRecentlyCompleted].slice(0, 4).map(d => ({ id: d.appid, t: d.completed_time || 0 })); } catch (e) { return []; } };
+	const collections = () => {
+		try {
+			return [...W.collectionStore.userCollections].filter(c => c.m_strId !== 'uncategorized' && !/^type-/.test(c.m_strId)).slice(0, 4)
+				.map(c => ({ id: c.m_strId, name: c.displayName || c.m_strName, n: (c.allApps || c.m_rgApps || []).length }));
+		} catch (e) { return []; }
+	};
+	const playStats = () => {
+		const g = games();
+		const two = g.filter(a => a.minutes_playtime_last_two_weeks).sort((a, b) => b.minutes_playtime_last_two_weeks - a.minutes_playtime_last_two_weeks);
+		const ever = g.filter(a => a.minutes_playtime_forever).sort((a, b) => b.minutes_playtime_forever - a.minutes_playtime_forever).slice(0, 3);
+		return { two: two.reduce((s, a) => s + a.minutes_playtime_last_two_weeks, 0), top: two[0] || null, ever, count: g.length, installed: g.filter(a => a.installed).length };
+	};
+	const rate = b => (b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB/s' : b >= 1024 ? Math.round(b / 1024) + ' KB/s' : '');
+
+	// pieces
+	const meta = a => {
+		const since = ago(a.rt_last_time_played);
+		return (since ? esc(T.lastPlayed + ' ' + since) : '') + (a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : '');
+	};
+	const heroBody = a => `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
+		+ `<img class="gr-continue-logo" alt="" data-name="${esc(a.display_name)}" ${artAttrs(a, 'logo')}>`
+		+ `<span class="gr-continue-meta">${meta(a)}</span>`
+		+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play" data-act="play" data-id="${a.appid}">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
+		+ `<button type="button" class="gr-continue-open" data-act="app" data-id="${a.appid}">${esc(T.gamePage)}</button></div></div>`;
+	const hero = a => (a
+		? `<section class="gr-hm-hero"><img class="gr-hm-art" alt="" ${artAttrs(a, 'hero')}>${heroBody(a)}</section>`
+		: `<section class="gr-hm-hero gr-hm-empty"><span>${esc(HS.none)}</span></section>`);
+	const capsule = a => `<button type="button" class="gr-hm-cap" data-act="app" data-id="${a.appid}" title="${esc(a.display_name)}">`
+		+ `<span class="gr-hm-cap-art" data-name="${esc(a.display_name)}"><img alt="" loading="lazy" ${artAttrs(a, 'capsule')}></span>`
+		+ `<b>${esc(a.display_name)}</b><small>${esc(ago(a.rt_last_time_played))}</small></button>`;
+	const tile = a => `<button type="button" class="gr-hm-tile" data-act="app" data-id="${a.appid}" title="${esc(a.display_name)}">`
+		+ `<span class="gr-hm-tile-art" data-name="${esc(a.display_name)}"><img alt="" loading="lazy" ${artAttrs(a, 'header')}></span></button>`;
+	const friendRows = (list, max) => (list.length
+		? list.slice(0, max).map(v => `<button type="button" class="gr-hm-friend" data-act="chat" data-id="${v.id}">${avatarHtml(v, 32)}`
+			+ `<span><b>${esc(v.name)}</b><small class="gr-tx-${v.st}">${esc(v.status)}</small></span></button>`).join('')
+		: `<p class="gr-hm-muted">${esc(HS.noFriends)}</p>`);
+	const friendsCard = (max, extra = '') => {
+		const list = friendsNow();
+		const n = list.filter(v => v.st === 'ingame').length;
+		return `<section class="gr-hm-card gr-hm-friends${extra}"><h2>${esc(HS.friendsOn)}<span>${list.length}${n ? ' · ' + n + ' ' + esc(HS.inGameN) : ''}</span></h2>`
+			+ `<div class="gr-hm-list">${friendRows(list, max)}</div></section>`;
+	};
+	const dlCard = (extra = '') => {
+		const d = dlNow();
+		const done = dlDone().map(x => ({ ...x, a: appById(x.id) })).filter(x => x.a);
+		const body = d
+			? `<b class="gr-hm-dl-name">${esc(d.name)}</b><span class="gr-hm-bar"><i></i></span><small class="gr-hm-dl-meta"></small>`
+			: `<p class="gr-hm-muted">${esc(HS.noDl)}</p>` + (done.length ? `<small class="gr-hm-sub">${esc(HS.dlDone)}</small><div class="gr-hm-list">`
+				+ done.map(x => `<button type="button" class="gr-hm-mini" data-act="app" data-id="${x.id}"><img alt="" ${iconAttrs(x.a)}><span>${esc(x.a.display_name)}</span><small>${esc(ago(x.t))}</small></button>`).join('') + '</div>' : '');
+		return `<section class="gr-hm-card gr-hm-dl${d ? ' gr-busy' : ''}${extra}" data-act="go" data-path="/library/downloads" title="${esc(HS.openDl)}"><h2>${esc(d ? HS.downloading : T.downloads)}</h2>${body}</section>`;
+	};
+	const statsCard = (extra = '') => {
+		const s = playStats();
+		const max = s.ever.length ? s.ever[0].minutes_playtime_forever : 1;
+		return `<section class="gr-hm-card gr-hm-stats${extra}"><h2>${esc(HS.twoWeeks)}<span>${s.top ? esc(s.top.display_name) : ''}</span></h2><strong>${esc(hours(s.two) || '0 ' + T.h)}</strong>`
+			+ (s.ever.length ? `<small class="gr-hm-sub">${esc(HS.allTime)}</small><div class="gr-hm-list">` + s.ever.map(a => `<button type="button" class="gr-hm-mini gr-hm-top-game" data-act="app" data-id="${a.appid}">`
+				+ `<img alt="" ${iconAttrs(a)}><span>${esc(a.display_name)}</span><small>${esc(hours(a.minutes_playtime_forever))}</small>`
+				+ `<i style="width:${Math.max(4, Math.round(a.minutes_playtime_forever / max * 100))}%"></i></button>`).join('') + '</div>' : '')
+			+ `<small class="gr-hm-lib">${esc(HS.library)}: ${s.count} ${esc(HS.games)} · ${s.installed} ${esc(HS.installed)}</small></section>`;
+	};
+	const collCard = (extra = '') => `<section class="gr-hm-card gr-hm-colls${extra}"><h2>${esc(HS.collections)}</h2><div class="gr-hm-list">`
+		+ collections().map(c => `<button type="button" class="gr-hm-coll" data-act="go" data-path="/library/collection/${esc(c.id)}"><span>${esc(c.name)}</span><small>${c.n}</small></button>`).join('')
+		+ `<button type="button" class="gr-hm-coll" data-act="go" data-path="/library/collections"><span>${esc(HS.allGames)}</span><small>${playStats().count}</small></button></div></section>`;
+	const greeting = () => {
+		const h = new Date().getHours();
+		const word = h < 5 ? HS.evening : h < 12 ? HS.morning : h < 18 ? HS.day : HS.evening;
+		const name = myName();
+		let date = '';
+		try { date = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' }); } catch (e) { /* ignore */ }
+		return `<header class="gr-hm-greet"><h1>${esc(word)}${name ? ', ' + esc(name) : ''}</h1><span>${esc(date)}</span></header>`;
+	};
+
+	const BUILD = {
+		Cockpit: () => {
+			const r = recentGames(9);
+			return `<div class="gr-hm-in">${greeting()}<div class="gr-hm-top">${hero(r[0])}<div class="gr-hm-side">${friendsCard(5)}${dlCard()}</div></div>`
+				+ (r.length > 1 ? `<section class="gr-hm-row"><h2>${esc(HS.recent)}</h2><div class="gr-hm-caps">${r.slice(1).map(capsule).join('')}</div></section>` : '') + '</div>';
+		},
+		Spotlight: () => {
+			const r = recentGames(8);
+			const a = r[0];
+			const f = friendsNow();
+			const d = dlNow();
+			const chips = `<div class="gr-hm-chips"><button type="button" class="gr-hm-chip" data-act="dock">`
+				+ `<i class="gr-hm-dot"></i>${f.length} ${esc(HS.onlineN)}${f.some(v => v.st === 'ingame') ? ' · ' + f.filter(v => v.st === 'ingame').length + ' ' + esc(HS.inGameN) : ''}</button>`
+				+ `<button type="button" class="gr-hm-chip gr-hm-dl${d ? ' gr-busy' : ''}" data-act="go" data-path="/library/downloads">${svg(I.downloads)}<span class="gr-hm-dl-meta">${esc(d ? d.name : HS.noDl)}</span></button></div>`;
+			return (a ? `<img class="gr-hm-spot-art" alt="" ${artAttrs(a, 'hero')}>` : '')
+				+ `<div class="gr-hm-spot">${a ? heroBody(a) : `<p class="gr-hm-muted">${esc(HS.none)}</p>`}`
+				+ `<div class="gr-hm-spot-foot">${r.length > 1 ? `<div class="gr-hm-strip">${r.slice(1).map(tile).join('')}</div>` : '<span></span>'}${chips}</div></div>`;
+		},
+		Bento: () => {
+			const r = recentGames(7);
+			return `<div class="gr-hm-in">${greeting()}<div class="gr-hm-bento">${hero(r[0])}${friendsCard(7, ' gr-b-friends')}${dlCard(' gr-b-dl')}${statsCard(' gr-b-stats')}`
+				+ `<section class="gr-hm-card gr-b-recent"><h2>${esc(HS.recent)}</h2><div class="gr-hm-strip">${r.slice(1).map(tile).join('')}</div></section>${collCard(' gr-b-colls')}</div></div>`;
+		},
+	};
+
+	const home = el('div', 'gr-home');
+	home.hidden = true;
+	home.addEventListener('click', e => {
+		const t = e.target.closest('[data-act]');
+		if (!t || !home.contains(t)) return;
+		const id = Number(t.dataset.id);
+		if (t.dataset.act === 'play') playApp(id);
+		else if (t.dataset.act === 'app') go('/library/app/' + id);
+		else if (t.dataset.act === 'chat') { if (dockMode === 'mini') setDock('open'); openChat(id); }
+		else if (t.dataset.act === 'dock') setDock('open');
+		else if (t.dataset.act === 'go' && t.dataset.path !== route()) go(t.dataset.path);
+	});
+	home.addEventListener('error', onArtError, true);
+	cleanup.push(() => home.remove());
+
+	let homeKey = '';
+	const homeData = () => {
+		const r = recentGames(9).map(a => [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':')).join(',');
+		const f = friendsNow().map(v => [v.id, v.st, v.status, v.avatar].join(':')).join(',');
+		const d = dlNow();
+		let c = '';
+		if (homeStyle === 'Bento') c = JSON.stringify([collections(), playStats().two, playStats().ever.map(a => a.appid + ':' + a.minutes_playtime_forever), dlDone()]);
+		else if (homeStyle === 'Cockpit') c = JSON.stringify(dlDone());
+		return [homeStyle, new Date().getHours(), myName(), r, f, d ? d.id : 0, c].join('|');
+	};
+	// download progress changes every second: updated in place, not re-rendered
+	const homeProgress = () => {
+		const d = dlNow();
+		if (!d) return;
+		const p = progress();
+		const bar = qs('.gr-hm-bar i', home);
+		if (bar) bar.style.width = (p === null || Number.isNaN(p) ? 0 : Math.max(0, Math.min(100, p))) + '%';
+		const m = qs('.gr-hm-dl-meta', home);
+		if (m) m.textContent = (homeStyle === 'Spotlight' ? d.name + ' · ' : '') + [p === null || Number.isNaN(p) ? '' : Math.round(p) + ' %', rate(d.rate)].filter(Boolean).join(' · ');
+	};
+	function renderHome(sec) {
+		const on = sec === 'home' && !!homeStyle && homeStyle !== 'Library' && !themePage.isOpen();
+		document.documentElement.classList.toggle('gr-home-on', on);
+		if (!on) { home.hidden = true; return; }
+		if (!home.isConnected) document.body.append(home);
+		home.hidden = false;
+		const key = homeData();
+		if (key !== homeKey) {
+			homeKey = key;
+			home.className = 'gr-home gr-home-' + homeStyle.toLowerCase();
+			home.innerHTML = BUILD[homeStyle]();
+		}
+		homeProgress();
+	}
+	const setHomeStyle = v => {
+		homeStyle = HOME_STYLES.includes(v) ? v : 'Cockpit';
+		homeKey = '';
+		try { update(); } catch (e) { /* the regular update picks it up */ }
+	};
+	const onCondition = e => { if (e.detail && e.detail.name === 'Start page') setHomeStyle(e.detail.value); };
+	window.addEventListener('graphite-condition', onCondition);
+	cleanup.push(() => window.removeEventListener('graphite-condition', onCondition));
+	(async () => {
+		let v = null;
+		try {
+			const r = await W.Millennium.callServerMethod('core', 'Core_GetBackendConfig', []);
+			const cfg = typeof r === 'string' ? JSON.parse(r) : r;
+			const themes = (cfg && cfg.themes) || {};
+			const set = themes.conditions && themes.conditions[themes.activeTheme];
+			v = set && set['Start page'];
+		} catch (e) { /* default */ }
+		setHomeStyle(v || 'Cockpit');
+	})();
+
 
 	/* --- Library list header: title + number of games (Home lives in the rail) ------------ */
 	const libHead = el('div', 'gr-libhead');
@@ -2479,7 +2808,8 @@
 		side.hidden = !web;
 		if (web) renderSide(sec);
 		renderDock();
-		mountContinue(sec);
+		renderHome(sec);
+		mountContinue(homeStyle === 'Library' ? sec : '');
 		// downloads ring
 		const p = progress();
 		const dlb = btns.downloads;

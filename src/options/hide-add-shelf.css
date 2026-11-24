@@ -1,0 +1,4 @@
+/* Hide the "Add shelf" row under the shelves on the library home page. */
+.$(AddShowcaseRow) {
+	display: none !important;
+}

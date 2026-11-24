@@ -42,9 +42,14 @@
 .windowControlButton.minimizeButton .title-area-icon-inner::before {
 	-webkit-mask-image: var(--gr-icon-min);
 }
-.windowControlButton.maximizeButton .title-area-icon-inner::before {
+/* maximized, Steam swaps maximizeButton for restoreButton */
+.windowControlButton.maximizeButton .title-area-icon-inner::before,
+.windowControlButton.restoreButton .title-area-icon-inner::before {
 	-webkit-mask-image: var(--gr-icon-max);
 	width: 14px;
 	height: 14px;
 	-webkit-mask-size: 14px 14px;
+}
+.windowControlButton.restoreButton .title-area-icon-inner::before {
+	-webkit-mask-image: var(--gr-icon-restore);
 }

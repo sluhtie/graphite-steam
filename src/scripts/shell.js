@@ -39,6 +39,11 @@
 		#gr-sb:hover::before, #gr-sb.gr-drag::before { width: 6px; background: color-mix(in srgb, var(--gr-text, #ececf0) 45%, transparent); }
 	`;
 	const css = `
+		/* tokens used below; webkit.css (option "Store & community pages") has the real ones */
+		:where(:root) { --gr-fast: 120ms; --gr-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+		/* with the address bar shown (option "Hide URL bar: no") it sits on top of the
+		   page inside the frame, so only the page's bottom corners are the frame's */
+		html.gr-urlbar::after { border-radius: 0 0 15px 15px; }
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
 		.responsive_page_content > div:has(form[role="search"]),
 		#store_header, .store_header_btn_gray, #global_header { display: none !important; }
@@ -118,6 +123,7 @@
 	// from its search form: climb while the parent is still bar-sized (and not
 	// an out-of-flow wrapper of height 0), then hide that element.
 	const hideBar = () => {
+		if (off) return;
 		const form = document.querySelector('form[role="search"]');
 		if (!form || form.closest('[data-gr-bar]')) return;
 		let bar = form;
@@ -136,16 +142,49 @@
 	let queued = false;
 	const watch = () => {
 		hideBar();
-		new MutationObserver(() => {
+		mo = new MutationObserver(() => {
 			if (queued) return;
 			queued = true;
 			requestAnimationFrame(() => { queued = false; hideBar(); });
-		}).observe(document.body, { childList: true, subtree: true });
+		});
+		mo.observe(document.body, { childList: true, subtree: true });
 	};
+	let off = false;
+	let mo = null;
 	if (h === 'store.steampowered.com') {
 		if (document.body) watch();
 		else document.addEventListener('DOMContentLoaded', watch, { once: true });
 	}
+
+	// The layout can be switched without restarting Steam (Graphite page,
+	// Millennium's panel), and store / community pages may then still get this
+	// script while the main window already runs Clean or Classic. Those layouts
+	// need the page's own navigation and no frame, so ask Millennium which
+	// layout is set and step back if it is not Graphite 2.0. The same answer
+	// says whether the address bar is shown above the page.
+	const undo = () => {
+		off = true;
+		window.__graphiteShellPage = false;
+		if (mo) mo.disconnect();
+		const st = document.getElementById('gr-shell-page');
+		if (st) st.remove();
+		const sb = document.getElementById('gr-sb');
+		if (sb) sb.remove();
+		for (const bar of document.querySelectorAll('[data-gr-bar]')) { bar.style.removeProperty('display'); delete bar.dataset.grBar; }
+	};
+	(async () => {
+		try {
+			const M = window.Millennium;
+			if (!M || typeof M.callServerMethod !== 'function') return;
+			const r = await M.callServerMethod('core', 'Core_GetBackendConfig', []);
+			const cfg = typeof r === 'string' ? JSON.parse(r) : r;
+			const themes = (cfg && cfg.themes) || {};
+			const set = themes.conditions && themes.conditions[themes.activeTheme];
+			const nav = set && set.Navigation;
+			if (nav && nav !== 'Graphite 2.0') { undo(); return; }
+			if (set && set['Hide URL bar'] === 'no') document.documentElement.classList.add('gr-urlbar');
+		} catch (e) { /* keep the 2.0 page */ }
+	})();
 })();
 
 /*
@@ -1334,6 +1373,7 @@
 	};
 	const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.2v13.6L19 12z" fill="currentColor"/></svg>';
 	const cont = el('section', 'gr-continue');
+	cont.addEventListener('error', e => onArtError(e), true);
 	let contKey = '';
 	const lastGame = () => {
 		try { return games().filter(a => a.rt_last_time_played).sort((a, b) => b.rt_last_time_played - a.rt_last_time_played)[0] || null; } catch (e) { return null; }
@@ -1344,30 +1384,28 @@
 		const key = [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':');
 		if (key === contKey) return true;
 		contKey = key;
-		const local = f => `https://steamloopback.host/assets/${a.appid}/${f}`;
-		const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
 		const since = ago(a.rt_last_time_played);
 		cont.dataset.appid = a.appid;
-		cont.innerHTML = `<img alt="" src="${local('library_hero.jpg')}" data-fallback="${cdn('library_hero.jpg')}">`
+		// art and its fallbacks: artAttrs / onArtError (shell-home.js)
+		cont.innerHTML = `<img alt="" ${artAttrs(a, 'hero')}>`
 			+ `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
-			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" src="${local('logo.png')}" data-fallback="${cdn('logo.png')}">`
+			+ `<img class="gr-continue-logo" alt="" data-name="${esc(a.display_name)}" ${artAttrs(a, 'logo')}>`
 			+ `<span class="gr-continue-meta">${since ? esc(T.lastPlayed + ' ' + since) : ''}${a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : ''}</span>`
 			+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
 			+ `<button type="button" class="gr-continue-open">${esc(T.gamePage)}</button></div></div>`;
-		// local cache -> CDN -> no picture (the logo becomes the name)
-		cont.querySelectorAll('img').forEach(img => img.addEventListener('error', () => {
-			if (img.dataset.fallback) { const u = img.dataset.fallback; delete img.dataset.fallback; img.src = u; return; }
-			if (img.classList.contains('gr-continue-logo')) { const n = el('span', 'gr-continue-name'); n.textContent = a.display_name; img.replaceWith(n); }
-			else img.remove();
-		}));
 		return true;
 	};
 	const playApp = id => {
 		go('/library/app/' + id);
 		const t0 = Date.now();
+		let onPage = 0;
 		const tick = () => {
-			// only press once the page really shows this game (its art is from /assets/<id>/)
-			const ready = route() === '/library/app/' + id && qs('.$(TopCapsule) img[src*="/assets/' + id + '/"]');
+			// only press once the page really shows this game: its art is from
+			// /assets/<id>/ (or /customimages/<id>_ for custom art). A non-Steam
+			// game without custom art has none, so there give the page a moment.
+			const here = route() === '/library/app/' + id;
+			if (here && !onPage) onPage = Date.now();
+			const ready = here && (qs('.$(TopCapsule) img[src*="/assets/' + id + '/"], .$(TopCapsule) img[src*="/customimages/' + id + '_"]') || Date.now() - onPage > 800);
 			const btn = ready && qs('.$(InPage) .$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer)');
 			if (btn) { setTimeout(() => btn.click(), 200); return; }
 			if (Date.now() - t0 < 6000) setTimeout(tick, 120);
@@ -1387,6 +1425,8 @@
 		if (!renderContinue()) return;
 		if (cont.parentElement !== parent || parent.firstElementChild !== cont) parent.prepend(cont);
 	};
+
+/* @include shell-home.js */
 
 	/* --- Library list header: title + number of games (Home lives in the rail) ------------ */
 	const libHead = el('div', 'gr-libhead');
@@ -1471,7 +1511,8 @@
 		side.hidden = !web;
 		if (web) renderSide(sec);
 		renderDock();
-		mountContinue(sec);
+		renderHome(sec);
+		mountContinue(homeStyle === 'Library' ? sec : '');
 		// downloads ring
 		const p = progress();
 		const dlb = btns.downloads;

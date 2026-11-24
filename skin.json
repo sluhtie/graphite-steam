@@ -2,7 +2,7 @@
 	"name": "Graphite",
 	"author": "sluhtie",
 	"description": "A clean, minimal and modern Steam. Neutral graphite surfaces, one editable accent color and quiet typography across the library, menus, settings, friends and the Store & Community pages. New in 2.0: an app layout with an icon rail, one search for library and store, a side navigation and a friends dock.",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"tags": [
 		"Minimal",
 		"Dark",
@@ -93,7 +93,7 @@
 			}
 		},
 		"Header": {
-			"description": "Single row merges the menu bar and the Store / Library / Community tabs into one compact row.",
+			"description": "Clean and Classic: Single row merges the menu bar and the Store / Library / Community tabs into one compact row. No effect with Graphite 2.0, which has its own title bar.",
 			"tab": "Layout",
 			"default": "Single row",
 			"values": {
@@ -127,7 +127,7 @@
 							"https:\\/\\/store\\.steampowered\\.com\\/.*",
 							"https:\\/\\/steamcommunity\\.com\\/.*"
 						],
-						"src": "build/scripts/nav.js"
+						"src": "build/scripts/clean.js"
 					}
 				},
 				"Graphite 2.0": {
@@ -147,7 +147,25 @@
 						"src": "build/scripts/shell.js"
 					}
 				},
-				"Classic": {}
+				"Classic": {
+					"TargetJs": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/scripts/theme-page.js"
+					}
+				}
+			}
+		},
+		"Start page": {
+			"description": "Graphite 2.0: what Home shows. Cockpit: your last game, friends online, downloads and recently played. Spotlight: your last game full-bleed. Bento: tiles for game, friends, downloads, playtime and collections. Library: Steam's library home.",
+			"tab": "Layout",
+			"default": "Cockpit",
+			"values": {
+				"Cockpit": {},
+				"Spotlight": {},
+				"Bento": {},
+				"Library": {}
 			}
 		},
 		"Store & community pages": {
@@ -179,7 +197,7 @@
 			}
 		},
 		"Hide URL bar": {
-			"description": "Hide the address bar above store and community pages (the Store / Community tabs and the page navigation already cover it).",
+			"description": "Hide the address bar above store and community pages (the tabs or side navigation and the page navigation already cover it). Works in every layout.",
 			"tab": "Layout",
 			"default": "yes",
 			"values": {
@@ -195,7 +213,7 @@
 			}
 		},
 		"Hide What's New": {
-			"description": "Hide the \"What's New\" event row on the library home page.",
+			"description": "Hide the \"What's New\" event row on Steam's library home. Applies where that home is shown: Clean, Classic, or Graphite 2.0 with Start page: Library.",
 			"tab": "Layout",
 			"default": "no",
 			"values": {
@@ -206,6 +224,22 @@
 							"^Steam$"
 						],
 						"src": "build/options/hide-whats-new.css"
+					}
+				}
+			}
+		},
+		"Hide Add shelf": {
+			"description": "Hide the \"Add shelf\" button under the shelves on Steam's library home. Applies where that home is shown: Clean, Classic, or Graphite 2.0 with Start page: Library.",
+			"tab": "Layout",
+			"default": "no",
+			"values": {
+				"no": {},
+				"yes": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/hide-add-shelf.css"
 					}
 				}
 			}
