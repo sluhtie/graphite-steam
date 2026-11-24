@@ -119,6 +119,7 @@
 	// from its search form: climb while the parent is still bar-sized (and not
 	// an out-of-flow wrapper of height 0), then hide that element.
 	const hideBar = () => {
+		if (off) return;
 		const form = document.querySelector('form[role="search"]');
 		if (!form || form.closest('[data-gr-bar]')) return;
 		let bar = form;
@@ -137,16 +138,47 @@
 	let queued = false;
 	const watch = () => {
 		hideBar();
-		new MutationObserver(() => {
+		mo = new MutationObserver(() => {
 			if (queued) return;
 			queued = true;
 			requestAnimationFrame(() => { queued = false; hideBar(); });
-		}).observe(document.body, { childList: true, subtree: true });
+		});
+		mo.observe(document.body, { childList: true, subtree: true });
 	};
+	let off = false;
+	let mo = null;
 	if (h === 'store.steampowered.com') {
 		if (document.body) watch();
 		else document.addEventListener('DOMContentLoaded', watch, { once: true });
 	}
+
+	// The layout can be switched without restarting Steam (Graphite page,
+	// Millennium's panel), and store / community pages may then still get this
+	// script while the main window already runs Clean or Classic. Those layouts
+	// need the page's own navigation and no frame, so ask Millennium which
+	// layout is set and step back if it is not Graphite 2.0.
+	const undo = () => {
+		off = true;
+		window.__graphiteShellPage = false;
+		if (mo) mo.disconnect();
+		const st = document.getElementById('gr-shell-page');
+		if (st) st.remove();
+		const sb = document.getElementById('gr-sb');
+		if (sb) sb.remove();
+		for (const bar of document.querySelectorAll('[data-gr-bar]')) { bar.style.removeProperty('display'); delete bar.dataset.grBar; }
+	};
+	(async () => {
+		try {
+			const M = window.Millennium;
+			if (!M || typeof M.callServerMethod !== 'function') return;
+			const r = await M.callServerMethod('core', 'Core_GetBackendConfig', []);
+			const cfg = typeof r === 'string' ? JSON.parse(r) : r;
+			const themes = (cfg && cfg.themes) || {};
+			const set = themes.conditions && themes.conditions[themes.activeTheme];
+			const nav = set && set.Navigation;
+			if (nav && nav !== 'Graphite 2.0') undo();
+		} catch (e) { /* keep the 2.0 page */ }
+	})();
 })();
 
 /*
@@ -1472,8 +1504,9 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 baut das Hauptfenster neu auf.', header: 'Kopfzeile', headerHint: 'Menü und Reiter in einer Zeile.',
 			web: 'Shop & Community im Graphite-Stil', webHint: 'Shop-, Community- und Hilfeseiten im selben Look.', url: 'Adressleiste ausblenden', urlHint: 'Die Zeile mit der Adresse über Shop- und Community-Seiten.',
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
+			shelf: '„Regal hinzufügen“ ausblenden', shelfHint: 'Den Button unter den Regalen auf der Startseite der Bibliothek.',
 			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
-			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
+			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', restartPending: 'Das neue Layout gilt nach einem Neustart von Steam.', restart: 'Steam neu starten', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
 			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0' },
 			colorNames: { '--gr-accent': 'Akzent', '--gr-bg': 'Hintergrund', '--gr-border': 'Linien', '--gr-play': 'Spielen-Button', '--gr-play-text': 'Spielen-Button, Text', '--gr-surface': 'Fläche', '--gr-surface-2': 'Fläche 2', '--gr-surface-3': 'Fläche 3', '--gr-text': 'Text', '--gr-text-2': 'Text, gedämpft', '--gr-text-3': 'Text, leise' },
 			colorHints: { '--gr-accent': 'Auswahl, Links, Hauptbuttons', '--gr-bg': 'Fenster, Titelleiste, Spieleliste', '--gr-border': 'Trennlinien und Rahmen', '--gr-play': 'Hintergrund des Spielen-/Installieren-Buttons', '--gr-play-text': 'Schrift auf dem Spielen-Button', '--gr-surface': 'Inhaltsbereich und Dialoge', '--gr-surface-2': 'Karten, Menüs, Eingabefelder', '--gr-surface-3': 'Hover und Buttons', '--gr-text': 'Überschriften und wichtiger Text', '--gr-text-2': 'Normaler Text', '--gr-text-3': 'Beschriftungen und Hinweise' },
@@ -1485,14 +1518,15 @@
 			layout: 'Layout', nav: 'Navigation', navHint: 'Graphite 2.0 rebuilds the main window.', header: 'Header', headerHint: 'Menu and tabs in one row.',
 			web: 'Store & Community in Graphite style', webHint: 'Store, community and help pages in the same look.', url: 'Hide the URL bar', urlHint: 'The address line above store and community pages.',
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
+			shelf: 'Hide "Add shelf"', shelfHint: 'The button under the shelves on the library home.',
 			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
-			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
+			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', restartPending: 'The new layout takes effect after restarting Steam.', restart: 'Restart Steam', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
 			values: {}, colorNames: {}, colorHints: {},
 		};
 		// condition -> [label, hint, kind]; kind: 'seg' (choices) or 'toggle' (yes/no)
 		const CONDS = {
 			look: [['Font', G.font, G.fontHint, 'seg'], ['Corners', G.corners, G.cornersHint, 'seg']],
-			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
+			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Hide Add shelf', G.shelf, G.shelfHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
 		};
 		// order of the choices as shown (2.0 first)
 		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'] };
@@ -1543,9 +1577,16 @@
 			paintConds();
 			api('Core_ChangeCondition', [theme, value, name]).then(r => {
 				if (r && r.success === false) throw new Error('failed');
-				qs('.gr-gs-reload', page).hidden = false;
+				// A new layout also changes the scripts of the store and community
+				// pages, which only a Steam restart reloads; the rest needs a UI reload.
+				if (name === 'Navigation') restart = true;
+				const bar = qs('.gr-gs-reload', page);
+				qs('span', bar).textContent = restart ? G.restartPending : G.pending;
+				qs('button', bar).textContent = restart ? G.restart : G.reload;
+				bar.hidden = false;
 			}).catch(() => { values[name] = before; paintConds(); flash(G.failed); });
 		};
+		let restart = false;
 		const flash = text => {
 			const bar = qs('.gr-gs-reload', page);
 			qs('span', bar).textContent = text;
@@ -1604,7 +1645,9 @@
 				<div class="gr-gs-reload" hidden><span>${esc(G.pending)}</span><button type="button">${esc(G.reload)}</button></div>
 			</div>`;
 			qs('.gr-gs-x', page).addEventListener('click', close);
-			qs('.gr-gs-reload button', page).addEventListener('click', () => { try { W.SteamClient.Browser.RestartJSContext(); } catch (e) {} });
+			qs('.gr-gs-reload button', page).addEventListener('click', () => {
+				try { if (restart) W.SteamClient.User.StartRestart(false); else W.SteamClient.Browser.RestartJSContext(); } catch (e) { /* ignore */ }
+			});
 			document.body.append(page);
 		}
 
@@ -2352,13 +2395,20 @@
 		const key = [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':');
 		if (key === contKey) return true;
 		contKey = key;
+		// Steam games: local asset cache, then the CDN. Non-Steam games (shortcuts)
+		// only have the art the user set, in Steam's custom images (png or jpg).
+		const shortcut = a.app_type === 1073741824;
 		const local = f => `https://steamloopback.host/assets/${a.appid}/${f}`;
 		const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
+		const custom = (kind, ext) => `https://steamloopback.host/customimages/${a.appid}_${kind}.${ext}`;
+		const art = (file, kind) => (shortcut
+			? `src="${custom(kind, 'png')}" data-fallback="${custom(kind, 'jpg')}"`
+			: `src="${local(file)}" data-fallback="${cdn(file)}"`);
 		const since = ago(a.rt_last_time_played);
 		cont.dataset.appid = a.appid;
-		cont.innerHTML = `<img alt="" src="${local('library_hero.jpg')}" data-fallback="${cdn('library_hero.jpg')}">`
+		cont.innerHTML = `<img alt="" ${art('library_hero.jpg', 'hero')}>`
 			+ `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
-			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" src="${local('logo.png')}" data-fallback="${cdn('logo.png')}">`
+			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" ${art('logo.png', 'logo')}>`
 			+ `<span class="gr-continue-meta">${since ? esc(T.lastPlayed + ' ' + since) : ''}${a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : ''}</span>`
 			+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
 			+ `<button type="button" class="gr-continue-open">${esc(T.gamePage)}</button></div></div>`;
@@ -2373,9 +2423,14 @@
 	const playApp = id => {
 		go('/library/app/' + id);
 		const t0 = Date.now();
+		let onPage = 0;
 		const tick = () => {
-			// only press once the page really shows this game (its art is from /assets/<id>/)
-			const ready = route() === '/library/app/' + id && qs('.NZMJ6g2iVnFsOOp-lDmIP img[src*="/assets/' + id + '/"]');
+			// only press once the page really shows this game: its art is from
+			// /assets/<id>/ (or /customimages/<id>_ for custom art). A non-Steam
+			// game without custom art has none, so there give the page a moment.
+			const here = route() === '/library/app/' + id;
+			if (here && !onPage) onPage = Date.now();
+			const ready = here && (qs('.NZMJ6g2iVnFsOOp-lDmIP img[src*="/assets/' + id + '/"], .NZMJ6g2iVnFsOOp-lDmIP img[src*="/customimages/' + id + '_"]') || Date.now() - onPage > 800);
 			const btn = ready && qs('._1U7LKpx70kEsz3jJwAFOi- ._1FnJ6dPuknQFQ2RTpKTI16 ._3ydigb6zZAjJ0JCDgHwSYA');
 			if (btn) { setTimeout(() => btn.click(), 200); return; }
 			if (Date.now() - t0 < 6000) setTimeout(tick, 120);

@@ -127,7 +127,7 @@
 							"https:\\/\\/store\\.steampowered\\.com\\/.*",
 							"https:\\/\\/steamcommunity\\.com\\/.*"
 						],
-						"src": "build/scripts/nav.js"
+						"src": "build/scripts/clean.js"
 					}
 				},
 				"Graphite 2.0": {
@@ -147,7 +147,14 @@
 						"src": "build/scripts/shell.js"
 					}
 				},
-				"Classic": {}
+				"Classic": {
+					"TargetJs": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/scripts/theme-page.js"
+					}
+				}
 			}
 		},
 		"Store & community pages": {
@@ -206,6 +213,22 @@
 							"^Steam$"
 						],
 						"src": "build/options/hide-whats-new.css"
+					}
+				}
+			}
+		},
+		"Hide Add shelf": {
+			"description": "Hide the \"Add shelf\" button under the shelves on the library home page.",
+			"tab": "Layout",
+			"default": "no",
+			"values": {
+				"no": {},
+				"yes": {
+					"TargetCss": {
+						"affects": [
+							"^Steam$"
+						],
+						"src": "build/options/hide-add-shelf.css"
 					}
 				}
 			}

@@ -65,7 +65,7 @@ Custom profile backgrounds stay visible, discount badges keep Steam's green, and
 
 ![Accent colors](docs/accents.jpg)
 
-Everything is set in **Millennium → Themes → Graphite**, and with Graphite 2.0 also on the **Graphite page** in the client (the palette icon in the rail), where colors apply right away:
+Everything is set in **Millennium → Themes → Graphite**, and also on the **Graphite page** in the client, where colors apply right away. Open it with the palette icon: in the rail with Graphite 2.0, next to the notifications with Clean and Classic.
 
 | Option | Choices |
 | --- | --- |
@@ -76,9 +76,9 @@ Everything is set in **Millennium → Themes → Graphite**, and with Graphite 2
 | **Header** | Single row (default), Classic two-row layout |
 | **Store & community pages** | Restyle the in-client web pages (on by default) |
 | **Startup screen** | The Graphite logo while the main window loads (2.0, on by default) |
-| **Extras** | Hide URL bar (on by default), Hide What's New |
+| **Extras** | Hide URL bar (on by default), Hide What's New, Hide "Add shelf" |
 
-Options other than colors take effect after reloading the UI (the Graphite page offers a button) or restarting Steam.
+Options other than colors take effect after reloading the UI (the Graphite page offers a button) or restarting Steam. A new **Navigation** layout needs a Steam restart.
 
 ## Install
 
@@ -123,7 +123,8 @@ The store and community are Valve's web pages. Older parts use stable class name
 
 - **`src/scripts/shell.js`** (Navigation: Graphite 2.0): builds the 2.0 layout on top of Steam's own UI. Rail, search and side navigation use Steam's router and `steam://` URLs, so every page is still Steam's real page. The store and community are Steam's native browser view, which follows a placeholder element, so resizing that element moves the page into the frame. Also includes the Graphite settings page (`shell-theme.js`), the store hero cards and the Points Shop (`points.js`).
 - **`src/scripts/web-recolor.js`** (Store & community option): swaps the hardcoded blue-greys of Valve's newest React pages for Graphite surfaces, and tags the parts of the wishlist, game pages, news hub, category pages and event overlay with stable `gr-*` classes, so the theme can restyle them despite Valve's changing class names.
-- **`src/scripts/nav.js`** (Navigation: Clean): stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation.
+- **`src/scripts/clean.js`** (Navigation: Clean): `nav.js` stops the tab dropdowns from opening on hover, moves Downloads and Friends & Chat into the title bar and adds the community sub-navigation; `theme-page.js` adds the Graphite page with its title bar button.
+- **`src/scripts/theme-page.js`** (Navigation: Classic): the Graphite page and its title bar button.
 
 Graphite has no server of its own and sends no data anywhere. Besides the Inter font from Google Fonts (pick **Font: System** to avoid it), the only requests are Steam's own: the store's `appdetails` API from inside the store page (for the hero cards) and Steam's search suggestions through the client's connection (for the title bar search). Settings are read and written through Millennium.
 
@@ -147,8 +148,8 @@ src/             Source CSS with $(Token) class references
   toasts.css     Desktop notifications
   partials/      Shared pieces pulled in with @import
   options/       Stylesheets toggled by theme options (shell.css = 2.0 layout, webkit.css = store/community)
-  scripts/       shell.js (2.0 layout, incl. shell-theme.js, points.js), nav.js (clean navigation),
-                 web-recolor.js (React web pages, incl. marketing.js)
+  scripts/       shell.js (2.0 layout, incl. shell-theme.js, points.js, nav.js), clean.js (nav.js + theme-page.js),
+                 theme-page.js (Graphite page for Clean / Classic), web-recolor.js (React web pages, incl. marketing.js)
 build/           Generated output loaded by Millennium (do not edit)
 tools/           Build, live preview, lookup and docs render scripts
 docs/            README images; docs/src holds their HTML sources and raw captures

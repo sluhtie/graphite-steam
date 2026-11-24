@@ -118,6 +118,7 @@
 	// from its search form: climb while the parent is still bar-sized (and not
 	// an out-of-flow wrapper of height 0), then hide that element.
 	const hideBar = () => {
+		if (off) return;
 		const form = document.querySelector('form[role="search"]');
 		if (!form || form.closest('[data-gr-bar]')) return;
 		let bar = form;
@@ -136,16 +137,47 @@
 	let queued = false;
 	const watch = () => {
 		hideBar();
-		new MutationObserver(() => {
+		mo = new MutationObserver(() => {
 			if (queued) return;
 			queued = true;
 			requestAnimationFrame(() => { queued = false; hideBar(); });
-		}).observe(document.body, { childList: true, subtree: true });
+		});
+		mo.observe(document.body, { childList: true, subtree: true });
 	};
+	let off = false;
+	let mo = null;
 	if (h === 'store.steampowered.com') {
 		if (document.body) watch();
 		else document.addEventListener('DOMContentLoaded', watch, { once: true });
 	}
+
+	// The layout can be switched without restarting Steam (Graphite page,
+	// Millennium's panel), and store / community pages may then still get this
+	// script while the main window already runs Clean or Classic. Those layouts
+	// need the page's own navigation and no frame, so ask Millennium which
+	// layout is set and step back if it is not Graphite 2.0.
+	const undo = () => {
+		off = true;
+		window.__graphiteShellPage = false;
+		if (mo) mo.disconnect();
+		const st = document.getElementById('gr-shell-page');
+		if (st) st.remove();
+		const sb = document.getElementById('gr-sb');
+		if (sb) sb.remove();
+		for (const bar of document.querySelectorAll('[data-gr-bar]')) { bar.style.removeProperty('display'); delete bar.dataset.grBar; }
+	};
+	(async () => {
+		try {
+			const M = window.Millennium;
+			if (!M || typeof M.callServerMethod !== 'function') return;
+			const r = await M.callServerMethod('core', 'Core_GetBackendConfig', []);
+			const cfg = typeof r === 'string' ? JSON.parse(r) : r;
+			const themes = (cfg && cfg.themes) || {};
+			const set = themes.conditions && themes.conditions[themes.activeTheme];
+			const nav = set && set.Navigation;
+			if (nav && nav !== 'Graphite 2.0') undo();
+		} catch (e) { /* keep the 2.0 page */ }
+	})();
 })();
 
 /*
@@ -1344,13 +1376,20 @@
 		const key = [a.appid, a.rt_last_time_played, a.minutes_playtime_forever, !!a.installed].join(':');
 		if (key === contKey) return true;
 		contKey = key;
+		// Steam games: local asset cache, then the CDN. Non-Steam games (shortcuts)
+		// only have the art the user set, in Steam's custom images (png or jpg).
+		const shortcut = a.app_type === 1073741824;
 		const local = f => `https://steamloopback.host/assets/${a.appid}/${f}`;
 		const cdn = f => `https://shared.steamstatic.com/store_item_assets/steam/apps/${a.appid}/${f}`;
+		const custom = (kind, ext) => `https://steamloopback.host/customimages/${a.appid}_${kind}.${ext}`;
+		const art = (file, kind) => (shortcut
+			? `src="${custom(kind, 'png')}" data-fallback="${custom(kind, 'jpg')}"`
+			: `src="${local(file)}" data-fallback="${cdn(file)}"`);
 		const since = ago(a.rt_last_time_played);
 		cont.dataset.appid = a.appid;
-		cont.innerHTML = `<img alt="" src="${local('library_hero.jpg')}" data-fallback="${cdn('library_hero.jpg')}">`
+		cont.innerHTML = `<img alt="" ${art('library_hero.jpg', 'hero')}>`
 			+ `<div class="gr-continue-body"><span class="gr-continue-label">${esc(T.continuePlaying)}</span>`
-			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" src="${local('logo.png')}" data-fallback="${cdn('logo.png')}">`
+			+ `<img class="gr-continue-logo" alt="${esc(a.display_name)}" ${art('logo.png', 'logo')}>`
 			+ `<span class="gr-continue-meta">${since ? esc(T.lastPlayed + ' ' + since) : ''}${a.minutes_playtime_forever ? (since ? ' · ' : '') + esc(hours(a.minutes_playtime_forever) + ' ' + T.total) : ''}</span>`
 			+ `<div class="gr-continue-actions">${a.installed ? `<button type="button" class="gr-continue-play">${PLAY_SVG}${esc(T.play)}</button>` : ''}`
 			+ `<button type="button" class="gr-continue-open">${esc(T.gamePage)}</button></div></div>`;
@@ -1365,9 +1404,14 @@
 	const playApp = id => {
 		go('/library/app/' + id);
 		const t0 = Date.now();
+		let onPage = 0;
 		const tick = () => {
-			// only press once the page really shows this game (its art is from /assets/<id>/)
-			const ready = route() === '/library/app/' + id && qs('.$(TopCapsule) img[src*="/assets/' + id + '/"]');
+			// only press once the page really shows this game: its art is from
+			// /assets/<id>/ (or /customimages/<id>_ for custom art). A non-Steam
+			// game without custom art has none, so there give the page a moment.
+			const here = route() === '/library/app/' + id;
+			if (here && !onPage) onPage = Date.now();
+			const ready = here && (qs('.$(TopCapsule) img[src*="/assets/' + id + '/"], .$(TopCapsule) img[src*="/customimages/' + id + '_"]') || Date.now() - onPage > 800);
 			const btn = ready && qs('.$(InPage) .$(PlayButtonContainer) .$(PlayButton@PlayButtonContainer)');
 			if (btn) { setTimeout(() => btn.click(), 200); return; }
 			if (Date.now() - t0 < 6000) setTimeout(tick, 120);
