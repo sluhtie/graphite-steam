@@ -348,6 +348,36 @@
 	cursor: pointer;
 }
 
+/* an option that does not apply with the current choices: greyed out, with
+   the reason (shell-theme.js, REQUIRES) */
+.gr-gs-row.gr-gs-off .gr-gs-label b,
+.gr-gs-row.gr-gs-off .gr-gs-label small:not(.gr-gs-why) {
+	color: var(--gr-text-3);
+}
+.gr-gs-row.gr-gs-off .gr-gs-seg,
+.gr-gs-row.gr-gs-off .gr-gs-switch {
+	opacity: 0.35;
+	filter: grayscale(1);
+	pointer-events: none;
+}
+.gr-gs-why {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	margin-top: 4px;
+	color: var(--gr-text-2) !important;
+}
+.gr-gs-why[hidden] {
+	display: none;
+}
+.gr-gs-why svg {
+	flex: none;
+	width: 13px;
+	height: 13px;
+	margin-top: 1px;
+	color: var(--gr-accent);
+}
+
 /* the title bar button (Clean, Classic) */
 .gr-gs-btn {
 	display: flex;

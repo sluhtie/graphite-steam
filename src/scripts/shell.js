@@ -39,6 +39,11 @@
 		#gr-sb:hover::before, #gr-sb.gr-drag::before { width: 6px; background: color-mix(in srgb, var(--gr-text, #ececf0) 45%, transparent); }
 	`;
 	const css = `
+		/* tokens used below; webkit.css (option "Store & community pages") has the real ones */
+		:where(:root) { --gr-fast: 120ms; --gr-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+		/* with the address bar shown (option "Hide URL bar: no") it sits on top of the
+		   page inside the frame, so only the page's bottom corners are the frame's */
+		html.gr-urlbar::after { border-radius: 0 0 15px 15px; }
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
 		.responsive_page_content > div:has(form[role="search"]),
 		#store_header, .store_header_btn_gray, #global_header { display: none !important; }
@@ -155,7 +160,8 @@
 	// Millennium's panel), and store / community pages may then still get this
 	// script while the main window already runs Clean or Classic. Those layouts
 	// need the page's own navigation and no frame, so ask Millennium which
-	// layout is set and step back if it is not Graphite 2.0.
+	// layout is set and step back if it is not Graphite 2.0. The same answer
+	// says whether the address bar is shown above the page.
 	const undo = () => {
 		off = true;
 		window.__graphiteShellPage = false;
@@ -175,7 +181,8 @@
 			const themes = (cfg && cfg.themes) || {};
 			const set = themes.conditions && themes.conditions[themes.activeTheme];
 			const nav = set && set.Navigation;
-			if (nav && nav !== 'Graphite 2.0') undo();
+			if (nav && nav !== 'Graphite 2.0') { undo(); return; }
+			if (set && set['Hide URL bar'] === 'no') document.documentElement.classList.add('gr-urlbar');
 		} catch (e) { /* keep the 2.0 page */ }
 	})();
 })();

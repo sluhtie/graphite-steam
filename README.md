@@ -74,13 +74,13 @@ Everything is set in **Millennium → Themes → Graphite**, and also on the **G
 | **Font** | Inter (default), System (Segoe UI), Motiva Sans |
 | **Corners** | Rounded (default), Sharp |
 | **Navigation** | Graphite 2.0 (default), Clean, Classic (Steam's own menus and hover dropdowns) |
-| **Header** | Single row (default), Classic two-row layout |
+| **Header** | Clean and Classic: single row (default) or the classic two-row layout |
 | **Store & community pages** | Restyle the in-client web pages (on by default) |
 | **Start page** | What Home shows (2.0): Cockpit (default), Spotlight, Bento, Library. Switches right away on the Graphite page |
 | **Startup screen** | The Graphite logo while the main window loads (2.0, on by default) |
 | **Extras** | Hide URL bar (on by default), Hide What's New, Hide "Add shelf" |
 
-Options other than colors take effect after reloading the UI (the Graphite page offers a button) or restarting Steam. A new **Navigation** layout needs a Steam restart.
+Options other than colors take effect after reloading the UI (the Graphite page offers a button) or restarting Steam. A new **Navigation** layout needs a Steam restart. Options that don't apply with your other choices (for example the header with Graphite 2.0, or Hide What's New with a start page of its own) are greyed out on the Graphite page and say what they need.
 
 ## Install
 

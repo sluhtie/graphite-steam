@@ -650,9 +650,7 @@
 	margin: 5px !important;
 	flex: none !important;
 }
-.gr-shell-web .$(URLBar@FocusNavigationRoot) {
-	display: none !important;
-}
+/* the address bar: shown or hidden by the option "Hide URL bar" (on by default) */
 /* page loading bar on the frame's top edge (shell.js sets position and --p) */
 .gr-load {
 	position: fixed;

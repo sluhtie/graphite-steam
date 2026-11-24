@@ -93,7 +93,7 @@
 			}
 		},
 		"Header": {
-			"description": "Single row merges the menu bar and the Store / Library / Community tabs into one compact row.",
+			"description": "Clean and Classic: Single row merges the menu bar and the Store / Library / Community tabs into one compact row. No effect with Graphite 2.0, which has its own title bar.",
 			"tab": "Layout",
 			"default": "Single row",
 			"values": {
@@ -197,7 +197,7 @@
 			}
 		},
 		"Hide URL bar": {
-			"description": "Hide the address bar above store and community pages (the Store / Community tabs and the page navigation already cover it).",
+			"description": "Hide the address bar above store and community pages (the tabs or side navigation and the page navigation already cover it). Works in every layout.",
 			"tab": "Layout",
 			"default": "yes",
 			"values": {
@@ -213,7 +213,7 @@
 			}
 		},
 		"Hide What's New": {
-			"description": "Hide the \"What's New\" event row on the library home page.",
+			"description": "Hide the \"What's New\" event row on Steam's library home. Applies where that home is shown: Clean, Classic, or Graphite 2.0 with Start page: Library.",
 			"tab": "Layout",
 			"default": "no",
 			"values": {
@@ -229,7 +229,7 @@
 			}
 		},
 		"Hide Add shelf": {
-			"description": "Hide the \"Add shelf\" button under the shelves on the library home page.",
+			"description": "Hide the \"Add shelf\" button under the shelves on Steam's library home. Applies where that home is shown: Clean, Classic, or Graphite 2.0 with Start page: Library.",
 			"tab": "Layout",
 			"default": "no",
 			"values": {

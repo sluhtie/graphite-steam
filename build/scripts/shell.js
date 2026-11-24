@@ -40,6 +40,11 @@
 		#gr-sb:hover::before, #gr-sb.gr-drag::before { width: 6px; background: color-mix(in srgb, var(--gr-text, #ececf0) 45%, transparent); }
 	`;
 	const css = `
+		/* tokens used below; webkit.css (option "Store & community pages") has the real ones */
+		:where(:root) { --gr-fast: 120ms; --gr-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+		/* with the address bar shown (option "Hide URL bar: no") it sits on top of the
+		   page inside the frame, so only the page's bottom corners are the frame's */
+		html.gr-urlbar::after { border-radius: 0 0 15px 15px; }
 		/* the store's top bar (React, hashed classes: found by its search form) and the legacy header */
 		.responsive_page_content > div:has(form[role="search"]),
 		#store_header, .store_header_btn_gray, #global_header { display: none !important; }
@@ -156,7 +161,8 @@
 	// Millennium's panel), and store / community pages may then still get this
 	// script while the main window already runs Clean or Classic. Those layouts
 	// need the page's own navigation and no frame, so ask Millennium which
-	// layout is set and step back if it is not Graphite 2.0.
+	// layout is set and step back if it is not Graphite 2.0. The same answer
+	// says whether the address bar is shown above the page.
 	const undo = () => {
 		off = true;
 		window.__graphiteShellPage = false;
@@ -176,7 +182,8 @@
 			const themes = (cfg && cfg.themes) || {};
 			const set = themes.conditions && themes.conditions[themes.activeTheme];
 			const nav = set && set.Navigation;
-			if (nav && nav !== 'Graphite 2.0') undo();
+			if (nav && nav !== 'Graphite 2.0') { undo(); return; }
+			if (set && set['Hide URL bar'] === 'no') document.documentElement.classList.add('gr-urlbar');
 		} catch (e) { /* keep the 2.0 page */ }
 	})();
 })();
@@ -1506,6 +1513,7 @@
 			news: '„Neuigkeiten“ ausblenden', newsHint: 'Den Neuigkeiten-Streifen auf der Startseite der Bibliothek.',
 			shelf: '„Regal hinzufügen“ ausblenden', shelfHint: 'Den Button unter den Regalen auf der Startseite der Bibliothek.',
 			home: 'Startseite', homeHint: 'Was „Startseite“ in der Leiste zeigt. Wechselt sofort.',
+			needs20: 'Nur mit Navigation: Graphite 2.0.', headerIn20: 'Graphite 2.0 hat eine eigene Titelleiste, hier ändert das nichts.', needsLibrary: 'Nur mit Startseite: Bibliothek. Deine Startseite ersetzt Steams Bibliotheks-Startseite.',
 			splash: 'Startbildschirm', splashHint: 'Das Graphite-Logo, während das Hauptfenster lädt.',
 			pending: 'Änderungen werden nach dem Neuladen der Oberfläche aktiv.', reload: 'Jetzt neu laden', restartPending: 'Das neue Layout gilt nach einem Neustart von Steam.', restart: 'Steam neu starten', failed: 'Konnte nicht gespeichert werden.', close: 'Schließen', loading: 'Lädt …',
 			values: { Inter: 'Inter', System: 'System', Steam: 'Steam', Rounded: 'Abgerundet', Sharp: 'Eckig', 'Single row': 'Einzeilig', Classic: 'Klassisch', Clean: 'Clean', 'Graphite 2.0': 'Graphite 2.0', Library: 'Bibliothek' },
@@ -1521,6 +1529,7 @@
 			news: 'Hide "What\'s New"', newsHint: 'The news shelf on the library home.',
 			shelf: 'Hide "Add shelf"', shelfHint: 'The button under the shelves on the library home.',
 			home: 'Start page', homeHint: 'What Home in the rail shows. Switches right away.',
+			needs20: 'Only with Navigation: Graphite 2.0.', headerIn20: 'Graphite 2.0 has its own title bar, so this changes nothing there.', needsLibrary: 'Only with Start page: Library. Your start page replaces Steam\'s library home.',
 			splash: 'Startup screen', splashHint: 'The Graphite logo while the main window loads.',
 			pending: 'Changes take effect after reloading the UI.', reload: 'Reload now', restartPending: 'The new layout takes effect after restarting Steam.', restart: 'Restart Steam', failed: 'Could not be saved.', close: 'Close', loading: 'Loading …',
 			values: {}, colorNames: {}, colorHints: {},
@@ -1529,6 +1538,17 @@
 		const CONDS = {
 			look: [['Font', G.font, G.fontHint, 'seg'], ['Corners', G.corners, G.cornersHint, 'seg']],
 			layout: [['Navigation', G.nav, G.navHint, 'seg'], ['Start page', G.home, G.homeHint, 'seg'], ['Header', G.header, G.headerHint, 'seg'], ['Store & community pages', G.web, G.webHint, 'toggle'], ['Hide URL bar', G.url, G.urlHint, 'toggle'], ["Hide What's New", G.news, G.newsHint, 'toggle'], ['Hide Add shelf', G.shelf, G.shelfHint, 'toggle'], ['Startup screen', G.splash, G.splashHint, 'toggle']],
+		};
+		// Options that only apply with certain other choices: condition -> the
+		// reason it does not apply right now (or ''). Such rows are greyed out and
+		// say what they need, and come back as soon as the other choice does.
+		const steamHome = v => v.Navigation !== 'Graphite 2.0' || v['Start page'] === 'Library';
+		const REQUIRES = {
+			'Start page': v => (v.Navigation !== 'Graphite 2.0' ? G.needs20 : ''),
+			'Startup screen': v => (v.Navigation !== 'Graphite 2.0' ? G.needs20 : ''),
+			Header: v => (v.Navigation === 'Graphite 2.0' ? G.headerIn20 : ''),
+			"Hide What's New": v => (steamHome(v) ? '' : G.needsLibrary),
+			'Hide Add shelf': v => (steamHome(v) ? '' : G.needsLibrary),
 		};
 		// order of the choices as shown (2.0 first)
 		const ORDER = { Navigation: ['Graphite 2.0', 'Clean', 'Classic'], 'Start page': ['Cockpit', 'Spotlight', 'Bento', 'Library'] };
@@ -1624,14 +1644,18 @@
 				for (const b of g.querySelectorAll('button[data-value]')) b.classList.toggle('gr-on', b.dataset.value === v);
 				const sw = g.querySelector('.gr-gs-switch');
 				if (sw) sw.setAttribute('aria-checked', String(v === 'yes'));
+				const why = REQUIRES[g.dataset.cond] ? REQUIRES[g.dataset.cond](values) : '';
+				g.classList.toggle('gr-gs-off', !!why);
+				for (const b of g.querySelectorAll('button')) b.disabled = !!why;
+				const note = g.querySelector('.gr-gs-why');
+				note.hidden = !why;
+				note.lastChild.textContent = why;
 			}
 		}
 
 		function row(name, label, hint, kind) {
 			const def = skin.Conditions[name];
 			if (!def) return '';
-			// the start pages belong to the 2.0 layout (shell.js)
-			if (name === 'Start page' && !window.__graphiteShell) return '';
 			let control;
 			if (kind === 'toggle') {
 				control = `<button type="button" class="gr-gs-switch" role="switch" aria-label="${esc(label)}"><i></i></button>`;
@@ -1639,7 +1663,8 @@
 				const opts = ORDER[name] || Object.keys(def.values);
 				control = `<div class="gr-gs-seg" role="radiogroup">${opts.filter(o => o in def.values).map(o => `<button type="button" data-value="${esc(o)}">${esc(G.values[o] || o)}</button>`).join('')}</div>`;
 			}
-			return `<div class="gr-gs-row" data-cond="${esc(name)}"><div class="gr-gs-label"><b>${esc(label)}</b><small>${esc(hint)}</small></div>${control}</div>`;
+			return `<div class="gr-gs-row" data-cond="${esc(name)}"><div class="gr-gs-label"><b>${esc(label)}</b><small>${esc(hint)}</small>`
+				+ `<small class="gr-gs-why" hidden>${svg('M12 8v5M12 16.5h.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 2)}<span></span></small></div>${control}</div>`;
 		}
 
 		function build() {
